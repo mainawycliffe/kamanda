@@ -4,6 +4,7 @@ go 1.12
 
 require (
 	cloud.google.com/go v0.44.3 // indirect
+	firebase.google.com/go v3.9.0+incompatible
 	github.com/coreos/bbolt v1.3.3 // indirect
 	github.com/coreos/etcd v3.3.15+incompatible // indirect
 	github.com/coreos/go-semver v0.3.0 // indirect
