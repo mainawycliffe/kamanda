@@ -22,9 +22,6 @@ var rootCmd = &cobra.Command{
   It provided addition functionality currently not available to via the Official 
   Firebase Tool such as Managing Users, Databases etc from the CLI.
   `,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	//	Run: func(cmd *cobra.Command, args []string) { },
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
