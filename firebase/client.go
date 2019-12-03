@@ -17,7 +17,7 @@ const firebaseProjectConfig string = "./.firebaserc"
 const defaultProject = "default"
 
 type Firebase struct {
-	app       *firebase.App
+	App       *firebase.App
 	projectId string
 }
 
@@ -67,11 +67,11 @@ func (f *Firebase) InitializeFirbeaseApp(ctx context.Context, projectId string) 
 		log.Fatalf("error initializing app: %v\n", err)
 	}
 
-	f.app = app
+	f.App = app
 
 	return nil
 }
 
-func (f *Firebase) auth(ctx context.Context) (*auth.Client, error) {
-	return f.app.Auth(ctx)
+func (f *Firebase) Auth(ctx context.Context) (*auth.Client, error) {
+	return f.App.Auth(ctx)
 }

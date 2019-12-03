@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"firebase.google.com/go/auth"
+	"github.com/mainawycliffe/kamanda/firebase"
 )
 
 type NewUser struct {
@@ -70,10 +71,24 @@ func AddCustomClaimsToFirebaseUser(ctx context.Context, client *auth.Client, uid
 	return nil
 }
 
-func DeleteFirebaseUser(ctx context.Context, client *auth.Client, uid string) error {
+func DeleteFirebaseUser(ctx context.Context, uid string) error {
 
 	if uid == "" {
 		return fmt.Errorf("The UID of the user can not be empty")
+	}
+
+	firebase := &firebase.Firebase{}
+
+	err := firebase.InitializeFirbeaseApp(context.Background(), "")
+
+	if err != nil {
+		return err
+	}
+
+	client, err := firebase.Auth(ctx)
+
+	if err != nil {
+		return fmt.Errorf("Error authenticating firebase account: %w", err)
 	}
 
 	return client.DeleteUser(ctx, uid)

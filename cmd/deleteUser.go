@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/mainawycliffe/kamanda/firebase"
+	"github.com/mainawycliffe/kamanda/firebase/auth"
 	"github.com/spf13/cobra"
 )
 
@@ -20,14 +20,14 @@ var deleteUserCmd = &cobra.Command{
 			return errors.New("atleast one Firebase user uid is required!")
 		}
 
-		fmt.Println(fmt.Sprintf("deleteUser called %v", args))
+		// delete all user accounts
+		for _, uid := range args {
 
-		firebase := &firebase.Firebase{}
+			err := auth.DeleteFirebaseUser(context.Background(), uid)
 
-		err := firebase.InitializeFirbeaseApp(context.Background(), "")
-
-		if err != nil {
-			return err
+			if err != nil {
+				return fmt.Errorf("An error occurred while deleting account with uid: %s :%w", uid, err)
+			}
 		}
 
 		return nil
