@@ -8,8 +8,9 @@ import (
 
 // addUsersCmd represents the addUsers command
 var addUsersCmd = &cobra.Command{
-	Use:   "addUsers",
-	Short: "Add new multiple Firebase Users",
+	Use:     "addUsers",
+	Aliases: []string{"add-users"},
+	Short:   "Add multiple Firebase Auth Users from file - JSON or YAML Supported!",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("addUsers called")
 	},
