@@ -1,2 +1,4 @@
 --debug=localhost
 .vscode
+.env
+.firebaserc
