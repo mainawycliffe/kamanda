@@ -6,7 +6,7 @@ require (
 	cloud.google.com/go v0.49.0 // indirect
 	cloud.google.com/go/firestore v1.1.0 // indirect
 	firebase.google.com/go v3.10.0+incompatible
-	github.com/bitfield/script v0.14.0 // indirect
+	github.com/bitfield/script v0.14.0
 	github.com/coreos/bbolt v1.3.3 // indirect
 	github.com/coreos/etcd v3.3.15+incompatible // indirect
 	github.com/coreos/go-semver v0.3.0 // indirect
@@ -45,6 +45,7 @@ require (
 	golang.org/x/net v0.0.0-20191126235420-ef20fe5d7933 // indirect
 	golang.org/x/oauth2 v0.0.0-20191202225959-858c2ad4c8b6 // indirect
 	golang.org/x/sys v0.0.0-20191128015809-6d18c012aee9 // indirect
+	google.golang.org/api v0.14.0
 	google.golang.org/appengine v1.6.5 // indirect
 	google.golang.org/genproto v0.0.0-20191115221424-83cc0476cb11 // indirect
 	google.golang.org/grpc v1.25.1 // indirect
