@@ -10,18 +10,20 @@ import (
 	"github.com/spf13/viper"
 )
 
+const description = `Kamanda is a  Firebase CLI Tool extender and should be used alongside it. 
+
+Kamanda provides additional functionality currently not available to via the 
+Firebase CLI Tool such as User Management, Cloud Firestore Management etc from the CLI.
+
+For instance, it allows you to easily create users with custom tokens, 
+which is always a trick preposition.`
+
 var cfgFile string
 
 var rootCmd = &cobra.Command{
-	Use:   "firebase-cli",
+	Use:   "kamanda",
 	Short: "Kamanda is an extender Firebase Tools CLI",
-	Long: `Kamanda is a  Firebase CLI Tool extender and should be used alongside it. 
-
-	Kamanda provides additional functionality currently not available to via the 
-	Firebase CLI Tool such as User Management, Cloud Firestore Management etc from the CLI.
-	
-	For instance, it allows you to easily create users with custom tokens, 
-	which is always a trick preposition.`,
+	Long:  description,
 }
 
 func Execute() {
@@ -34,7 +36,7 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.firebase-cli.yaml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.kamanda.yaml)")
 
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
@@ -51,7 +53,7 @@ func initConfig() {
 		}
 
 		viper.AddConfigPath(home)
-		viper.SetConfigName(".firebase-cli")
+		viper.SetConfigName(".kamanda")
 	}
 
 	viper.AutomaticEnv()
