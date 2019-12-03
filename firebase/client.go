@@ -5,10 +5,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"os"
 
 	firebase "firebase.google.com/go"
 	"firebase.google.com/go/auth"
 	s "github.com/bitfield/script"
+	"google.golang.org/api/option"
 )
 
 const firebaseProjectConfig string = "./.firebaserc"
@@ -56,7 +58,10 @@ func (f *Firebase) InitializeFirbeaseApp(ctx context.Context, projectId string) 
 		ProjectID: f.projectId,
 	}
 
-	app, err := firebase.NewApp(ctx, configs)
+	// replace this with something better
+	opt := option.WithCredentialsFile(os.Getenv("firebaseToken"))
+
+	app, err := firebase.NewApp(ctx, configs, opt)
 
 	if err != nil {
 		log.Fatalf("error initializing app: %v\n", err)
