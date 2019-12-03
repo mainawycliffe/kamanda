@@ -1,11 +1,11 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"log"
-	"context"
 
-	"github.com/mainawycliffe/firebase-cli/auth"
+	"github.com/mainawycliffe/kamanda/firebase/auth"
 	"github.com/spf13/cobra"
 )
 
@@ -30,7 +30,7 @@ var deleteUserCmd = &cobra.Command{
 			log.Fatalf("%s", err.Error())
 		}
 	},
-} 
+}
 
 func init() {
 	authCmd.AddCommand(deleteUserCmd)
