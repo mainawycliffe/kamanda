@@ -1,6 +1,6 @@
 package main
 
-import "github.com/mainawycliffe/firebase-cli/cmd"
+import "github.com/mainawycliffe/firebasecli/cmd"
 
 func main() {
 	cmd.Execute()

@@ -1,4 +1,4 @@
-module github.com/mainawycliffe/firebase-cli
+module github.com/mainawycliffe/firebasecli
 
 go 1.12
 
