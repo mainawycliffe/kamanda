@@ -1,4 +1,4 @@
-# Firebase CLI Extender
+# Kamada - A Firebase CLI Extender
 
 This tool is meant to provide functionality not provided by Firebase CLI such as Managing Users of your Projects, Exporting and Importing of Cloud Firestore Data.
 
