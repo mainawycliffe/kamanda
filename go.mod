@@ -4,6 +4,7 @@ go 1.12
 
 require (
 	cloud.google.com/go v0.49.0 // indirect
+	cloud.google.com/go/firestore v1.1.0 // indirect
 	firebase.google.com/go v3.10.0+incompatible
 	github.com/bitfield/script v0.14.0 // indirect
 	github.com/coreos/bbolt v1.3.3 // indirect
@@ -16,6 +17,7 @@ require (
 	github.com/gorilla/websocket v1.4.1 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.9.6 // indirect
 	github.com/hashicorp/golang-lru v0.5.3 // indirect
+	github.com/joho/godotenv v1.3.0
 	github.com/kisielk/errcheck v1.2.0 // indirect
 	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
 	github.com/kr/pty v1.1.8 // indirect
