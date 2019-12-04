@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	oauthGoogleUrlAPI = "https://www.googleapis.com/oauth2/v2/userinfo?access_token="
+	oauthGoogleUrlAPI = "https://www.googleapis.com/oauth2/v2/firebase?access_token="
 	port              = "8000"
 )
 
