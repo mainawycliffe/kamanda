@@ -70,10 +70,14 @@ func StartLocalhostServer() {
 	// open browser now
 	oauthState := generateOauthStateTracker()
 	u := googleOauthConfig.AuthCodeURL(oauthState)
-	fmt.Printf("Visit this URL on any device to log in:\n\n%s\n\n", u)
+	fmt.Printf("Visit this URL on any device to log in:\n\n%s\n\nWaiting for authentication...", u)
 	_ = browser.OpenURL(u)
-	r := chi.NewRouter()
-	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+	router := chi.NewRouter()
+	httpServer := http.Server{
+		Addr:    fmt.Sprintf(":%s", port),
+		Handler: router,
+	}
+	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.FormValue("state") != oauthStateTracker {
 			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 			return
@@ -84,13 +88,17 @@ func StartLocalhostServer() {
 			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 			return
 		}
-		// save credentials
+		// todo: save credentials
+		// todo: return success message to the user
 		fmt.Fprintf(w, "UserInfo: %s\n", data)
-
-		// TODO: close after some time, don't leave server hanging
+		go func() {
+			fmt.Printf("\n\nLogin Successful!\n\n")
+			if err := httpServer.Shutdown(context.Background()); err != nil {
+				log.Fatal(err)
+			}
+		}()
 	})
-	if err := http.ListenAndServe(fmt.Sprintf(":%s", port), r); err != nil {
-		panic(err)
+	if err := httpServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		log.Fatal(err)
 	}
-	log.Println("Server closed!")
 }
