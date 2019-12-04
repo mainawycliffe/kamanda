@@ -11,6 +11,7 @@ import (
 	"os"
 
 	"github.com/go-chi/chi"
+	"github.com/pkg/browser"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 )
@@ -69,38 +70,30 @@ func StartLocalhostServer() {
 		Scopes:       scopes,
 		Endpoint:     google.Endpoint,
 	}
-
+	// open browser now
+	oauthState := generateOauthStateTracker()
+	u := googleOauthConfig.AuthCodeURL(oauthState)
+	fmt.Printf("Visit this URL on any device to log in:\n\n%s\n\n", u)
+	_ = browser.OpenURL(u)
 	r := chi.NewRouter()
-	r.Get(loginPath, googleLoginHandler)
-	r.Get(callbackPath, callbackHandler)
+	r.Get(callbackPath, func(w http.ResponseWriter, r *http.Request) {
+		if r.FormValue("state") != oauthStateTracker {
+			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+			return
+		}
+		data, err := getUserDataFromGoogle(r.FormValue("code"))
+		if err != nil {
+			log.Println(err.Error())
+			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+			return
+		}
+		// save credentials
+		fmt.Fprintf(w, "UserInfo: %s\n", data)
 
-	log.Printf("Click here http://localhost:8000%s to authenticate login with your Google Account", loginPath)
+		// TODO: close after some time, don't leave server hanging
+	})
 	if err := http.ListenAndServe(":8000", r); err != nil {
 		panic(err)
 	}
 	log.Println("Server closed!")
-}
-
-func googleLoginHandler(w http.ResponseWriter, r *http.Request) {
-	// Create oauthState cookie
-	oauthState := generateOauthStateTracker()
-	u := googleOauthConfig.AuthCodeURL(oauthState)
-	http.Redirect(w, r, u, http.StatusTemporaryRedirect)
-}
-
-func callbackHandler(w http.ResponseWriter, r *http.Request) {
-	if r.FormValue("state") != oauthStateTracker {
-		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-		return
-	}
-	data, err := getUserDataFromGoogle(r.FormValue("code"))
-	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-		return
-	}
-	// save credentials
-	fmt.Fprintf(w, "UserInfo: %s\n", data)
-
-	// TODO: close after some time, don't leave server hanging
 }
