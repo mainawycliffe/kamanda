@@ -3,3 +3,4 @@
 .env
 .firebaserc
 credentials.json
+credentials*
