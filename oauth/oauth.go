@@ -18,8 +18,7 @@ import (
 
 const (
 	oauthGoogleUrlAPI = "https://www.googleapis.com/oauth2/v2/userinfo?access_token="
-	loginPath         = "/auth/google/login"
-	callbackPath      = "/auth/google/callback"
+	port              = "8000"
 )
 
 var (
@@ -56,15 +55,13 @@ func getUserDataFromGoogle(code string) ([]byte, error) {
 }
 
 func StartLocalhostServer() {
-
 	scopes := []string{
 		"https://www.googleapis.com/auth/userinfo.email",
 		"https://www.googleapis.com/auth/cloud-platform",
 		"https://www.googleapis.com/auth/firebase",
 	}
-
 	googleOauthConfig = &oauth2.Config{
-		RedirectURL:  fmt.Sprintf("http://localhost:8000%s", callbackPath),
+		RedirectURL:  fmt.Sprintf("http://localhost:%s", port),
 		ClientID:     os.Getenv("GOOGLE_OAUTH_CLIENT_ID"),
 		ClientSecret: os.Getenv("GOOGLE_OAUTH_CLIENT_SECRET"),
 		Scopes:       scopes,
@@ -76,7 +73,7 @@ func StartLocalhostServer() {
 	fmt.Printf("Visit this URL on any device to log in:\n\n%s\n\n", u)
 	_ = browser.OpenURL(u)
 	r := chi.NewRouter()
-	r.Get(callbackPath, func(w http.ResponseWriter, r *http.Request) {
+	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.FormValue("state") != oauthStateTracker {
 			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 			return
@@ -92,7 +89,7 @@ func StartLocalhostServer() {
 
 		// TODO: close after some time, don't leave server hanging
 	})
-	if err := http.ListenAndServe(":8000", r); err != nil {
+	if err := http.ListenAndServe(fmt.Sprintf(":%s", port), r); err != nil {
 		panic(err)
 	}
 	log.Println("Server closed!")
