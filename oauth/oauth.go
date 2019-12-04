@@ -71,6 +71,8 @@ func StartLocalhostServer() {
 		Addr:    fmt.Sprintf(":%s", port),
 		Handler: router,
 	}
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.FormValue("state") != oauthStateTracker {
 			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
@@ -85,14 +87,19 @@ func StartLocalhostServer() {
 		// todo: save credentials
 		// todo: return success message to the user
 		fmt.Fprintf(w, "UserInfo: %s\n", data)
-		go func() {
-			fmt.Printf("\n\nLogin Successful!\n\n")
-			if err := httpServer.Shutdown(context.Background()); err != nil {
-				log.Fatal(err)
-			}
-		}()
+		// use subroutine to shutdown server
+		cancel()
+
 	})
-	if err := httpServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+	go func() {
+		if err := httpServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatal(err)
+		}
+	}()
+	<-ctx.Done()
+	// Shutdown the server when the context is canceled
+	fmt.Printf("\n\nLogin Successful!\n\n")
+	if err := httpServer.Shutdown(context.Background()); err != nil {
 		log.Fatal(err)
 	}
 }
