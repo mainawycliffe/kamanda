@@ -21,22 +21,16 @@ const (
 	port              = "8000"
 )
 
-var (
-	googleOauthConfig *oauth2.Config
-	oauthStateTracker string
-	letters           = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-)
-
 func generateOauthStateTracker() string {
+	letters := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 	b := make([]rune, 10)
 	for i := range b {
 		b[i] = letters[rand.Intn(len(letters))]
 	}
-	oauthStateTracker = base64.URLEncoding.EncodeToString([]byte(string(b)))
-	return oauthStateTracker
+	return base64.URLEncoding.EncodeToString([]byte(string(b)))
 }
 
-func getUserDataFromGoogle(code string) ([]byte, error) {
+func getUserDataFromGoogle(googleOauthConfig *oauth2.Config, code string) ([]byte, error) {
 	// Use code to get token and get user info from Google.
 	token, err := googleOauthConfig.Exchange(context.Background(), code)
 	if err != nil {
@@ -60,7 +54,7 @@ func StartLocalhostServer() {
 		"https://www.googleapis.com/auth/cloud-platform",
 		"https://www.googleapis.com/auth/firebase",
 	}
-	googleOauthConfig = &oauth2.Config{
+	googleOauthConfig := &oauth2.Config{
 		RedirectURL:  fmt.Sprintf("http://localhost:%s", port),
 		ClientID:     os.Getenv("GOOGLE_OAUTH_CLIENT_ID"),
 		ClientSecret: os.Getenv("GOOGLE_OAUTH_CLIENT_SECRET"),
@@ -68,8 +62,8 @@ func StartLocalhostServer() {
 		Endpoint:     google.Endpoint,
 	}
 	// open browser now
-	oauthState := generateOauthStateTracker()
-	u := googleOauthConfig.AuthCodeURL(oauthState)
+	oauthStateTracker := generateOauthStateTracker()
+	u := googleOauthConfig.AuthCodeURL(oauthStateTracker)
 	fmt.Printf("Visit this URL on any device to log in:\n\n%s\n\nWaiting for authentication...", u)
 	_ = browser.OpenURL(u)
 	router := chi.NewRouter()
@@ -82,7 +76,7 @@ func StartLocalhostServer() {
 			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 			return
 		}
-		data, err := getUserDataFromGoogle(r.FormValue("code"))
+		data, err := getUserDataFromGoogle(googleOauthConfig, r.FormValue("code"))
 		if err != nil {
 			log.Println(err.Error())
 			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
