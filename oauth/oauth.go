@@ -55,11 +55,18 @@ func getUserDataFromGoogle(code string) ([]byte, error) {
 }
 
 func StartLocalhostServer() {
+
+	scopes := []string{
+		"https://www.googleapis.com/auth/userinfo.email",
+		"https://www.googleapis.com/auth/cloud-platform",
+		"https://www.googleapis.com/auth/firebase",
+	}
+
 	googleOauthConfig = &oauth2.Config{
 		RedirectURL:  fmt.Sprintf("http://localhost:8000%s", callbackPath),
 		ClientID:     os.Getenv("GOOGLE_OAUTH_CLIENT_ID"),
 		ClientSecret: os.Getenv("GOOGLE_OAUTH_CLIENT_SECRET"),
-		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email"},
+		Scopes:       scopes,
 		Endpoint:     google.Endpoint,
 	}
 
