@@ -36,6 +36,9 @@ func getUserDataFromGoogle(googleOauthConfig *oauth2.Config, code string) ([]byt
 	if err != nil {
 		return nil, fmt.Errorf("code exchange wrong: %s", err.Error())
 	}
+	// todo: construct a refresh_token.json file here
+	// todo: save the configs globally
+	// todo: get user details i.e. email and name
 	response, err := http.Get(oauthGoogleUrlAPI + token.AccessToken)
 	if err != nil {
 		return nil, fmt.Errorf("failed getting user info: %s", err.Error())
