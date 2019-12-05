@@ -16,10 +16,18 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		oauth.LoginWithLocalhost()
+		noLocalhost, _ := cmd.Flags().GetBool("no-localhost")
+		if noLocalhost {
+			oauth.LoginWithoutLocalhost()
+		} else {
+			oauth.LoginWithLocalhost()
+		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(loginCmd)
+
+	// allow users to login without localhost
+	loginCmd.Flags().Bool("no-localhost", false, " copy and paste a code instead of starting a local server for authentication")
 }
