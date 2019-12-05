@@ -89,6 +89,11 @@ func StartLocalhostServer() {
 		Scopes:       scopes,
 		Endpoint:     google.Endpoint,
 	}
+}
+
+// LoginWithLocalhost starts a server that can be used to capture OAUTH
+// token from Google Auth Server
+func LoginWithLocalhost() {
 	oauthStateTracker := generateOauthStateTracker()
 	u := googleOauthConfig.AuthCodeURL(oauthStateTracker)
 	fmt.Printf("Visit this URL on any device to log in:\n\n%s\n\nWaiting for authentication...", u)
