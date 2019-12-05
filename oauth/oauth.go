@@ -20,6 +20,7 @@ import (
 const (
 	oauthGoogleUrlAPI = "https://www.googleapis.com/oauth2/v2/userinfo?access_token="
 	port              = "8000"
+	noPortURL         = "urn:ietf:wg:oauth:2.0:oob"
 )
 
 // GoogleAPIUserInfo the user data returned from Google API Services
@@ -74,19 +75,26 @@ func getUserDataFromGoogle(googleOauthConfig *oauth2.Config, code string) (*GetU
 	}, nil
 }
 
-// StartLocalhostServer starts a server that can be used to capture OAUTH
-// token from Google Auth Server
-func StartLocalhostServer() {
-	scopes := []string{
+// googleOAuthScopes return a list of scopes used by kamanda
+func googleOAuthScopes() []string {
+	return []string{
 		"https://www.googleapis.com/auth/userinfo.email",
 		"https://www.googleapis.com/auth/cloud-platform",
 		"https://www.googleapis.com/auth/firebase",
 	}
-	googleOauthConfig := &oauth2.Config{
-		RedirectURL:  fmt.Sprintf("http://localhost:%s", port),
+}
+
+// getGoogleOAuthConfig create a OAuth Config object
+func getGoogleOAuthConfig(port string) *oauth2.Config {
+	redirectURL := fmt.Sprintf("http://localhost:%s", port)
+	if port == "" {
+		redirectURL = noPortURL
+	}
+	return &oauth2.Config{
+		RedirectURL:  redirectURL,
 		ClientID:     os.Getenv("GOOGLE_OAUTH_CLIENT_ID"),
 		ClientSecret: os.Getenv("GOOGLE_OAUTH_CLIENT_SECRET"),
-		Scopes:       scopes,
+		Scopes:       googleOAuthScopes(),
 		Endpoint:     google.Endpoint,
 	}
 }
@@ -94,6 +102,7 @@ func StartLocalhostServer() {
 // LoginWithLocalhost starts a server that can be used to capture OAUTH
 // token from Google Auth Server
 func LoginWithLocalhost() {
+	googleOauthConfig := getGoogleOAuthConfig(port)
 	oauthStateTracker := generateOauthStateTracker()
 	u := googleOauthConfig.AuthCodeURL(oauthStateTracker)
 	fmt.Printf("Visit this URL on any device to log in:\n\n%s\n\nWaiting for authentication...", u)
@@ -118,7 +127,6 @@ func LoginWithLocalhost() {
 			return
 		}
 		// todo: save credentials
-
 		// todo: return success message to the user
 		fmt.Fprintf(w, "UserInfo: %s\n", data)
 		// use subroutine to shutdown server
