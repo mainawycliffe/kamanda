@@ -29,6 +29,14 @@ type GoogleAPIUserInfo struct {
 	Picture       string `json:"picture"`
 	VerifiedEmail bool   `json:"verified_email"`
 }
+
+// GetUserDataFromGoogleResponse capture the response we need when users data is
+// returned from google api services
+type GetUserDataFromGoogleResponse struct {
+	Email        string
+	RefreshToken string
+}
+
 func generateOauthStateTracker() string {
 	letters := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 	b := make([]rune, 10)
@@ -38,27 +46,28 @@ func generateOauthStateTracker() string {
 	return base64.URLEncoding.EncodeToString([]byte(string(b)))
 }
 
-func getUserDataFromGoogle(googleOauthConfig *oauth2.Config, code string) ([]byte, error) {
-	// Use code to get token and get user info from Google.
+func getUserDataFromGoogle(googleOauthConfig *oauth2.Config, code string) (GetUserDataFromGoogleResponse, error) {
 	token, err := googleOauthConfig.Exchange(context.Background(), code)
 	if err != nil {
-		return nil, fmt.Errorf("code exchange wrong: %s", err.Error())
+		return GetUserDataFromGoogleResponse{}, fmt.Errorf("code exchange wrong: %w", err)
 	}
-	// todo: construct a refresh_token.json file here
-	// todo: save the configs globally
-	// todo: get user details i.e. email and name
 	response, err := http.Get(oauthGoogleUrlAPI + token.AccessToken)
 	if err != nil {
-		return nil, fmt.Errorf("failed getting user info: %s", err.Error())
+		return GetUserDataFromGoogleResponse{}, fmt.Errorf("failed getting user info: %w", err)
 	}
 	defer response.Body.Close()
 	contents, err := ioutil.ReadAll(response.Body)
 	if err != nil {
+		return GetUserDataFromGoogleResponse{}, fmt.Errorf("failed read response: %w", err)
+	}
 	var userInfo *GoogleAPIUserInfo
 	if err = json.Unmarshal(contents, &userInfo); err != nil {
 		return GetUserDataFromGoogleResponse{}, fmt.Errorf("Error reading data from google: %w", err)
 	}
-	return contents, nil
+	return GetUserDataFromGoogleResponse{
+		Email:        userInfo.Email,
+		RefreshToken: token.RefreshToken,
+	}, nil
 }
 
 func StartLocalhostServer() {
