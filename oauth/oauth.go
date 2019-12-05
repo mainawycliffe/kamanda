@@ -21,6 +21,14 @@ const (
 	port              = "8000"
 )
 
+// GoogleAPIUserInfo the user data returned from Google API Services
+type GoogleAPIUserInfo struct {
+	Email         string `json:"email"`
+	Hd            string `json:"hd"`
+	ID            string `json:"id"`
+	Picture       string `json:"picture"`
+	VerifiedEmail bool   `json:"verified_email"`
+}
 func generateOauthStateTracker() string {
 	letters := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 	b := make([]rune, 10)
@@ -46,7 +54,9 @@ func getUserDataFromGoogle(googleOauthConfig *oauth2.Config, code string) ([]byt
 	defer response.Body.Close()
 	contents, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		return nil, fmt.Errorf("failed read response: %s", err.Error())
+	var userInfo *GoogleAPIUserInfo
+	if err = json.Unmarshal(contents, &userInfo); err != nil {
+		return GetUserDataFromGoogleResponse{}, fmt.Errorf("Error reading data from google: %w", err)
 	}
 	return contents, nil
 }
