@@ -1,6 +1,7 @@
 package oauth
 
 import (
+	"bufio"
 	"context"
 	"encoding/base64"
 	"encoding/json"
@@ -143,4 +144,26 @@ func LoginWithLocalhost() {
 	if err := httpServer.Shutdown(context.Background()); err != nil {
 		log.Fatal(err)
 	}
+}
+
+// LoginWithoutLocalhost login without localhost localhost server, suitable in
+// environments without a GUI. The user enters the authorization code manually
+func LoginWithoutLocalhost() {
+	googleOauthConfig := getGoogleOAuthConfig("")
+	oauthStateTracker := generateOauthStateTracker()
+	u := googleOauthConfig.AuthCodeURL(oauthStateTracker)
+	fmt.Printf("Visit this URL on any device to log in:\n\n%s\n\nWaiting for authentication...", u)
+	// open browser now
+	_ = browser.OpenURL(u)
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print("\n\nEnter the authorization code here: ")
+	code, _ := reader.ReadString('\n')
+	data, err := getUserDataFromGoogle(googleOauthConfig, code)
+	if err != nil {
+		log.Fatalln(err.Error())
+		return
+	}
+	// todo: save credentials
+	// todo: return success message to the user
+	fmt.Fprintf(os.Stdout, "\n\nSuccess! Logged in as %s\n\n", data.Email)
 }
