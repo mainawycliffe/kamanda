@@ -50,25 +50,25 @@ func generateOauthStateTracker() string {
 }
 
 // getUserDataFromGoogle fetch user data and the token from google using code
-func getUserDataFromGoogle(googleOauthConfig *oauth2.Config, code string) (GetUserDataFromGoogleResponse, error) {
+func getUserDataFromGoogle(googleOauthConfig *oauth2.Config, code string) (*GetUserDataFromGoogleResponse, error) {
 	token, err := googleOauthConfig.Exchange(context.Background(), code)
 	if err != nil {
-		return GetUserDataFromGoogleResponse{}, fmt.Errorf("code exchange wrong: %w", err)
+		return nil, fmt.Errorf("OAuth: Error exchanging codes: %w", err)
 	}
 	response, err := http.Get(oauthGoogleUrlAPI + token.AccessToken)
 	if err != nil {
-		return GetUserDataFromGoogleResponse{}, fmt.Errorf("failed getting user info: %w", err)
+		return nil, fmt.Errorf("OAuth: Error fetching user data: %w", err)
 	}
 	defer response.Body.Close()
 	contents, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		return GetUserDataFromGoogleResponse{}, fmt.Errorf("failed read response: %w", err)
+		return nil, fmt.Errorf("OAuth: Error reading response body: %w", err)
 	}
 	var userInfo *GoogleAPIUserInfo
 	if err = json.Unmarshal(contents, &userInfo); err != nil {
-		return GetUserDataFromGoogleResponse{}, fmt.Errorf("Error reading data from google: %w", err)
+		return nil, fmt.Errorf("OAuth: Error reading data from google: %w", err)
 	}
-	return GetUserDataFromGoogleResponse{
+	return &GetUserDataFromGoogleResponse{
 		Email:        userInfo.Email,
 		RefreshToken: token.RefreshToken,
 	}, nil
@@ -89,10 +89,10 @@ func StartLocalhostServer() {
 		Scopes:       scopes,
 		Endpoint:     google.Endpoint,
 	}
-	// open browser now
 	oauthStateTracker := generateOauthStateTracker()
 	u := googleOauthConfig.AuthCodeURL(oauthStateTracker)
 	fmt.Printf("Visit this URL on any device to log in:\n\n%s\n\nWaiting for authentication...", u)
+	// open browser now
 	_ = browser.OpenURL(u)
 	router := chi.NewRouter()
 	httpServer := http.Server{
