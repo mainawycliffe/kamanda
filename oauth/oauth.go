@@ -3,6 +3,7 @@ package oauth
 import (
 	"context"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -37,6 +38,8 @@ type GetUserDataFromGoogleResponse struct {
 	RefreshToken string
 }
 
+// generateOauthStateTracker generates a random string to act as oauth state
+// tracker
 func generateOauthStateTracker() string {
 	letters := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 	b := make([]rune, 10)
@@ -46,6 +49,7 @@ func generateOauthStateTracker() string {
 	return base64.URLEncoding.EncodeToString([]byte(string(b)))
 }
 
+// getUserDataFromGoogle fetch user data and the token from google using code
 func getUserDataFromGoogle(googleOauthConfig *oauth2.Config, code string) (GetUserDataFromGoogleResponse, error) {
 	token, err := googleOauthConfig.Exchange(context.Background(), code)
 	if err != nil {
@@ -70,6 +74,8 @@ func getUserDataFromGoogle(googleOauthConfig *oauth2.Config, code string) (GetUs
 	}, nil
 }
 
+// StartLocalhostServer starts a server that can be used to capture OAUTH
+// token from Google Auth Server
 func StartLocalhostServer() {
 	scopes := []string{
 		"https://www.googleapis.com/auth/userinfo.email",
@@ -107,11 +113,11 @@ func StartLocalhostServer() {
 			return
 		}
 		// todo: save credentials
+
 		// todo: return success message to the user
 		fmt.Fprintf(w, "UserInfo: %s\n", data)
 		// use subroutine to shutdown server
 		cancel()
-
 	})
 	go func() {
 		if err := httpServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
