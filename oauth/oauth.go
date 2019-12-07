@@ -148,7 +148,7 @@ func LoginWithLocalhost() {
 
 // LoginWithoutLocalhost login without localhost localhost server, suitable in
 // environments without a GUI. The user enters the authorization code manually
-func LoginWithoutLocalhost() {
+func LoginWithoutLocalhost() error {
 	googleOauthConfig := getGoogleOAuthConfig("")
 	oauthStateTracker := generateOauthStateTracker()
 	u := googleOauthConfig.AuthCodeURL(oauthStateTracker)
@@ -157,13 +157,14 @@ func LoginWithoutLocalhost() {
 	_ = browser.OpenURL(u)
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("\n\nEnter the authorization code here: ")
-	code, _ := reader.ReadString('\n')
+	code, err := reader.ReadString('\n')
+	if err != nil {
+		return fmt.Errorf("An error occurred while reading user input: %w", err)
+	}
 	data, err := getUserDataFromGoogle(googleOauthConfig, code)
 	if err != nil {
-		log.Fatalln(err.Error())
-		return
+		return fmt.Errorf("An error occurred while exchanging code with token: %w", err)
 	}
-	// todo: save credentials
-	// todo: return success message to the user
 	fmt.Fprintf(os.Stdout, "\n\nSuccess! Logged in as %s\n\n", data.Email)
+	return nil
 }
