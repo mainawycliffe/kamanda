@@ -19,8 +19,27 @@ type RefreshToken struct {
 	Type         string `json:"type"`
 }
 
+func (r RefreshToken) validate() error {
+	if r.ClientID == "" {
+		return fmt.Errorf("client id can not be empty")
+	}
+	if r.ClientSecret == "" {
+		return fmt.Errorf("client secret can not be empty")
+	}
+	if r.RefreshToken == "" {
+		return fmt.Errorf("refresh token can not be empty")
+	}
+	if r.Type != "authorized_user" {
+		return fmt.Errorf("token type is not valid")
+	}
+	return nil
+}
+
 // SaveRefreshToken saves refresh token to file
 func SaveRefreshToken(token RefreshToken) error {
+	if err := token.validate(); err != nil {
+		return fmt.Errorf("Error validating the refresh token: %w", err)
+	}
 	home, err := homedir.Dir()
 	if err != nil {
 		return fmt.Errorf("Error reading home dir: %w", err)
