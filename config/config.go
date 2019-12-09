@@ -4,13 +4,13 @@ package config
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"github.com/mitchellh/go-homedir"
 )
 
 const refreshTokenFilePath = ".kamanda/refresh_token.json"
+const configDir = ".kamanda"
 
 type RefreshToken struct {
 	ClientID     string `json:"client_id"`
@@ -48,9 +48,25 @@ func SaveRefreshToken(token RefreshToken) error {
 	if err != nil {
 		return fmt.Errorf("Error converting to json: %w", err)
 	}
-	err = ioutil.WriteFile(fmt.Sprintf("%s/%s", home, refreshTokenFilePath), jsonToken, os.ModeAppend)
-	if err != nil {
+	filePath := fmt.Sprintf("%s/%s", home, refreshTokenFilePath)
+	_, err = os.Stat(filePath)
+	if err != nil && !os.IsNotExist(err) {
 		return fmt.Errorf("Error saving configs: %w", err)
+	}
+	if os.IsNotExist(err) {
+		err := os.MkdirAll(fmt.Sprintf("%s/%s", home, configDir), os.ModePerm)
+		if err != nil {
+			return fmt.Errorf("Error creating refresh token dir: %w", err)
+		}
+	}
+	file, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE, os.ModePerm)
+	if err != nil {
+		return fmt.Errorf("Error saving refresh token: %w", err)
+	}
+	defer file.Close()
+	_, err = file.Write(jsonToken)
+	if err != nil {
+		return fmt.Errorf("Error saving refresh token: %w", err)
 	}
 	return nil
 }
