@@ -6,11 +6,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/mitchellh/go-homedir"
+	"github.com/spf13/viper"
 )
-
-const refreshTokenFilePath = ".kamanda/refresh_token.json"
-const configDir = ".kamanda"
 
 type RefreshToken struct {
 	ClientID     string `json:"client_id"`
@@ -40,26 +37,22 @@ func SaveRefreshToken(token RefreshToken) error {
 	if err := token.validate(); err != nil {
 		return fmt.Errorf("Error validating the refresh token: %w", err)
 	}
-	home, err := homedir.Dir()
-	if err != nil {
-		return fmt.Errorf("Error reading home dir: %w", err)
-	}
 	jsonToken, err := json.MarshalIndent(token, "", " ")
 	if err != nil {
 		return fmt.Errorf("Error converting to json: %w", err)
 	}
-	filePath := fmt.Sprintf("%s/%s", home, refreshTokenFilePath)
-	_, err = os.Stat(filePath)
+	refreshTokenFilePath := viper.GetString("refreshTokenFilePath")
+	_, err = os.Stat(refreshTokenFilePath)
 	if err != nil && !os.IsNotExist(err) {
 		return fmt.Errorf("Error saving configs: %w", err)
 	}
 	if os.IsNotExist(err) {
-		err := os.MkdirAll(fmt.Sprintf("%s/%s", home, configDir), os.ModePerm)
+		err := os.MkdirAll(viper.GetString("configDirPath"), os.ModePerm)
 		if err != nil {
 			return fmt.Errorf("Error creating refresh token dir: %w", err)
 		}
 	}
-	file, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE, os.ModePerm)
+	file, err := os.OpenFile(refreshTokenFilePath, os.O_WRONLY|os.O_CREATE, os.ModePerm)
 	if err != nil {
 		return fmt.Errorf("Error saving refresh token: %w", err)
 	}

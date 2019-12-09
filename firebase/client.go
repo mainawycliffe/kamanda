@@ -3,14 +3,13 @@ package firebase
 import (
 	"context"
 	"encoding/json"
-	"fmt"
-	"log"
-	"os"
-
 	firebase "firebase.google.com/go"
 	"firebase.google.com/go/auth"
+	"fmt"
 	s "github.com/bitfield/script"
+	"github.com/spf13/viper"
 	"google.golang.org/api/option"
+	"log"
 )
 
 const firebaseProjectConfig string = "./.firebaserc"
@@ -59,7 +58,7 @@ func (f *Firebase) InitializeFirbeaseApp(ctx context.Context, projectId string) 
 	}
 
 	// replace this with something better
-	opt := option.WithCredentialsFile(os.Getenv("firebaseToken"))
+	opt := option.WithCredentialsFile(viper.GetString("refreshTokenFilePath"))
 
 	app, err := firebase.NewApp(ctx, configs, opt)
 
