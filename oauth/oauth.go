@@ -6,17 +6,15 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/go-chi/chi"
+	"github.com/pkg/browser"
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/google"
 	"io/ioutil"
 	"log"
 	"math/rand"
 	"net/http"
 	"os"
-
-	"github.com/go-chi/chi"
-	"github.com/mainawycliffe/kamanda/config"
-	"github.com/pkg/browser"
-	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/google"
 )
 
 const (
@@ -128,13 +126,13 @@ func LoginWithLocalhost() {
 			http.Redirect(w, r, "/", http.StatusTemporaryRedirect) // todo: improve response
 			return
 		}
-		refreshTokenObject := config.RefreshToken{
+		refreshTokenObject := RefreshToken{
 			ClientID:     os.Getenv("GOOGLE_OAUTH_CLIENT_ID"),
 			ClientSecret: os.Getenv("GOOGLE_OAUTH_CLIENT_SECRET"),
 			RefreshToken: data.RefreshToken,
 			Type:         "authorized_user",
 		}
-		err = config.SaveRefreshToken(refreshTokenObject)
+		err = SaveRefreshToken(refreshTokenObject)
 		if err != nil {
 			log.Println(err.Error())
 			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
@@ -175,13 +173,13 @@ func LoginWithoutLocalhost() error {
 	if err != nil {
 		return fmt.Errorf("An error occurred while exchanging code with token: %w", err)
 	}
-	refreshTokenObject := config.RefreshToken{
+	refreshTokenObject := RefreshToken{
 		ClientID:     os.Getenv("GOOGLE_OAUTH_CLIENT_ID"),
 		ClientSecret: os.Getenv("GOOGLE_OAUTH_CLIENT_SECRET"),
 		RefreshToken: data.RefreshToken,
 		Type:         "authorized_user",
 	}
-	err = config.SaveRefreshToken(refreshTokenObject)
+	err = SaveRefreshToken(refreshTokenObject)
 	if err != nil {
 		return fmt.Errorf("An error occurred while saving refresh token: %w", err)
 	}

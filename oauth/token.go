@@ -1,5 +1,4 @@
-// Package config save configurations to file using github.com/spf13/viper
-package config
+package oauth
 
 import (
 	"encoding/json"
