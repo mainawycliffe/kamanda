@@ -10,6 +10,8 @@ import (
 	"github.com/spf13/viper"
 )
 
+const configDirName = ".kamanda"
+
 const description = `Kamanda is a  Firebase CLI Tool extender and should be used alongside it. 
 
 Kamanda provides additional functionality currently not available to via the 
@@ -49,12 +51,30 @@ func initConfig() {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		viper.AddConfigPath(home)
-		viper.SetConfigFile(".kamanda/refresh_token.json")
+		configPath := fmt.Sprintf("%s/%s/configs.json", home, configDirName)
+		configDirPath := fmt.Sprintf("%s/%s", home, configDirName)
+		_, err = os.Stat(configPath)
+		if err != nil && !os.IsNotExist(err) {
+			fmt.Printf("Error checking if config file exists: %s\n", err.Error())
+			os.Exit(1)
+		}
+		if os.IsNotExist(err) {
+			err := os.MkdirAll(configDirPath, os.ModePerm)
+			if err != nil {
+				fmt.Printf("Error checking if config file exists: %s\n", err.Error())
+				os.Exit(1)
+			}
+		}
+		viper.SetConfigFile(configPath)
 	}
 	viper.Set("GOOGLE_OAUTH_CLIENT_ID", os.Getenv("GOOGLE_OAUTH_CLIENT_ID"))
-	viper.Set("GOOGLE_OAUTH_CLIENT_ID", os.Getenv("GOOGLE_OAUTH_CLIENT_ID"))
+	viper.Set("GOOGLE_OAUTH_CLIENT_SECRET", os.Getenv("GOOGLE_OAUTH_CLIENT_SECRET"))
 	viper.AutomaticEnv()
+	err := viper.SafeWriteConfig()
+	if err != nil {
+		fmt.Printf("Error checking if config file exists: %s\n", err.Error())
+		os.Exit(1)
+	}
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
 	}
