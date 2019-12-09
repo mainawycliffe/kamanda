@@ -10,7 +10,13 @@ import (
 	"github.com/spf13/viper"
 )
 
-const configDirName = ".kamanda"
+// "In this context, the client secret is obviously not treated as a secret"
+// https://developers.google.com/identity/protocols/OAuth2InstalledApp
+const (
+	configDirName              = ".kamanda"
+	GOOGLE_OAUTH_CLIENT_ID     = "69911959250-cbimd6dvmvgqlt45tgqf8kkmo5br5vql.apps.googleusercontent.com"
+	GOOGLE_OAUTH_CLIENT_SECRET = "-U9Ab0SHVO1MuuES2CkHAB1e"
+)
 
 const description = `Kamanda is a  Firebase CLI Tool extender and should be used alongside it. 
 
@@ -67,8 +73,8 @@ func initConfig() {
 		}
 		viper.SetConfigFile(configPath)
 	}
-	viper.Set("GOOGLE_OAUTH_CLIENT_ID", os.Getenv("GOOGLE_OAUTH_CLIENT_ID"))
-	viper.Set("GOOGLE_OAUTH_CLIENT_SECRET", os.Getenv("GOOGLE_OAUTH_CLIENT_SECRET"))
+	viper.Set("GOOGLE_OAUTH_CLIENT_ID", GOOGLE_OAUTH_CLIENT_ID)
+	viper.Set("GOOGLE_OAUTH_CLIENT_SECRET", GOOGLE_OAUTH_CLIENT_SECRET)
 	viper.AutomaticEnv()
 	err := viper.SafeWriteConfig()
 	if err != nil {
