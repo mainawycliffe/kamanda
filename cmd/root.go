@@ -52,6 +52,8 @@ func initConfig() {
 		viper.AddConfigPath(home)
 		viper.SetConfigFile(".kamanda/refresh_token.json")
 	}
+	viper.Set("GOOGLE_OAUTH_CLIENT_ID", os.Getenv("GOOGLE_OAUTH_CLIENT_ID"))
+	viper.Set("GOOGLE_OAUTH_CLIENT_ID", os.Getenv("GOOGLE_OAUTH_CLIENT_ID"))
 	viper.AutomaticEnv()
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())

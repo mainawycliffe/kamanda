@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"github.com/go-chi/chi"
 	"github.com/pkg/browser"
+	"github.com/spf13/viper"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"io/ioutil"
@@ -93,8 +94,8 @@ func getGoogleOAuthConfig(port string) *oauth2.Config {
 	}
 	return &oauth2.Config{
 		RedirectURL:  redirectURL,
-		ClientID:     os.Getenv("GOOGLE_OAUTH_CLIENT_ID"),
-		ClientSecret: os.Getenv("GOOGLE_OAUTH_CLIENT_SECRET"),
+		ClientID:     viper.GetString("GOOGLE_OAUTH_CLIENT_ID"),
+		ClientSecret: viper.GetString("GOOGLE_OAUTH_CLIENT_SECRET"),
 		Scopes:       googleOAuthScopes(),
 		Endpoint:     google.Endpoint,
 	}
@@ -128,8 +129,8 @@ func LoginWithLocalhost() {
 			return
 		}
 		refreshTokenObject := RefreshToken{
-			ClientID:     os.Getenv("GOOGLE_OAUTH_CLIENT_ID"),
-			ClientSecret: os.Getenv("GOOGLE_OAUTH_CLIENT_SECRET"),
+			ClientID:     viper.GetString("GOOGLE_OAUTH_CLIENT_ID"),
+			ClientSecret: viper.GetString("GOOGLE_OAUTH_CLIENT_SECRET"),
 			RefreshToken: data.RefreshToken,
 			Type:         "authorized_user",
 		}
@@ -175,8 +176,8 @@ func LoginWithoutLocalhost() error {
 		return fmt.Errorf("An error occurred while exchanging code with token: %w", err)
 	}
 	refreshTokenObject := RefreshToken{
-		ClientID:     os.Getenv("GOOGLE_OAUTH_CLIENT_ID"),
-		ClientSecret: os.Getenv("GOOGLE_OAUTH_CLIENT_SECRET"),
+		ClientID:     viper.GetString("GOOGLE_OAUTH_CLIENT_ID"),
+		ClientSecret: viper.GetString("GOOGLE_OAUTH_CLIENT_SECRET"),
 		RefreshToken: data.RefreshToken,
 		Type:         "authorized_user",
 	}
