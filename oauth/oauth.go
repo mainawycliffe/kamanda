@@ -156,13 +156,16 @@ func LoginWithLocalhost() {
 			}
 			return
 		}
-		refreshTokenObject := RefreshToken{
-			ClientID:     viper.GetString("GOOGLE_OAUTH_CLIENT_ID"),
-			ClientSecret: viper.GetString("GOOGLE_OAUTH_CLIENT_SECRET"),
-			RefreshToken: data.RefreshToken,
-			Type:         "authorized_user",
+		viper.Set("FirebaseRefreshToken", data.RefreshToken)
+		viper.Set("FirebaseUserAccountEmail", data.Email)
+		err = viper.WriteConfig()
+		if err != nil {
+			fmt.Printf("An error occurred while saving refresh token: %s", err.Error())
+			if err := writeHTMLOutput(w, templateData, templates.LoginFailureTemplate); err != nil {
+				fmt.Printf("Error showing response: %s", err.Error())
+			}
+			return
 		}
-		err = SaveRefreshToken(refreshTokenObject)
 		if err != nil {
 			log.Println(err.Error())
 			if err := writeHTMLOutput(w, templateData, templates.LoginFailureTemplate); err != nil {
@@ -207,13 +210,9 @@ func LoginWithoutLocalhost() error {
 	if err != nil {
 		return fmt.Errorf("An error occurred while exchanging code with token: %w", err)
 	}
-	refreshTokenObject := RefreshToken{
-		ClientID:     viper.GetString("GOOGLE_OAUTH_CLIENT_ID"),
-		ClientSecret: viper.GetString("GOOGLE_OAUTH_CLIENT_SECRET"),
-		RefreshToken: data.RefreshToken,
-		Type:         "authorized_user",
-	}
-	err = SaveRefreshToken(refreshTokenObject)
+	viper.Set("FirebaseRefreshToken", data.RefreshToken)
+	viper.Set("FirebaseUserAccountEmail", data.Email)
+	err = viper.WriteConfig()
 	if err != nil {
 		return fmt.Errorf("An error occurred while saving refresh token: %w", err)
 	}
