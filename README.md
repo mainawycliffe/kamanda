@@ -1,8 +1,10 @@
-# Kamanda - A Firebase CLI Extender
+# Kamanda - A Firebase CLI Companion Tool
 
 This tool is meant to provide additional functionality not provided by Firebase
 CLI such as Managing Users of your Projects, Exporting and Importing of Cloud
 Firestore Data.
+
+> This is not meant to replace Firebase CLI but to compliment it.
 
 ## Work in Progress
 
