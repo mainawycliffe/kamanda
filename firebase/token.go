@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/mainawycliffe/kamanda/configs"
 	"github.com/spf13/viper"
 )
 
@@ -36,7 +37,7 @@ func constructToken() ([]byte, error) {
 	refreshToken := RefreshToken{
 		ClientID:     viper.GetString("GOOGLE_OAUTH_CLIENT_ID"),
 		ClientSecret: viper.GetString("GOOGLE_OAUTH_CLIENT_SECRET"),
-		RefreshToken: viper.GetString("FirebaseRefreshToken"),
+		RefreshToken: viper.GetString(configs.FirebaseRefreshTokenViperConfigKey),
 		Type:         "authorized_user",
 	}
 	if err := refreshToken.validate(); err != nil {

@@ -156,8 +156,8 @@ func LoginWithLocalhost() {
 			}
 			return
 		}
-		viper.Set("FirebaseRefreshToken", data.RefreshToken)
-		viper.Set("FirebaseUserAccountEmail", data.Email)
+		viper.Set(configs.FirebaseRefreshTokenViperConfigKey, data.RefreshToken)
+		viper.Set(configs.FirebaseLoggedInUserEmailViperConfigKey, data.Email)
 		err = viper.WriteConfig()
 		if err != nil {
 			fmt.Printf("An error occurred while saving refresh token: %s", err.Error())
@@ -210,8 +210,8 @@ func LoginWithoutLocalhost() error {
 	if err != nil {
 		return fmt.Errorf("An error occurred while exchanging code with token: %w", err)
 	}
-	viper.Set("FirebaseRefreshToken", data.RefreshToken)
-	viper.Set("FirebaseUserAccountEmail", data.Email)
+	viper.Set(configs.FirebaseRefreshTokenViperConfigKey, data.RefreshToken)
+	viper.Set(configs.FirebaseLoggedInUserEmailViperConfigKey, data.Email)
 	err = viper.WriteConfig()
 	if err != nil {
 		return fmt.Errorf("An error occurred while saving refresh token: %w", err)
@@ -228,7 +228,11 @@ func RevokeRefreshToken() error {
 	if err != nil {
 		return fmt.Errorf("Error sending http request: %w", err)
 	}
-	if err := configs.UnsetViperConfig("FirebaseRefreshToken", "FirebaseUserAccountEmail"); err != nil {
+	err = configs.UnsetViperConfig(
+		configs.FirebaseRefreshTokenViperConfigKey,
+		configs.FirebaseLoggedInUserEmailViperConfigKey,
+	)
+	if err != nil {
 		return fmt.Errorf("Error removing configs: %w", err)
 	}
 	defer resp.Body.Close()
