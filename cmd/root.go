@@ -46,6 +46,9 @@ func init() {
 	cobra.OnInitialize(initConfig)
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.kamanda.yaml)")
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// this can be used to pass project alias to sub commands, incase having
+	// multiple projects
+	rootCmd.PersistentFlags().StringP("project", "P", "default", "The firebase project to use")
 }
 
 func initConfig() {
