@@ -1,8 +1,13 @@
 package cmd
 
 import (
+	"fmt"
+	"os"
+
+	"github.com/logrusorgru/aurora"
 	"github.com/mainawycliffe/kamanda/oauth"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // loginCmd represents the login command
@@ -15,14 +20,21 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	Run: func(cmd *cobra.Command, args []string) {
+		if viper.IsSet("FirebaseRefreshToken") {
+			email := viper.GetString("FirebaseUserAccountEmail")
+			fmt.Fprint(os.Stdout, aurora.Sprintf(aurora.Red("You are already logged in as %s!\n"), email))
+			os.Exit(1)
+		}
 		noLocalhostFlag, _ := cmd.Flags().GetBool("no-localhost")
 		if noLocalhostFlag {
-			return oauth.LoginWithoutLocalhost()
+			err := oauth.LoginWithoutLocalhost()
+			fmt.Fprint(os.Stdout, aurora.Sprintf(aurora.Red("\n\n%s\n\n"), err.Error()))
+			os.Exit(1)
 		} else {
 			oauth.LoginWithLocalhost()
 		}
-		return nil
+		os.Exit(0)
 	},
 }
 
