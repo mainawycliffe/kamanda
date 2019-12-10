@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Firebase CLI</title>
+    <title>{{ .AppName }}</title>
 
     <style media="screen">
         body {
@@ -93,10 +93,10 @@
 <body>
     <div id="message">
         <h2>Oops!</h2>
-        <h1>Firebase CLI Login Failed</h1>
-        <p>The Firebase CLI login request was rejected or an error occurred. Please
-            run <code>firebase login</code> again or contact support if you continue
-            to have difficulty logging in.</p>
+        <h1>{{ .AppName }}</h1>
+        <p>The {{ .AppName }} login request was rejected or an error occurred. Please
+            run <code>kamanda login</code> again or file an issue on our GitHub repository
+            <a href="{{ .AppRepoURL }}">here</a>.</p>
     </div>
 </body>
 

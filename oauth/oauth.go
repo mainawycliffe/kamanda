@@ -121,6 +121,11 @@ func LoginWithLocalhost() {
 
 	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		defer cancel()
+		templateData := map[string]string{
+			"AppRepoURL": "https://github.com/mainawycliffe/kamanda",
+			"AppName":    "Kamanda - Firebase CLI Companion Tool",
+		}
+
 		if r.FormValue("state") != oauthStateTracker {
 			w.Header().Set("Content-Type", "text/html; charset=utf-8")
 			t, err := template.ParseFiles("templates/loginFailure.html")
@@ -128,7 +133,7 @@ func LoginWithLocalhost() {
 				fmt.Fprintf(w, "Unable to load and parse failure template")
 				return
 			}
-			err = t.Execute(w, nil)
+			err = t.Execute(w, templateData)
 			if err != nil {
 				fmt.Fprintf(w, "Unable to load and parse failure template")
 				return
@@ -144,7 +149,7 @@ func LoginWithLocalhost() {
 				fmt.Fprintf(w, "Unable to load and parse failure template")
 				return
 			}
-			err = t.Execute(w, nil)
+			err = t.Execute(w, templateData)
 			if err != nil {
 				fmt.Fprintf(w, "Unable to load and parse failure template")
 				return
@@ -166,7 +171,7 @@ func LoginWithLocalhost() {
 				fmt.Fprintf(w, "Unable to load and parse failure template")
 				return
 			}
-			err = t.Execute(w, nil)
+			err = t.Execute(w, templateData)
 			if err != nil {
 				fmt.Fprintf(w, "Unable to load and parse failure template")
 				return
@@ -179,7 +184,7 @@ func LoginWithLocalhost() {
 			fmt.Fprintf(w, "Unable to load and parse success template %v", err)
 			return
 		}
-		err = t.Execute(w, nil)
+		err = t.Execute(w, templateData)
 		if err != nil {
 			fmt.Fprintf(w, "Unable to load and parse success template: %v", err)
 			return
