@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/mainawycliffe/kamanda/configs"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -65,8 +66,8 @@ func initConfig() {
 		}
 		viper.SetConfigFile(configPath)
 	}
-	viper.Set("GOOGLE_OAUTH_CLIENT_ID", GOOGLE_OAUTH_CLIENT_ID)
-	viper.Set("GOOGLE_OAUTH_CLIENT_SECRET", GOOGLE_OAUTH_CLIENT_SECRET)
+	viper.Set(configs.GoogleOAuthClientIDConfigKey, GOOGLE_OAUTH_CLIENT_ID)
+	viper.Set(configs.GoogleOAuthClientSecretConfigKey, GOOGLE_OAUTH_CLIENT_SECRET)
 	viper.AutomaticEnv()
 	// @todo: improve error handling here, i.e fail if error is due to missing
 	// config file

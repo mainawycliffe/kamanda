@@ -35,8 +35,8 @@ func (r RefreshToken) validate() error {
 // constructToken create a json refresh token byte for use by a firebase client
 func constructToken() ([]byte, error) {
 	refreshToken := RefreshToken{
-		ClientID:     viper.GetString("GOOGLE_OAUTH_CLIENT_ID"),
-		ClientSecret: viper.GetString("GOOGLE_OAUTH_CLIENT_SECRET"),
+		ClientID:     viper.GetString(configs.GoogleOAuthClientIDConfigKey),
+		ClientSecret: viper.GetString(configs.GoogleOAuthClientSecretConfigKey),
 		RefreshToken: viper.GetString(configs.FirebaseRefreshTokenViperConfigKey),
 		Type:         "authorized_user",
 	}

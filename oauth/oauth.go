@@ -114,8 +114,8 @@ func getGoogleOAuthConfig(port string) *oauth2.Config {
 	}
 	return &oauth2.Config{
 		RedirectURL:  redirectURL,
-		ClientID:     viper.GetString("GOOGLE_OAUTH_CLIENT_ID"),
-		ClientSecret: viper.GetString("GOOGLE_OAUTH_CLIENT_SECRET"),
+		ClientID:     viper.GetString(configs.GoogleOAuthClientIDConfigKey),
+		ClientSecret: viper.GetString(configs.GoogleOAuthClientSecretConfigKey),
 		Scopes:       googleOAuthScopes(),
 		Endpoint:     google.Endpoint,
 	}
