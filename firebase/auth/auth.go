@@ -72,26 +72,23 @@ func AddCustomClaimsToFirebaseUser(ctx context.Context, client *auth.Client, uid
 }
 
 func DeleteFirebaseUser(ctx context.Context, uid string) error {
-
 	if uid == "" {
 		return fmt.Errorf("The UID of the user can not be empty")
 	}
-
 	firebase := &firebase.Firebase{}
-
 	err := firebase.InitializeFirbeaseApp(context.Background(), "")
-
 	if err != nil {
 		return err
 	}
-
 	client, err := firebase.Auth(ctx)
-
 	if err != nil {
 		return fmt.Errorf("Error authenticating firebase account: %w", err)
 	}
-
-	return client.DeleteUser(ctx, uid)
+	err = client.DeleteUser(ctx, uid)
+	if auth.IsUserNotFound(err) {
+		return fmt.Errorf("User not found!")
+	}
+	return fmt.Errorf("An unnkown error: %w", err)
 }
 
 // ListAllFirebaseUsers get all users in firebase auth
