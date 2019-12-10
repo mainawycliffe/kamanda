@@ -2,8 +2,12 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
+	"github.com/logrusorgru/aurora"
+	"github.com/mainawycliffe/kamanda/oauth"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // logoutCmd represents the logout command
@@ -17,7 +21,17 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("logout called")
+		email := viper.GetString("FirebaseUserAccountEmail")
+		if !viper.IsSet("FirebaseRefreshToken") {
+			fmt.Fprint(os.Stdout, aurora.Sprintf("%s\n", aurora.Red("You are not logged in!")))
+			os.Exit(1)
+		}
+		if err := oauth.RevokeRefreshToken(); err != nil {
+			fmt.Fprint(os.Stdout, aurora.Sprintf(aurora.Red("%s\n"), err.Error()))
+			os.Exit(1)
+		}
+		fmt.Fprint(os.Stdout, aurora.Sprintf(aurora.Green("Logged out from %s\n\n"), email))
+		os.Exit(0)
 	},
 }
 

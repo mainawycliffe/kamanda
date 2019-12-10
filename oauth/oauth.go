@@ -16,6 +16,7 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/logrusorgru/aurora"
+	"github.com/mainawycliffe/kamanda/configs"
 	"github.com/mainawycliffe/kamanda/oauth/templates"
 	"github.com/pkg/browser"
 	"github.com/spf13/viper"
@@ -217,4 +218,36 @@ func LoginWithoutLocalhost() error {
 	}
 	fmt.Fprint(os.Stdout, aurora.Sprintf(aurora.Green("\n\nSuccess! Logged in as %s\n\n"), data.Email))
 	return nil
+}
+
+// RevokeRefreshToken revoke refresh token for google oauth when the user
+// logouts
+func RevokeRefreshToken() error {
+	url := fmt.Sprintf("https://accounts.google.com/o/oauth2/revoke?token=%s", viper.GetString("FirebaseRefreshToken"))
+	resp, err := http.Get(url)
+	if err != nil {
+		return fmt.Errorf("Error sending http request: %w", err)
+	}
+	if err := configs.UnsetViperConfig("FirebaseRefreshToken", "FirebaseUserAccountEmail"); err != nil {
+		return fmt.Errorf("Error removing configs: %w", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode == http.StatusOK {
+		return nil
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("Error reading response body: %w", err)
+	}
+	var responseJSON map[string]string
+	if err = json.Unmarshal(body, &responseJSON); err != nil {
+		return fmt.Errorf("Error reading response body: %w", err)
+	}
+	var message string
+	if responseJSON["error_description"] != "" {
+		message = responseJSON["error_description"]
+	} else {
+		message = responseJSON["error"]
+	}
+	return fmt.Errorf("%s", message)
 }
