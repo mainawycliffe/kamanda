@@ -23,7 +23,7 @@ to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if viper.IsSet("FirebaseRefreshToken") {
 			email := viper.GetString("FirebaseUserAccountEmail")
-			fmt.Fprint(os.Stdout, aurora.Sprintf(aurora.Red("You are already logged in as %s!\n"), email))
+			fmt.Fprint(os.Stdout, aurora.Sprintf("Already logged in as %s\n", aurora.Green(email)))
 			os.Exit(1)
 		}
 		noLocalhostFlag, _ := cmd.Flags().GetBool("no-localhost")
