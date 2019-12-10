@@ -5,8 +5,8 @@ import (
 	"os"
 
 	"github.com/logrusorgru/aurora"
-	"github.com/mainawycliffe/kamanda/oauth"
 	"github.com/mainawycliffe/kamanda/configs"
+	"github.com/mainawycliffe/kamanda/oauth"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -23,7 +23,7 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		email := viper.GetString(configs.FirebaseLoggedInUserEmailViperConfigKey)
-		if !viper.IsSet("FirebaseRefreshToken") {
+		if !viper.IsSet(configs.FirebaseRefreshTokenViperConfigKey) {
 			fmt.Fprint(os.Stdout, aurora.Sprintf("%s\n", aurora.Red("You are not logged in!")))
 			os.Exit(1)
 		}
