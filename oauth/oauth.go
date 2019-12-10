@@ -15,6 +15,7 @@ import (
 	"os"
 
 	"github.com/go-chi/chi"
+	"github.com/logrusorgru/aurora"
 	"github.com/mainawycliffe/kamanda/oauth/templates"
 	"github.com/pkg/browser"
 	"github.com/spf13/viper"
@@ -176,7 +177,7 @@ func LoginWithLocalhost() {
 		if err := writeHTMLOutput(w, templateData, templates.LoginSuccessTemplate); err != nil {
 			fmt.Printf("Error showing response: %s", err.Error())
 		}
-		fmt.Printf("\n\nLogin Successful!\n\n")
+		fmt.Fprint(os.Stdout, aurora.Sprintf(aurora.Green("\n\nSuccess! Logged in as %s\n\n"), data.Email))
 		cancel()
 	})
 	go func() {
@@ -216,6 +217,6 @@ func LoginWithoutLocalhost() error {
 	if err != nil {
 		return fmt.Errorf("An error occurred while saving refresh token: %w", err)
 	}
-	fmt.Fprintf(os.Stdout, "\n\nSuccess! Logged in as %s\n\n", data.Email)
+	fmt.Fprint(os.Stdout, aurora.Sprintf(aurora.Green("\n\nSuccess! Logged in as %s\n\n"), data.Email))
 	return nil
 }
