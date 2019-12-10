@@ -10,6 +10,7 @@ require (
 	github.com/go-chi/chi v4.0.2+incompatible
 	github.com/golang/groupcache v0.0.0-20191027212112-611e8accdfc9 // indirect
 	github.com/joho/godotenv v1.3.0
+	github.com/logrusorgru/aurora v0.0.0-20191116043053-66b7ad493a23
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/pelletier/go-toml v1.6.0 // indirect
 	github.com/pkg/browser v0.0.0-20180916011732-0a3d74bf9ce4
