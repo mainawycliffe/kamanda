@@ -2,12 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"os"
-
-	"github.com/spf13/cobra"
-
 	homedir "github.com/mitchellh/go-homedir"
+	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"os"
 )
 
 // "In this context, the client secret is obviously not treated as a secret"

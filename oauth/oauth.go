@@ -135,14 +135,12 @@ func LoginWithLocalhost() {
 		Handler: router,
 	}
 	ctx, cancel := context.WithCancel(context.Background())
-
 	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		defer cancel()
 		templateData := map[string]string{
 			"AppRepoURL": "https://github.com/mainawycliffe/kamanda",
 			"AppName":    "Kamanda - Firebase CLI Companion Tool",
 		}
-
 		if r.FormValue("state") != oauthStateTracker {
 			if err := writeHTMLOutput(w, templateData, templates.LoginFailureTemplate); err != nil {
 				fmt.Printf("Error showing response: %s", err.Error())
