@@ -1,3 +1,7 @@
+// Package oauth get refresh token and save for future use
+package templates
+
+const LoginSuccessTemplate = `
 <!DOCTYPE html>
 <html>
 
@@ -96,3 +100,4 @@
 </body>
 
 </html>
+`

@@ -15,6 +15,7 @@ import (
 	"os"
 
 	"github.com/go-chi/chi"
+	"github.com/mainawycliffe/kamanda/oauth/templates"
 	"github.com/pkg/browser"
 	"github.com/spf13/viper"
 	"golang.org/x/oauth2"
@@ -52,6 +53,21 @@ func generateOauthStateTracker() string {
 		b[i] = letters[rand.Intn(len(letters))]
 	}
 	return base64.URLEncoding.EncodeToString([]byte(string(b)))
+}
+
+func writeHTMLOutput(w http.ResponseWriter, data interface{}, html string) error {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	errorTemplate, err := template.New("response.html").Parse(html)
+	if err != nil {
+		fmt.Fprintf(w, "Unable to load and parse failure template")
+		return err
+	}
+	err = errorTemplate.Execute(w, data)
+	if err != nil {
+		fmt.Fprintf(w, "Unable to load and parse failure template")
+		return err
+	}
+	return nil
 }
 
 // getUserDataFromGoogle fetch user data and the token from google using code
@@ -127,32 +143,16 @@ func LoginWithLocalhost() {
 		}
 
 		if r.FormValue("state") != oauthStateTracker {
-			w.Header().Set("Content-Type", "text/html; charset=utf-8")
-			t, err := template.ParseFiles("templates/loginFailure.html")
-			if err != nil {
-				fmt.Fprintf(w, "Unable to load and parse failure template")
-				return
-			}
-			err = t.Execute(w, templateData)
-			if err != nil {
-				fmt.Fprintf(w, "Unable to load and parse failure template")
-				return
+			if err := writeHTMLOutput(w, templateData, templates.LoginFailureTemplate); err != nil {
+				fmt.Printf("Error showing response: %s", err.Error())
 			}
 			return
 		}
 		data, err := getUserDataFromGoogle(googleOauthConfig, r.FormValue("code"))
 		if err != nil {
 			log.Println(err.Error())
-			w.Header().Set("Content-Type", "text/html; charset=utf-8")
-			t, err := template.ParseFiles("templates/loginFailure.html")
-			if err != nil {
-				fmt.Fprintf(w, "Unable to load and parse failure template")
-				return
-			}
-			err = t.Execute(w, templateData)
-			if err != nil {
-				fmt.Fprintf(w, "Unable to load and parse failure template")
-				return
+			if err := writeHTMLOutput(w, templateData, templates.LoginFailureTemplate); err != nil {
+				fmt.Printf("Error showing response: %s", err.Error())
 			}
 			return
 		}
@@ -165,29 +165,13 @@ func LoginWithLocalhost() {
 		err = SaveRefreshToken(refreshTokenObject)
 		if err != nil {
 			log.Println(err.Error())
-			w.Header().Set("Content-Type", "text/html; charset=utf-8")
-			t, err := template.ParseFiles("templates/loginFailure.html")
-			if err != nil {
-				fmt.Fprintf(w, "Unable to load and parse failure template")
-				return
-			}
-			err = t.Execute(w, templateData)
-			if err != nil {
-				fmt.Fprintf(w, "Unable to load and parse failure template")
-				return
+			if err := writeHTMLOutput(w, templateData, templates.LoginFailureTemplate); err != nil {
+				fmt.Printf("Error showing response: %s", err.Error())
 			}
 			return
 		}
-		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		t, err := template.ParseFiles("templates/loginSuccess.html")
-		if err != nil {
-			fmt.Fprintf(w, "Unable to load and parse success template %v", err)
-			return
-		}
-		err = t.Execute(w, templateData)
-		if err != nil {
-			fmt.Fprintf(w, "Unable to load and parse success template: %v", err)
-			return
+		if err := writeHTMLOutput(w, templateData, templates.LoginSuccessTemplate); err != nil {
+			fmt.Printf("Error showing response: %s", err.Error())
 		}
 		fmt.Printf("\n\nLogin Successful!\n\n")
 		cancel()
