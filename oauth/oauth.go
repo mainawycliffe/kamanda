@@ -7,16 +7,18 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/go-chi/chi"
-	"github.com/pkg/browser"
-	"github.com/spf13/viper"
-	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/google"
+	"html/template"
 	"io/ioutil"
 	"log"
 	"math/rand"
 	"net/http"
 	"os"
+
+	"github.com/go-chi/chi"
+	"github.com/pkg/browser"
+	"github.com/spf13/viper"
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/google"
 )
 
 const (
@@ -116,16 +118,37 @@ func LoginWithLocalhost() {
 		Handler: router,
 	}
 	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+
 	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		defer cancel()
 		if r.FormValue("state") != oauthStateTracker {
-			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+			w.Header().Set("Content-Type", "text/html; charset=utf-8")
+			t, err := template.ParseFiles("templates/loginFailure.html")
+			if err != nil {
+				fmt.Fprintf(w, "Unable to load and parse failure template")
+				return
+			}
+			err = t.Execute(w, nil)
+			if err != nil {
+				fmt.Fprintf(w, "Unable to load and parse failure template")
+				return
+			}
 			return
 		}
 		data, err := getUserDataFromGoogle(googleOauthConfig, r.FormValue("code"))
 		if err != nil {
 			log.Println(err.Error())
-			http.Redirect(w, r, "/", http.StatusTemporaryRedirect) // todo: improve response
+			w.Header().Set("Content-Type", "text/html; charset=utf-8")
+			t, err := template.ParseFiles("templates/loginFailure.html")
+			if err != nil {
+				fmt.Fprintf(w, "Unable to load and parse failure template")
+				return
+			}
+			err = t.Execute(w, nil)
+			if err != nil {
+				fmt.Fprintf(w, "Unable to load and parse failure template")
+				return
+			}
 			return
 		}
 		refreshTokenObject := RefreshToken{
@@ -137,10 +160,31 @@ func LoginWithLocalhost() {
 		err = SaveRefreshToken(refreshTokenObject)
 		if err != nil {
 			log.Println(err.Error())
-			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+			w.Header().Set("Content-Type", "text/html; charset=utf-8")
+			t, err := template.ParseFiles("templates/loginFailure.html")
+			if err != nil {
+				fmt.Fprintf(w, "Unable to load and parse failure template")
+				return
+			}
+			err = t.Execute(w, nil)
+			if err != nil {
+				fmt.Fprintf(w, "Unable to load and parse failure template")
+				return
+			}
 			return
 		}
-		fmt.Fprintf(w, "UserInfo: %s\n", data) // todo: improve response
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		t, err := template.ParseFiles("templates/loginSuccess.html")
+		if err != nil {
+			fmt.Fprintf(w, "Unable to load and parse success template %v", err)
+			return
+		}
+		err = t.Execute(w, nil)
+		if err != nil {
+			fmt.Fprintf(w, "Unable to load and parse success template: %v", err)
+			return
+		}
+		fmt.Printf("\n\nLogin Successful!\n\n")
 		cancel()
 	})
 	go func() {
@@ -150,7 +194,6 @@ func LoginWithLocalhost() {
 	}()
 	<-ctx.Done()
 	// Shutdown the server when the context is canceled
-	fmt.Printf("\n\nLogin Successful!\n\n")
 	if err := httpServer.Shutdown(context.Background()); err != nil {
 		log.Fatal(err)
 	}
