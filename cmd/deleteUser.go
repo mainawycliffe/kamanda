@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"context"
-	"errors"
 	"fmt"
+	"os"
 
 	"github.com/mainawycliffe/kamanda/firebase/auth"
 	"github.com/spf13/cobra"
@@ -14,10 +14,11 @@ var deleteUserCmd = &cobra.Command{
 	Use:     "deleteUsers",
 	Aliases: []string{"delete-users", "delete"},
 	Short:   "Delete multiple Firebase Auth User by their UID",
-	RunE: func(cmd *cobra.Command, args []string) error {
+	Run: func(cmd *cobra.Command, args []string) {
 		// args = list of uids
 		if len(args) == 0 {
-			return errors.New("atleast one Firebase user uid is required!")
+			fmt.Printf("atleast one Firebase user uid is required!")
+			os.Exit(1)
 		}
 
 		// delete all user accounts
@@ -26,11 +27,13 @@ var deleteUserCmd = &cobra.Command{
 			err := auth.DeleteFirebaseUser(context.Background(), uid)
 
 			if err != nil {
-				return fmt.Errorf("An error occurred while deleting account with uid: %s :%w", uid, err)
+				fmt.Printf("Error deleting %s: %s\n", uid, err.Error())
+				os.Exit(1)
 			}
 		}
 
-		return nil
+		fmt.Printf("User was successfully deleted!")
+		os.Exit(0)
 	},
 }
 
