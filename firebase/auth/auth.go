@@ -85,10 +85,13 @@ func DeleteFirebaseUser(ctx context.Context, uid string) error {
 		return fmt.Errorf("Error authenticating firebase account: %w", err)
 	}
 	err = client.DeleteUser(ctx, uid)
-	if auth.IsUserNotFound(err) {
-		return fmt.Errorf("User not found!")
+	if err != nil {
+		if auth.IsUserNotFound(err) {
+			return fmt.Errorf("User not found!")
+		}
+		return fmt.Errorf("An unnkown error: %w", err)
 	}
-	return fmt.Errorf("An unnkown error: %w", err)
+	return nil
 }
 
 // ListAllFirebaseUsers get all users in firebase auth
