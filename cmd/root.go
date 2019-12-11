@@ -24,7 +24,11 @@ Firebase CLI Tool such as User Management, Cloud Firestore Management etc from t
 For instance, it allows you to easily create users with custom tokens, 
 which is always a trick preposition.`
 
-var cfgFile string
+var (
+	cfgFile         string
+	firebaseToken   string
+	firebaseProject string
+)
 
 var rootCmd = &cobra.Command{
 	Use:   "kamanda",
@@ -42,10 +46,11 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.kamanda/config.json)")
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.PersistentFlags().StringVar(&firebaseToken, "token", "", "firebase token to use for authentication")
 	// this can be used to pass project alias to sub commands, incase having
 	// multiple projects
-	rootCmd.PersistentFlags().StringP("project", "P", "default", "The firebase project to use")
+	rootCmd.PersistentFlags().StringVarP(&firebaseProject, "project", "P", "default", "The firebase project to use")
+	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
 func initConfig() {
@@ -72,6 +77,7 @@ func initConfig() {
 	// @todo: improve error handling here, i.e fail if error is due to missing
 	// config file
 	_ = viper.SafeWriteConfig()
+	// @todo: probably bind the token flag to the refresh setting config
 	if err := viper.ReadInConfig(); err != nil {
 		fmt.Printf("Error reading configs: %s\n", err.Error())
 		os.Exit(1)

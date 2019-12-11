@@ -15,6 +15,7 @@ func NewError(err error) Error {
 }
 
 // Error parse the original error and return a coherent message
+// @todo: expand this to parse all Firebase errors and return a readable message
 func (err Error) Error() string {
 	if auth.IsEmailAlreadyExists(err.OriginalError) {
 		return "Email already exists"
