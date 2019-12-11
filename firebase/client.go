@@ -22,7 +22,8 @@ type Firebase struct {
 	projectId string
 }
 
-func (f *Firebase) setProjectID(projectId string) error {
+// setProjectID use the project alias to get the firebase project id
+func (f *Firebase) setProjectID(projectAlias string) error {
 	configFileContent, err := s.File(firebaseProjectConfig).Bytes()
 	if err != nil {
 		return fmt.Errorf("An error occurred while reading config file: %w", err)
@@ -32,15 +33,17 @@ func (f *Firebase) setProjectID(projectId string) error {
 	if err != nil {
 		return fmt.Errorf("An error occurred while reading config file: %w", err)
 	}
-	f.projectId = decodedConfigs.Projects[projectId]
+	f.projectId = decodedConfigs.Projects[projectAlias]
 	return nil
 }
 
-func (f *Firebase) InitializeFirbeaseApp(ctx context.Context, projectId string) error {
-	if projectId == "" {
-		projectId = defaultProject
+// initializeFirbeaseApp create a new firebase app that can create clients for
+// auth, firestore, storage etc
+func (f *Firebase) initializeFirbeaseApp(ctx context.Context, projectAlias string) error {
+	if projectAlias == "" {
+		projectAlias = defaultProject
 	}
-	err := f.setProjectID(projectId)
+	err := f.setProjectID(projectAlias)
 	if err != nil {
 		return fmt.Errorf("An error occurred while reading config file: %w", err)
 	}
@@ -61,6 +64,11 @@ func (f *Firebase) InitializeFirbeaseApp(ctx context.Context, projectId string) 
 	return nil
 }
 
-func (f *Firebase) Auth(ctx context.Context) (*auth.Client, error) {
-	return f.App.Auth(ctx)
+// Auth create a firebase auth client
+func Auth(ctx context.Context, projectAlias string) (*auth.Client, error) {
+	fb := &Firebase{}
+	if err := fb.initializeFirbeaseApp(ctx, projectAlias); err != nil {
+		return nil, err
+	}
+	return fb.App.Auth(ctx)
 }

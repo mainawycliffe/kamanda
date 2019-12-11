@@ -39,12 +39,7 @@ func NewFirebaseUser(ctx context.Context, user *NewUser) (*auth.UserRecord, erro
 	if user.PhotoURL != "" {
 		params = params.PhotoURL(user.PhotoURL)
 	}
-	fb := &firebase.Firebase{}
-	err := fb.InitializeFirbeaseApp(context.Background(), "")
-	if err != nil {
-		return nil, err
-	}
-	client, err := fb.Auth(ctx)
+	client, err := firebase.Auth(ctx, "")
 	if err != nil {
 		return nil, fmt.Errorf("Error authenticating firebase account: %w", err)
 	}
@@ -55,16 +50,17 @@ func NewFirebaseUser(ctx context.Context, user *NewUser) (*auth.UserRecord, erro
 	return u, nil
 }
 
-func AddCustomClaimsToFirebaseUser(ctx context.Context, client *auth.Client, uid string, listOfClaims *[]map[string]interface{}) error {
-
+func AddCustomClaimsToFirebaseUser(ctx context.Context, uid string, listOfClaims *[]map[string]interface{}) error {
+	client, err := firebase.Auth(ctx, "")
+	if err != nil {
+		return err
+	}
 	for _, v := range *listOfClaims {
 		err := client.SetCustomUserClaims(ctx, uid, v)
-
 		if err != nil {
 			return err
 		}
 	}
-
 	return nil
 }
 
@@ -72,12 +68,7 @@ func DeleteFirebaseUser(ctx context.Context, uid string) error {
 	if uid == "" {
 		return fmt.Errorf("The UID of the user can not be empty")
 	}
-	firebase := &firebase.Firebase{}
-	err := firebase.InitializeFirbeaseApp(context.Background(), "")
-	if err != nil {
-		return err
-	}
-	client, err := firebase.Auth(ctx)
+	client, err := firebase.Auth(ctx, "")
 	if err != nil {
 		return fmt.Errorf("Error authenticating firebase account: %w", err)
 	}
@@ -92,6 +83,6 @@ func DeleteFirebaseUser(ctx context.Context, uid string) error {
 }
 
 // ListAllFirebaseUsers get all users in firebase auth
-func ListAllFirebaseUsers(ctx context.Context, client *auth.Client, maxResults uint32, nextPageToken string) error {
+func ListAllFirebaseUsers(ctx context.Context, maxResults uint32, nextPageToken string) error {
 	panic("not implemented")
 }
