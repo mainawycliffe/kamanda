@@ -28,12 +28,13 @@ to quickly create a Cobra application.`,
 			os.Exit(1)
 		}
 		noLocalhostFlag, _ := cmd.Flags().GetBool("no-localhost")
-		if noLocalhostFlag {
-			err := oauth.LoginWithoutLocalhost()
+		if !noLocalhostFlag {
+			oauth.LoginWithLocalhost(false)
+			os.Exit(0)
+		}
+		if err := oauth.LoginWithoutLocalhost(false); err != nil {
 			fmt.Fprint(os.Stdout, aurora.Sprintf(aurora.Red("\n\n%s\n\n"), err.Error()))
 			os.Exit(1)
-		} else {
-			oauth.LoginWithLocalhost()
 		}
 		os.Exit(0)
 	},
@@ -41,7 +42,6 @@ to quickly create a Cobra application.`,
 
 func init() {
 	rootCmd.AddCommand(loginCmd)
-
 	// allow users to login without localhost
 	loginCmd.Flags().Bool("no-localhost", false, " copy and paste a code instead of starting a local server for authentication")
 }
