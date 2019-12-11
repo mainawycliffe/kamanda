@@ -24,6 +24,7 @@ var addUserCmd = &cobra.Command{
 		name, _ := cmd.Flags().GetString("name")
 		photoURL, _ := cmd.Flags().GetString("photoURL")
 		isDisabled, _ := cmd.Flags().GetBool("isDisabled")
+		customClaimsInput, _ := cmd.Flags().GetStringToString("customClaims")
 		user := &auth.NewUser{
 			UID:           UID,
 			Email:         email,
@@ -39,8 +40,21 @@ var addUserCmd = &cobra.Command{
 			fmt.Print(aurora.Sprintf(aurora.Red("%s\n"), err.Error()))
 			os.Exit(1)
 		}
-		// @todo: add custom claims in the future
-		fmt.Print(aurora.Sprintf(aurora.Green("User created: %s email: %s\n"), userRecord.UID, userRecord.Email))
+		fmt.Print(aurora.Sprintf(aurora.Green("✔✔ user added - uid: %s email: %s\n"), userRecord.UID, userRecord.Email))
+		if len(customClaimsInput) == 0 {
+			os.Exit(0)
+		}
+		// @todo: reflect the actual kind before saving
+		customClaims := make(map[string]interface{})
+		for k, v := range customClaimsInput {
+			customClaims[k] = v
+		}
+		err = auth.AddCustomClaimToFirebaseUser(context.Background(), userRecord.UID, customClaims)
+		if err != nil {
+			fmt.Print(aurora.Sprintf(aurora.Red("%s\n"), err.Error()))
+			os.Exit(1)
+		}
+		fmt.Print(aurora.Sprintf(aurora.Green("✔✔ custom claims added\n")))
 		os.Exit(0)
 	},
 }
@@ -55,6 +69,7 @@ func init() {
 	addUserCmd.Flags().String("name", "", "the name of the user")
 	addUserCmd.Flags().String("photoURL", "", "the photo url of the user")
 	addUserCmd.Flags().Bool("isDisabled", false, "is the user account disabled")
+	addUserCmd.Flags().StringToStringP("customClaims", "c", nil, "user custom claims i.e. --customClaims \"admin=true\"")
 	if err := addUserCmd.MarkFlagRequired("email"); err != nil {
 		fmt.Print(aurora.Sprintf(aurora.Red("%s\n"), err.Error()))
 		os.Exit(1)

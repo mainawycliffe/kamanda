@@ -50,16 +50,13 @@ func NewFirebaseUser(ctx context.Context, user *NewUser) (*auth.UserRecord, erro
 	return u, nil
 }
 
-func AddCustomClaimsToFirebaseUser(ctx context.Context, uid string, listOfClaims *[]map[string]interface{}) error {
+func AddCustomClaimToFirebaseUser(ctx context.Context, uid string, customClaims map[string]interface{}) error {
 	client, err := firebase.Auth(ctx, "")
 	if err != nil {
 		return err
 	}
-	for _, v := range *listOfClaims {
-		err := client.SetCustomUserClaims(ctx, uid, v)
-		if err != nil {
-			return err
-		}
+	if err := client.SetCustomUserClaims(ctx, uid, customClaims); err != nil {
+		return err
 	}
 	return nil
 }
