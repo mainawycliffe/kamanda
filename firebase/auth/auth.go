@@ -20,41 +20,38 @@ type NewUser struct {
 }
 
 // NewFirebaseUser create a new firebase user using Email/Password Auth Provider
-func NewFirebaseUser(ctx context.Context, client *auth.Client, user *NewUser, customClaims *[]map[string]interface{}) (*auth.UserRecord, error) {
-
+func NewFirebaseUser(ctx context.Context, user *NewUser) (*auth.UserRecord, error) {
 	params := (&auth.UserToCreate{}).
 		Email(user.Email).
 		EmailVerified(user.EmailVerified).
 		Password(user.Password).
-		DisplayName(user.DisplayName).
 		Disabled(user.Disabled)
-
 	// incase you want to use a custom UID instead a random one
 	if user.UID != "" {
 		params = params.UID(user.UID)
 	}
-
+	if user.DisplayName != "" {
+		params = params.DisplayName(user.DisplayName)
+	}
 	if user.PhoneNumber != "" {
 		params = params.PhoneNumber(user.PhotoURL)
 	}
-
 	if user.PhotoURL != "" {
 		params = params.PhotoURL(user.PhotoURL)
 	}
-
+	fb := &firebase.Firebase{}
+	err := fb.InitializeFirbeaseApp(context.Background(), "")
+	if err != nil {
+		return nil, err
+	}
+	client, err := fb.Auth(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("Error authenticating firebase account: %w", err)
+	}
 	u, err := client.CreateUser(ctx, params)
-
 	if err != nil {
-		return nil, err
+		return nil, firebase.NewError(err)
 	}
-
-	// add custom claims for the new user
-	err = AddCustomClaimsToFirebaseUser(ctx, client, u.UID, customClaims)
-
-	if err != nil {
-		return nil, err
-	}
-
 	return u, nil
 }
 
