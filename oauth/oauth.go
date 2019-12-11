@@ -121,9 +121,19 @@ func getGoogleOAuthConfig(port string) *oauth2.Config {
 	}
 }
 
+func saveRefreshToken(data *GetUserDataFromGoogleResponse) error {
+	viper.Set(configs.FirebaseRefreshTokenViperConfigKey, data.RefreshToken)
+	viper.Set(configs.FirebaseLoggedInUserEmailViperConfigKey, data.Email)
+	err := viper.WriteConfig()
+	if err != nil {
+		return fmt.Errorf("An error occurred while saving refresh token: %w", err)
+	}
+	return nil
+}
+
 // LoginWithLocalhost starts a server that can be used to capture OAUTH
 // token from Google Auth Server
-func LoginWithLocalhost() {
+func LoginWithLocalhost(isCILogin bool) {
 	googleOauthConfig := getGoogleOAuthConfig(port)
 	oauthStateTracker := generateOauthStateTracker()
 	u := googleOauthConfig.AuthCodeURL(oauthStateTracker)
@@ -156,28 +166,22 @@ func LoginWithLocalhost() {
 			}
 			return
 		}
-		viper.Set(configs.FirebaseRefreshTokenViperConfigKey, data.RefreshToken)
-		viper.Set(configs.FirebaseLoggedInUserEmailViperConfigKey, data.Email)
-		err = viper.WriteConfig()
-		if err != nil {
-			fmt.Printf("An error occurred while saving refresh token: %s", err.Error())
-			if err := writeHTMLOutput(w, templateData, templates.LoginFailureTemplate); err != nil {
-				fmt.Printf("Error showing response: %s", err.Error())
+		if isCILogin {
+			fmt.Fprint(os.Stdout, aurora.Sprintf(aurora.Green("\n\nSuccess! Use this token to login on a CI server:\n\n%s"), data.RefreshToken))
+			fmt.Printf("\n\nExample: firebase deploy --token \"$FIREBASE_TOKEN\"\n")
+		} else {
+			if err = saveRefreshToken(data); err != nil {
+				fmt.Printf("%s", err.Error())
+				if err := writeHTMLOutput(w, templateData, templates.LoginFailureTemplate); err != nil {
+					fmt.Printf("Error showing response: %s", err.Error())
+				}
+				return
 			}
-			return
-		}
-		if err != nil {
-			log.Println(err.Error())
-			if err := writeHTMLOutput(w, templateData, templates.LoginFailureTemplate); err != nil {
-				fmt.Printf("Error showing response: %s", err.Error())
-			}
-			return
+			fmt.Fprint(os.Stdout, aurora.Sprintf(aurora.Green("\n\nSuccess! Logged in as %s\n\n"), data.Email))
 		}
 		if err := writeHTMLOutput(w, templateData, templates.LoginSuccessTemplate); err != nil {
 			fmt.Printf("Error showing response: %s", err.Error())
 		}
-		fmt.Fprint(os.Stdout, aurora.Sprintf(aurora.Green("\n\nSuccess! Logged in as %s\n\n"), data.Email))
-		cancel()
 	})
 	go func() {
 		if err := httpServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
@@ -193,7 +197,7 @@ func LoginWithLocalhost() {
 
 // LoginWithoutLocalhost login without localhost localhost server, suitable in
 // environments without a GUI. The user enters the authorization code manually
-func LoginWithoutLocalhost() error {
+func LoginWithoutLocalhost(isCILogin bool) error {
 	googleOauthConfig := getGoogleOAuthConfig("")
 	oauthStateTracker := generateOauthStateTracker()
 	u := googleOauthConfig.AuthCodeURL(oauthStateTracker)
@@ -210,11 +214,12 @@ func LoginWithoutLocalhost() error {
 	if err != nil {
 		return fmt.Errorf("An error occurred while exchanging code with token: %w", err)
 	}
-	viper.Set(configs.FirebaseRefreshTokenViperConfigKey, data.RefreshToken)
-	viper.Set(configs.FirebaseLoggedInUserEmailViperConfigKey, data.Email)
-	err = viper.WriteConfig()
-	if err != nil {
-		return fmt.Errorf("An error occurred while saving refresh token: %w", err)
+	if isCILogin {
+		fmt.Fprint(os.Stdout, aurora.Sprintf(aurora.Green("\n\nSuccess! Use this token to login on a CI server:\n\n%s\n"), data.RefreshToken))
+		return nil
+	}
+	if err = saveRefreshToken(data); err != nil {
+		return err
 	}
 	fmt.Fprint(os.Stdout, aurora.Sprintf(aurora.Green("\n\nSuccess! Logged in as %s\n\n"), data.Email))
 	return nil
