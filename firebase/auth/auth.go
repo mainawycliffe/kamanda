@@ -56,7 +56,7 @@ func AddCustomClaimToFirebaseUser(ctx context.Context, uid string, customClaims 
 		return err
 	}
 	if err := client.SetCustomUserClaims(ctx, uid, customClaims); err != nil {
-		return err
+		return firebase.NewError(err)
 	}
 	return nil
 }
