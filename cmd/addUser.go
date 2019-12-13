@@ -7,6 +7,7 @@ import (
 
 	"github.com/logrusorgru/aurora"
 	"github.com/mainawycliffe/kamanda/firebase/auth"
+	"github.com/mainawycliffe/kamanda/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -44,11 +45,7 @@ var addUserCmd = &cobra.Command{
 		if len(customClaimsInput) == 0 {
 			os.Exit(0)
 		}
-		// @todo: reflect the actual kind before saving
-		customClaims := make(map[string]interface{})
-		for k, v := range customClaimsInput {
-			customClaims[k] = v
-		}
+		customClaims := utils.ProcessCustomClaimInput(customClaimsInput)
 		err = auth.AddCustomClaimToFirebaseUser(context.Background(), userRecord.UID, customClaims)
 		if err != nil {
 			fmt.Print(aurora.Sprintf(aurora.Red("%s\n"), err.Error()))

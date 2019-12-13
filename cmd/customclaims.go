@@ -7,6 +7,7 @@ import (
 
 	"github.com/logrusorgru/aurora"
 	"github.com/mainawycliffe/kamanda/firebase/auth"
+	"github.com/mainawycliffe/kamanda/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -22,10 +23,7 @@ var customclaimsCmd = &cobra.Command{
 			os.Exit(1)
 		}
 		customClaimsInput, _ := cmd.Flags().GetStringToString("customClaims")
-		customClaims := make(map[string]interface{})
-		for k, v := range customClaimsInput {
-			customClaims[k] = v
-		}
+		customClaims := utils.ProcessCustomClaimInput(customClaimsInput)
 		for _, uid := range args {
 			err := auth.AddCustomClaimToFirebaseUser(context.Background(), uid, customClaims)
 			if err != nil {
