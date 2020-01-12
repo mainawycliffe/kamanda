@@ -9,14 +9,14 @@ import (
 )
 
 type NewUser struct {
-	UID           string
-	Email         string
-	EmailVerified bool
-	PhoneNumber   string
-	Password      string
-	DisplayName   string
-	Disabled      bool
-	PhotoURL      string
+	UID           string `json:"uid" yaml:"uid"`
+	Email         string `json:"email" yaml:"email"`
+	EmailVerified bool   `json:"email_verified" yaml:"email_verified"`
+	PhoneNumber   string `json:"phone" yaml:"phone"`
+	Password      string `json:"password" yaml:"password"`
+	DisplayName   string `json:"name" yaml:"name" `
+	Disabled      bool   `json:"disabled" yaml:"disabled"`
+	PhotoURL      string `json:"photo_url" yaml:"photo_url"`
 }
 
 // NewFirebaseUser create a new firebase user using Email/Password Auth Provider
