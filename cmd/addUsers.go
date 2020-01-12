@@ -29,7 +29,7 @@ var addUsersCmd = &cobra.Command{
 			os.Exit(1)
 		}
 		usersToCreate := make([]auth.NewUser, 0)
-		err = utils.UnmashalFormatFile(sourceFile, sourceFileExtension, usersToCreate)
+		err = utils.UnmashalFormatFile(sourceFile, sourceFileExtension, &usersToCreate)
 		if err != nil {
 			utils.StdOutError("Error decoding your config file: %s", err.Error())
 			os.Exit(1)
