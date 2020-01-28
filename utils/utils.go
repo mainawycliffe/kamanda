@@ -4,11 +4,24 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"os"
+	"strings"
+	"time"
 
 	"github.com/logrusorgru/aurora"
 	"gopkg.in/yaml.v2"
 )
+
+func PasswordGenerator(passwordLength int) string {
+	rand.Seed(time.Now().UnixNano())
+	letterBytes := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()?.|")
+	var password strings.Builder
+	for i := 0; i < passwordLength; i++ {
+		password.WriteRune(letterBytes[rand.Intn(len(letterBytes))])
+	}
+	return password.String()
+}
 
 // ProcessCustomClaimInput take in the input from cmd flags which a map of strings
 // and convert it to a map of interface
