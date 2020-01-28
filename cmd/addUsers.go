@@ -38,7 +38,8 @@ var addUsersCmd = &cobra.Command{
 		for _, v := range usersToCreate {
 			userRecord, err := auth.NewFirebaseUser(context.Background(), &v)
 			if err != nil {
-				utils.StdOutError("%s Failed!", v.Email)
+				// @todo: unwrap the errors properly to better error messages
+				utils.StdOutError("%s Failed - %s", v.Email, err.Error())
 				failedAccountCreation++
 				continue
 			}
