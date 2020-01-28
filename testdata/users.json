@@ -1,0 +1,9 @@
+[{
+    "name": "Some name here",
+    "email": "james@gmail.com",
+    "password": "HelloWorld"
+}, {
+    "name": "Some name here",
+    "email": "ms@outlook.com",
+    "password": "HelloWorld"
+}]
