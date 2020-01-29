@@ -43,8 +43,17 @@ var addUsersCmd = &cobra.Command{
 				failedAccountCreation++
 				continue
 			}
+			customClaims := make(map[string]interface{})
+			for _, v := range v.CustomClaims {
+				customClaims[v.Key] = v.Value
+			}
+			err = auth.AddCustomClaimToFirebaseUser(context.Background(), userRecord.UID, customClaims)
+			if err != nil {
+				utils.StdOutError("%s Failed - %s", v.Email, err.Error())
+				failedAccountCreation++
+				continue
+			}
 			utils.StdOutSuccess("✔✔ email: %s SUCCESS \t uid: %s \n", userRecord.Email, userRecord.UID)
-			// @todo probably also add custom claims
 		}
 		if failedAccountCreation > 0 {
 			os.Exit(1)
