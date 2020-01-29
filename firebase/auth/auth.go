@@ -9,14 +9,20 @@ import (
 )
 
 type NewUser struct {
-	UID           string `json:"uid" yaml:"uid"`
-	Email         string `json:"email" yaml:"email"`
-	EmailVerified bool   `json:"email_verified" yaml:"email_verified"`
-	PhoneNumber   string `json:"phone" yaml:"phone"`
-	Password      string `json:"password" yaml:"password"`
-	DisplayName   string `json:"name" yaml:"name" `
-	Disabled      bool   `json:"disabled" yaml:"disabled"`
-	PhotoURL      string `json:"photo_url" yaml:"photo_url"`
+	UID           string                     `json:"uid" yaml:"uid"`
+	Email         string                     `json:"email" yaml:"email"`
+	EmailVerified bool                       `json:"email_verified" yaml:"email_verified"`
+	PhoneNumber   string                     `json:"phone" yaml:"phone"`
+	Password      string                     `json:"password" yaml:"password"`
+	DisplayName   string                     `json:"name" yaml:"name" `
+	Disabled      bool                       `json:"disabled" yaml:"disabled"`
+	PhotoURL      string                     `json:"photo_url" yaml:"photo_url"`
+	CustomClaims  []FirebaseUserCustomClaims `json:"custom_claims" yaml:"custom_claims"`
+}
+
+type FirebaseUserCustomClaims struct {
+	Key   string `json:"key" yaml:"key"`
+	Value string `json:"value" yaml:"value"`
 }
 
 // NewFirebaseUser create a new firebase user using Email/Password Auth Provider
