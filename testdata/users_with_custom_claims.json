@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Some name here",
+    "email": "james@gmail.com",
+    "password": "HelloWorld",
+    "custom_claims": [
+      {
+        "key": "isAdmin",
+        "valye": "true"
+      },
+      {
+        "key": "isSomethingElse",
+        "value": "helloworld"
+      }
+    ]
+  },
+  {
+    "name": "Some name here",
+    "email": "ms3444@outlook.com",
+    "password": "HelloWorld",
+    "custom_claims": [
+      {
+        "key": "isAdmin",
+        "valye": "true"
+      },
+      {
+        "key": "isSomethingElse",
+        "value": "helloworld"
+      }
+    ]
+  }
+]

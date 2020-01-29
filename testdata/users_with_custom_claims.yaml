@@ -1,0 +1,17 @@
+---
+- name: Some name here
+  email: james234433@gmail.com
+  password: HelloWorld
+  custom_claims:
+    - key: isAdmin
+      valye: 'true'
+    - key: isSomethingElse
+      value: helloworld
+- name: Some name here
+  email: ms3443224@outlook.com
+  password: HelloWorld
+  custom_claims:
+    - key: isAdmin
+      valye: 'true'
+    - key: isSomethingElse
+      value: helloworld
