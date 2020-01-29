@@ -1,11 +1,10 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
 
-	"github.com/logrusorgru/aurora"
 	"github.com/mainawycliffe/kamanda/oauth"
+	"github.com/mainawycliffe/kamanda/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -20,7 +19,7 @@ var loginCICmd = &cobra.Command{
 			os.Exit(0)
 		}
 		if err := oauth.LoginWithoutLocalhost(true); err != nil {
-			fmt.Fprint(os.Stdout, aurora.Sprintf(aurora.Red("\n\n%s\n\n"), err.Error()))
+			utils.StdOutError("\n\n%s\n\n", err.Error())
 			os.Exit(1)
 		}
 		os.Exit(0)

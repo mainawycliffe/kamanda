@@ -2,10 +2,8 @@ package cmd
 
 import (
 	"context"
-	"fmt"
 	"os"
 
-	"github.com/logrusorgru/aurora"
 	"github.com/mainawycliffe/kamanda/firebase/auth"
 	"github.com/mainawycliffe/kamanda/utils"
 	"github.com/spf13/cobra"
@@ -38,20 +36,20 @@ var addUserCmd = &cobra.Command{
 		}
 		userRecord, err := auth.NewFirebaseUser(context.Background(), user)
 		if err != nil {
-			fmt.Print(aurora.Sprintf(aurora.Red("%s\n"), err.Error()))
+			utils.StdOutError("%s\n", err.Error())
 			os.Exit(1)
 		}
-		fmt.Print(aurora.Sprintf(aurora.Green("✔✔ user added - uid: %s email: %s\n"), userRecord.UID, userRecord.Email))
+		utils.StdOutSuccess("✔✔ user added - uid: %s email: %s\n", userRecord.UID, userRecord.Email)
 		if len(customClaimsInput) == 0 {
 			os.Exit(0)
 		}
 		customClaims := utils.ProcessCustomClaimInput(customClaimsInput)
 		err = auth.AddCustomClaimToFirebaseUser(context.Background(), userRecord.UID, customClaims)
 		if err != nil {
-			fmt.Print(aurora.Sprintf(aurora.Red("%s\n"), err.Error()))
+			utils.StdOutError("%s\n", err.Error())
 			os.Exit(1)
 		}
-		fmt.Print(aurora.Sprintf(aurora.Green("✔✔ custom claims added\n")))
+		utils.StdOutSuccess("✔✔ custom claims added\n")
 		os.Exit(0)
 	},
 }
@@ -68,11 +66,11 @@ func init() {
 	addUserCmd.Flags().Bool("isDisabled", false, "is the user account disabled")
 	addUserCmd.Flags().StringToStringP("customClaims", "c", nil, "user custom claims i.e. --customClaims \"admin=true\"")
 	if err := addUserCmd.MarkFlagRequired("email"); err != nil {
-		fmt.Print(aurora.Sprintf(aurora.Red("%s\n"), err.Error()))
+		utils.StdOutError("%s\n", err.Error())
 		os.Exit(1)
 	}
 	if err := addUserCmd.MarkFlagRequired("password"); err != nil {
-		fmt.Print(aurora.Sprintf(aurora.Red("%s\n"), err.Error()))
+		utils.StdOutError("%s\n", err.Error())
 		os.Exit(1)
 	}
 }

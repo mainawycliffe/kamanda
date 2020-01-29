@@ -1,12 +1,11 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
 
-	"github.com/logrusorgru/aurora"
 	"github.com/mainawycliffe/kamanda/configs"
 	"github.com/mainawycliffe/kamanda/oauth"
+	"github.com/mainawycliffe/kamanda/utils"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -18,7 +17,7 @@ var loginCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		if viper.IsSet(configs.FirebaseRefreshTokenViperConfigKey) {
 			email := viper.GetString(configs.FirebaseLoggedInUserEmailViperConfigKey)
-			fmt.Fprint(os.Stdout, aurora.Sprintf("Already logged in as %s\n", aurora.Green(email)))
+			utils.StdOutSuccess("Already logged in as %s\n", email)
 			os.Exit(1)
 		}
 		noLocalhostFlag, _ := cmd.Flags().GetBool("no-localhost")
@@ -27,7 +26,7 @@ var loginCmd = &cobra.Command{
 			os.Exit(0)
 		}
 		if err := oauth.LoginWithoutLocalhost(false); err != nil {
-			fmt.Fprint(os.Stdout, aurora.Sprintf(aurora.Red("\n\n%s\n\n"), err.Error()))
+			utils.StdOutError("\n\n%s\n\n", err.Error())
 			os.Exit(1)
 		}
 		os.Exit(0)

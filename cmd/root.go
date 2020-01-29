@@ -2,11 +2,13 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/mainawycliffe/kamanda/configs"
+	"github.com/mainawycliffe/kamanda/utils"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"os"
 )
 
 // "In this context, the client secret is obviously not treated as a secret"
@@ -34,7 +36,7 @@ var rootCmd = &cobra.Command{
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
+		utils.StdOutError("%s", err.Error())
 		os.Exit(1)
 	}
 }
@@ -56,13 +58,13 @@ func initConfig() {
 		// Find home directory.
 		home, err := homedir.Dir()
 		if err != nil {
-			fmt.Println(err)
+			utils.StdOutError("%s", err.Error())
 			os.Exit(1)
 		}
 		configPath := fmt.Sprintf("%s/.kamanda.yaml", home)
 		_, err = os.Stat(configPath)
 		if err != nil && !os.IsNotExist(err) {
-			fmt.Printf("Error checking if config file exists: %s\n", err.Error())
+			utils.StdOutError("Error checking if config file exists: %s\n", err.Error())
 			os.Exit(1)
 		}
 		viper.SetConfigFile(configPath)
@@ -75,15 +77,15 @@ func initConfig() {
 	_ = viper.SafeWriteConfig()
 	// bind token flag to refresh token config, overriding incase token is supplied
 	if err := viper.BindPFlag(configs.FirebaseRefreshTokenViperConfigKey, rootCmd.Flags().Lookup("token")); err != nil {
-		fmt.Printf("Error bind token flag: %s\n", err.Error())
+		utils.StdOutError("Error bind token flag: %s\n", err.Error())
 		os.Exit(1)
 	}
 	if err := viper.BindPFlag("project", rootCmd.Flags().Lookup("project")); err != nil {
-		fmt.Printf("Error bind project flag: %s\n", err.Error())
+		utils.StdOutError("Error bind project flag: %s\n", err.Error())
 		os.Exit(1)
 	}
 	if err := viper.ReadInConfig(); err != nil {
-		fmt.Printf("Error reading configs: %s\n", err.Error())
+		utils.StdOutError("Error reading configs: %s\n", err.Error())
 		os.Exit(1)
 	}
 }

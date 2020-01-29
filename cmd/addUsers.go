@@ -2,10 +2,8 @@ package cmd
 
 import (
 	"context"
-	"fmt"
 	"os"
 
-	"github.com/logrusorgru/aurora"
 	"github.com/mainawycliffe/kamanda/firebase/auth"
 	"github.com/mainawycliffe/kamanda/utils"
 	"github.com/spf13/cobra"
@@ -66,12 +64,12 @@ func init() {
 	authCmd.AddCommand(addUsersCmd)
 	addUsersCmd.Flags().StringP("source", "s", "", "file with list of users to create")
 	if err := addUsersCmd.MarkFlagRequired("source"); err != nil {
-		fmt.Print(aurora.Sprintf(aurora.Red("%s\n"), err.Error()))
+		utils.StdOutError("%s\n", err.Error())
 		os.Exit(1)
 	}
 	addUsersCmd.Flags().StringP("extension", "e", "yaml", "Source file type - json or yaml")
 	if err := addUsersCmd.MarkFlagRequired("extension"); err != nil {
-		fmt.Print(aurora.Sprintf(aurora.Red("%s\n"), err.Error()))
+		utils.StdOutError("%s\n", err.Error())
 		os.Exit(1)
 	}
 }
