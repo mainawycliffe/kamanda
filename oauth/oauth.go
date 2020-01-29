@@ -233,6 +233,8 @@ func RevokeRefreshToken() error {
 	if err != nil {
 		return fmt.Errorf("Error sending http request: %w", err)
 	}
+	// remove configs locally whether successfull or not. May be not best
+	// practice here
 	err = configs.UnsetViperConfig(
 		configs.FirebaseRefreshTokenViperConfigKey,
 		configs.FirebaseLoggedInUserEmailViperConfigKey,
