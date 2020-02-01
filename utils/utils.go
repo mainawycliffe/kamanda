@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -13,6 +14,22 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+// ParseStringToActualValue takes a string and converts the string the actual
+// type of the string i.e. "true" => true
+func ParseStringToActualValueType(input string) interface{} {
+	if v, err := strconv.ParseBool(input); err == nil {
+		return v
+	}
+	if v, err := strconv.Atoi(input); err == nil {
+		return v
+	}
+	if v, err := strconv.Atoi(input); err == nil {
+		return v
+	}
+	return input
+}
+
+// PasswordGenerator generate password of given length
 func PasswordGenerator(passwordLength int) string {
 	rand.Seed(time.Now().UnixNano())
 	letterBytes := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()?.|")
@@ -29,7 +46,7 @@ func ProcessCustomClaimInput(input map[string]string) map[string]interface{} {
 	customClaims := make(map[string]interface{})
 	for k, v := range input {
 		// @todo try and determine the value type and return it natively
-		customClaims[k] = v
+		customClaims[k] = ParseStringToActualValueType(v)
 	}
 	return customClaims
 }
