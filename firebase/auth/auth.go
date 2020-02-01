@@ -21,8 +21,8 @@ type NewUser struct {
 }
 
 type FirebaseUserCustomClaims struct {
-	Key   string `json:"key" yaml:"key"`
-	Value string `json:"value" yaml:"value"`
+	Key   string      `json:"key" yaml:"key"`
+	Value interface{} `json:"value" yaml:"value"`
 }
 
 // NewFirebaseUser create a new firebase user using Email/Password Auth Provider
