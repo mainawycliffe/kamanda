@@ -34,3 +34,8 @@ func (err Error) Error() string {
 	}
 	return err.OriginalError.Error()
 }
+
+//IsUserNotFound check if an error is of type UserNotFound
+func IsUserNotFound(err error) bool {
+	return auth.IsUserNotFound(err)
+}
