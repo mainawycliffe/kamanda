@@ -84,8 +84,3 @@ func DeleteFirebaseUser(ctx context.Context, uid string) error {
 	}
 	return nil
 }
-
-// ListAllFirebaseUsers get all users in firebase auth
-func ListAllFirebaseUsers(ctx context.Context, maxResults uint32, nextPageToken string) error {
-	panic("not implemented")
-}
