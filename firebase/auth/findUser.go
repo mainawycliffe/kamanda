@@ -25,7 +25,7 @@ func (c FindUserCriteria) IsValid() bool {
 }
 
 // GetUser find a user by either uid, email or phone number
-func GetUser(ctx context.Context, query string, criteria FindUserCriteria, includeCustomClaims bool) (*auth.UserRecord, error) {
+func GetUser(ctx context.Context, query string, criteria FindUserCriteria) (*auth.UserRecord, error) {
 	if isValid := criteria.IsValid(); !isValid {
 		return nil, fmt.Errorf("Invalid find user criteria.")
 	}
