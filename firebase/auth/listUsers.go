@@ -11,7 +11,7 @@ import (
 
 type ListUsersResponse struct {
 	Users         []*auth.ExportedUserRecord
-	nextPageToken string
+	NextPageToken string
 }
 
 // ListUsers get all users in firebase auth
@@ -28,13 +28,13 @@ func ListUsers(ctx context.Context, maxSize int, nextPageToken string) (ListUser
 			break
 		}
 		if err != nil {
-			return ListUsersResponse{}, err
+			return ListUsersResponse{}, firebase.NewError(err)
 		}
 		users = append(users, user)
 	}
 	response := ListUsersResponse{
 		Users:         users,
-		nextPageToken: usersIterator.PageInfo().Token,
+		NextPageToken: usersIterator.PageInfo().Token,
 	}
 	return response, nil
 }
