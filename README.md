@@ -24,3 +24,15 @@ This is currently our roadmap, please feel free to request additions/changes.
 | Firebase Auth    | 🔜       |
 | Cloud Firestore  | 🔜       |
 | Firebase Storage | 🔜       |
+
+### Currently Working On
+
+I am currently working on Firebase authentication. As of now, the tool can:
+
+- Delete User(s)
+- Add Users (Custom Claims Supported)
+  - Add Single User
+  - Add Users from a Yaml/JSON File
+  - Add Custom Claims to a User ID
+- Get User (WIP)
+- List Firebase Auth Users (WIP)
