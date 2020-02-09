@@ -44,7 +44,7 @@ func GetUser(ctx context.Context, query string, criteria FindUserCriteria) (*aut
 		user, getUserErr = client.GetUser(ctx, query)
 	}
 	if getUserErr != nil {
-		return nil, fmt.Errorf("Error while find user: %w", getUserErr)
+		return nil, firebase.NewError(getUserErr)
 	}
 	return user, nil
 }
