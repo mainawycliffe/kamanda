@@ -18,7 +18,7 @@ var byPhoneCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		// args = list of phone numbers
 		if len(args) == 0 {
-			utils.StdOutError("at least one Firebase user UID is required!")
+			utils.StdOutError(os.Stderr, "at least one Firebase user UID is required!")
 			os.Exit(1)
 		}
 		criteria := auth.ByUserUIDCriteria
@@ -26,14 +26,14 @@ var byPhoneCmd = &cobra.Command{
 			user, err := auth.GetUser(context.Background(), phone, criteria)
 			if err != nil {
 				if firebase.IsUserNotFound(err) {
-					utils.StdOutError("Not Found\t %s \t %s", phone, err.Error())
+					utils.StdOutError(os.Stderr, "Not Found\t %s \t %s", phone, err.Error())
 					continue
 				}
-				utils.StdOutError("Error\t%s\t%s", phone, err.Error())
+				utils.StdOutError(os.Stderr, "Error\t%s\t%s", phone, err.Error())
 				continue
 			}
 			// @todo expand this list of users
-			utils.StdOutSuccess("%s\tWas successfully Retrieved\n", user.UID)
+			utils.StdOutSuccess(os.Stdout, "%s\tWas successfully Retrieved\n", user.UID)
 		}
 		os.Exit(0)
 	},

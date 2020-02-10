@@ -18,7 +18,7 @@ var byEmailCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		// args = list of UIDs
 		if len(args) == 0 {
-			utils.StdOutError("at least one email is required!")
+			utils.StdOutError(os.Stderr, "at least one email is required!")
 			os.Exit(1)
 		}
 		criteria := auth.ByUserEmailCriteria
@@ -26,14 +26,14 @@ var byEmailCmd = &cobra.Command{
 			user, err := auth.GetUser(context.Background(), email, criteria)
 			if err != nil {
 				if firebase.IsUserNotFound(err) {
-					utils.StdOutError("Not Found\t %s \t User was not found", email, err.Error())
+					utils.StdOutError(os.Stderr, "Not Found\t %s \t User was not found", email, err.Error())
 					continue
 				}
-				utils.StdOutError("Error\t %s\t %s", email, err.Error())
+				utils.StdOutError(os.Stderr, "Error\t %s\t %s", email, err.Error())
 				continue
 			}
 			//@todo something with the output
-			utils.StdOutSuccess("Success\t%s\t%s", email, user.UID)
+			utils.StdOutSuccess(os.Stdout, "Success\t%s\t%s", email, user.UID)
 		}
 		os.Exit(0)
 	},

@@ -36,20 +36,20 @@ var addUserCmd = &cobra.Command{
 		}
 		userRecord, err := auth.NewFirebaseUser(context.Background(), user)
 		if err != nil {
-			utils.StdOutError("%s\n", err.Error())
+			utils.StdOutError(os.Stderr, "%s\n", err.Error())
 			os.Exit(1)
 		}
-		utils.StdOutSuccess("✔✔ user added - uid: %s email: %s\n", userRecord.UID, userRecord.Email)
+		utils.StdOutSuccess(os.Stdout, "✔✔ user added - uid: %s email: %s\n", userRecord.UID, userRecord.Email)
 		if len(customClaimsInput) == 0 {
 			os.Exit(0)
 		}
 		customClaims := utils.ProcessCustomClaimInput(customClaimsInput)
 		err = auth.AddCustomClaimToFirebaseUser(context.Background(), userRecord.UID, customClaims)
 		if err != nil {
-			utils.StdOutError("%s\n", err.Error())
+			utils.StdOutError(os.Stderr, "%s\n", err.Error())
 			os.Exit(1)
 		}
-		utils.StdOutSuccess("✔✔ custom claims added\n")
+		utils.StdOutSuccess(os.Stdout, "✔✔ custom claims added\n")
 		os.Exit(0)
 	},
 }
@@ -66,11 +66,11 @@ func init() {
 	addUserCmd.Flags().Bool("isDisabled", false, "is the user account disabled")
 	addUserCmd.Flags().StringToStringP("customClaims", "c", nil, "user custom claims i.e. --customClaims \"admin=true\"")
 	if err := addUserCmd.MarkFlagRequired("email"); err != nil {
-		utils.StdOutError("%s\n", err.Error())
+		utils.StdOutError(os.Stderr, "%s\n", err.Error())
 		os.Exit(1)
 	}
 	if err := addUserCmd.MarkFlagRequired("password"); err != nil {
-		utils.StdOutError("%s\n", err.Error())
+		utils.StdOutError(os.Stderr, "%s\n", err.Error())
 		os.Exit(1)
 	}
 }

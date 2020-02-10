@@ -19,7 +19,7 @@ var loginCICmd = &cobra.Command{
 			os.Exit(0)
 		}
 		if err := oauth.LoginWithoutLocalhost(true); err != nil {
-			utils.StdOutError("\n\n%s\n\n", err.Error())
+			utils.StdOutError(os.Stderr, "\n\n%s\n\n", err.Error())
 			os.Exit(1)
 		}
 		os.Exit(0)

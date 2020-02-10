@@ -3,9 +3,9 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"math/rand"
-	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -52,15 +52,15 @@ func ProcessCustomClaimInput(input map[string]string) map[string]interface{} {
 }
 
 // StdOutError print an error message to the standard out
-func StdOutError(format string, a ...interface{}) {
+func StdOutError(w io.Writer, format string, a ...interface{}) {
 	m := aurora.Sprintf(aurora.Red(format), a...)
-	fmt.Fprintf(os.Stdout, "%s\n", m)
+	fmt.Fprintf(w, "%s\n", m)
 }
 
 // StdOutSuccess print a success message to the standard out
-func StdOutSuccess(format string, a ...interface{}) {
+func StdOutSuccess(w io.Writer, format string, a ...interface{}) {
 	m := aurora.Sprintf(aurora.Green(format), a...)
-	fmt.Fprintf(os.Stdout, "%s\n", m)
+	fmt.Fprintf(w, "%s\n", m)
 }
 
 // UnmarshalFormatFile read and unmarshal either a json/yaml file into a struct

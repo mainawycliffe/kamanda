@@ -17,17 +17,17 @@ var deleteUserCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		// args = list of uids
 		if len(args) == 0 {
-			utils.StdOutError("at least one Firebase user uid is required!")
+			utils.StdOutError(os.Stderr, "at least one Firebase user uid is required!")
 			os.Exit(1)
 		}
 		// delete all listed user accounts
 		for _, uid := range args {
 			err := auth.DeleteFirebaseUser(context.Background(), uid)
 			if err != nil {
-				utils.StdOutError("%s - Not Deleted: %s\n", uid, err.Error())
+				utils.StdOutError(os.Stderr, "%s - Not Deleted: %s\n", uid, err.Error())
 				continue
 			}
-			utils.StdOutSuccess("%s - Deleted\n", uid)
+			utils.StdOutSuccess(os.Stdout, "%s - Deleted\n", uid)
 		}
 		os.Exit(0)
 	},

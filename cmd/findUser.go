@@ -18,7 +18,7 @@ var findUserCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		// args = list of uids
 		if len(args) == 0 {
-			utils.StdOutError("at least one Firebase user UID is required!")
+			utils.StdOutError(os.Stderr, "at least one Firebase user UID is required!")
 			os.Exit(1)
 		}
 		criteria := auth.ByUserUIDCriteria
@@ -26,14 +26,14 @@ var findUserCmd = &cobra.Command{
 			user, err := auth.GetUser(context.Background(), uid, criteria)
 			if err != nil {
 				if firebase.IsUserNotFound(err) {
-					utils.StdOutError("Not Found\t %s \t %s", uid, err.Error())
+					utils.StdOutError(os.Stderr, "Not Found\t %s \t %s", uid, err.Error())
 					continue
 				}
-				utils.StdOutError("Error \t %s \t %s", uid, err.Error())
+				utils.StdOutError(os.Stderr, "Error \t %s \t %s", uid, err.Error())
 				continue
 			}
 			//@todo something with the output
-			utils.StdOutSuccess("Success \t %s \t Was successfully Retrieved", user.UID)
+			utils.StdOutSuccess(os.Stdout, "Success \t %s \t Was successfully Retrieved", user.UID)
 		}
 		os.Exit(0)
 	},

@@ -17,7 +17,7 @@ var loginCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		if viper.IsSet(configs.FirebaseRefreshTokenViperConfigKey) {
 			email := viper.GetString(configs.FirebaseLoggedInUserEmailViperConfigKey)
-			utils.StdOutSuccess("Already logged in as %s\n", email)
+			utils.StdOutSuccess(os.Stdout, "Already logged in as %s\n", email)
 			os.Exit(1)
 		}
 		noLocalhostFlag, _ := cmd.Flags().GetBool("no-localhost")
@@ -26,7 +26,7 @@ var loginCmd = &cobra.Command{
 			os.Exit(0)
 		}
 		if err := oauth.LoginWithoutLocalhost(false); err != nil {
-			utils.StdOutError("\n\n%s\n\n", err.Error())
+			utils.StdOutError(os.Stderr, "\n\n%s\n\n", err.Error())
 			os.Exit(1)
 		}
 		os.Exit(0)

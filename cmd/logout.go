@@ -18,14 +18,14 @@ var logoutCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		email := viper.GetString(configs.FirebaseLoggedInUserEmailViperConfigKey)
 		if !viper.IsSet(configs.FirebaseRefreshTokenViperConfigKey) {
-			utils.StdOutError("%s\n", aurora.Red("You are not logged in!"))
+			utils.StdOutError(os.Stderr, "%s\n", aurora.Red("You are not logged in!"))
 			os.Exit(1)
 		}
 		if err := oauth.RevokeRefreshToken(); err != nil {
-			utils.StdOutError("%s\n", err.Error())
+			utils.StdOutError(os.Stderr, "%s\n", err.Error())
 			os.Exit(1)
 		}
-		utils.StdOutError("Logged out from %s\n\n", email)
+		utils.StdOutError(os.Stderr, "Logged out from %s\n\n", email)
 		os.Exit(0)
 	},
 }

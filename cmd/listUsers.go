@@ -17,17 +17,17 @@ var listUsersCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		token, err := cmd.Flags().GetString("nextPageToken")
 		if err != nil {
-			utils.StdOutError("An error occurred while parsing next page token")
+			utils.StdOutError(os.Stderr, "An error occurred while parsing next page token")
 			os.Exit(1)
 		}
 		getUsers, err := auth.ListUsers(context.Background(), 0, token)
 		if err != nil {
-			utils.StdOutError("Error! %s", err.Error())
+			utils.StdOutError(os.Stderr, "Error! %s", err.Error())
 			os.Exit(1)
 		}
 		// @todo: do something with the response i.e save to file or list them
-		utils.StdOutSuccess("Next Page Token %s", getUsers.NextPageToken)
-		utils.StdOutSuccess("Number of Users: %d", len(getUsers.Users))
+		utils.StdOutSuccess(os.Stdout, "Next Page Token %s", getUsers.NextPageToken)
+		utils.StdOutSuccess(os.Stdout, "Number of Users: %d", len(getUsers.Users))
 	},
 }
 
