@@ -64,8 +64,8 @@ func TestProcessCustomClaimInput(t *testing.T) {
 	}{
 		{"Custom Claims Str to Interface 1 (String)", args{input: map[string]string{"hello": "world"}}, map[string]interface{}{"hello": "world"}},
 		{"Custom Claims Str to Interface 2 (Boolean)", args{input: map[string]string{"hello": "true"}}, map[string]interface{}{"hello": true}},
-		{"Custom Claims Str to Interface 2 (Int)", args{input: map[string]string{"hello": "1"}}, map[string]interface{}{"hello": 1}},
-		{"Custom Claims Str to Interface 2 (Float)", args{input: map[string]string{"hello": "1.23"}}, map[string]interface{}{"hello": 1.23}},
+		{"Custom Claims Str to Interface 3 (Int)", args{input: map[string]string{"hello": "1"}}, map[string]interface{}{"hello": 1}},
+		{"Custom Claims Str to Interface 4 (Float)", args{input: map[string]string{"hello": "1.23"}}, map[string]interface{}{"hello": 1.23}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -117,7 +117,7 @@ func TestUnmarshalFormatFile(t *testing.T) {
 		{"Test with JSON File", args{path: "./../testdata/users.json", extension: "json", v: &test1Users}, false, testUserResponse},
 		{"Test with Yaml File", args{path: "./../testdata/users.yaml", extension: "yaml", v: &test2Users}, false, testUserResponse},
 		{"No file", args{path: "./../testdata/users1.yaml", extension: "yaml", v: &test2Users}, true, nil},
-		{"Test with Yaml File", args{path: "./../testdata/users.yaml", extension: "yaml", v: &test2Users}, false, testUserWrongResponse},
+		{"Test with Yaml File (Incorrect Response)", args{path: "./../testdata/users.yaml", extension: "yaml", v: &test2Users}, false, testUserWrongResponse},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
