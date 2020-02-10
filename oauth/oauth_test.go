@@ -139,6 +139,28 @@ func Test_writeHTMLOutput(t *testing.T) {
 			"<strong>hello world</strong>",
 			false,
 		},
+		{
+			"HTML String Test 2",
+			args{
+				data: map[string]string{
+					"world1": "world",
+				},
+				html: "<strong>hello {{ .world }}</strong>",
+			},
+			"<strong>hello </strong>",
+			false,
+		},
+		{
+			"Empty String Test",
+			args{
+				data: map[string]string{
+					"world1": "world",
+				},
+				html: "",
+			},
+			"",
+			false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
