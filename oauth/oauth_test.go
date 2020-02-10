@@ -106,6 +106,48 @@ func Test_getGoogleOAuthConfig(t *testing.T) {
 	}
 }
 
+func Test_saveRefreshToken(t *testing.T) {
+	viper.SetConfigFile("./../testdata/.viper.yaml")
+	type args struct {
+		data *GetUserDataFromGoogleResponse
+	}
+	data := &GetUserDataFromGoogleResponse{
+		Email:        "dkkdkd@email.com",
+		RefreshToken: "SomeRefreshToken",
+	}
+	tests := []struct {
+		name     string
+		args     args
+		wantErr  bool
+		wantData *GetUserDataFromGoogleResponse
+	}{
+		{
+			"Test 1",
+			args{
+				&GetUserDataFromGoogleResponse{
+					Email:        "dkkdkd@email.com",
+					RefreshToken: "SomeRefreshToken",
+				},
+			},
+			false,
+			data,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := saveRefreshToken(tt.args.data); (err != nil) != tt.wantErr {
+				t.Errorf("saveRefreshToken() error = %v, wantErr %v", err, tt.wantErr)
+			}
+			if data.Email != viper.GetString("firebaseuseraccountemail") {
+				t.Errorf("saveRefreshToken() Expected email = %v, got %v", data.Email, viper.GetString("firebaseuseraccountemail"))
+			}
+			if data.RefreshToken != viper.GetString("firebaserefreshtoken") {
+				t.Errorf("saveRefreshToken() Expected Refresh Token = %v, got %v", data.RefreshToken, viper.GetString("firebaserefreshtoken"))
+			}
+		})
+	}
+}
+
 func Test_writeHTMLOutput(t *testing.T) {
 	type args struct {
 		data interface{}
