@@ -3,6 +3,8 @@ package oauth
 
 import (
 	"encoding/base64"
+	"io/ioutil"
+	"net/http/httptest"
 	"reflect"
 	"testing"
 
@@ -99,6 +101,55 @@ func Test_getGoogleOAuthConfig(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := getGoogleOAuthConfig(tt.args.port); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("getGoogleOAuthConfig() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_writeHTMLOutput(t *testing.T) {
+	type args struct {
+		data interface{}
+		html string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantW   string
+		wantErr bool
+	}{
+		{
+			"Simple String Test",
+			args{
+				data: map[string]string{
+					"world": "world",
+				},
+				html: "hello {{ .world }}",
+			},
+			"hello world",
+			false,
+		},
+		{
+			"HTML String Test",
+			args{
+				data: map[string]string{
+					"world": "world",
+				},
+				html: "<strong>hello {{ .world }}</strong>",
+			},
+			"<strong>hello world</strong>",
+			false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			w := httptest.NewRecorder()
+			if err := writeHTMLOutput(w, tt.args.data, tt.args.html); (err != nil) != tt.wantErr {
+				t.Errorf("writeHTMLOutput() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			body, _ := ioutil.ReadAll(w.Body)
+			if gotW := string(body); gotW != tt.wantW {
+				t.Errorf("writeHTMLOutput() = %v, want %v", gotW, tt.wantW)
 			}
 		})
 	}
