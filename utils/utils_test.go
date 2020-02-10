@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"bytes"
 	"reflect"
 	"testing"
 
@@ -71,6 +72,54 @@ func TestProcessCustomClaimInput(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := ProcessCustomClaimInput(tt.args.input); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("ProcessCustomClaimInput() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestStdOutError(t *testing.T) {
+	type args struct {
+		format string
+		a      []interface{}
+	}
+	tests := []struct {
+		name  string
+		args  args
+		wantW string
+	}{
+		{"Hello World", args{format: "Hello %s", a: []interface{}{"World"}}, "\u001b[31mHello World\u001b[0m\n"},
+		{"Test number 2", args{format: "This is a go %s", a: []interface{}{"test"}}, "\u001b[31mThis is a go test\u001b[0m\n"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			w := &bytes.Buffer{}
+			StdOutError(w, tt.args.format, tt.args.a...)
+			if gotW := w.String(); gotW != tt.wantW {
+				t.Errorf("StdOutError() = %v, want %v", gotW, tt.wantW)
+			}
+		})
+	}
+}
+
+func TestStdOutSuccess(t *testing.T) {
+	type args struct {
+		format string
+		a      []interface{}
+	}
+	tests := []struct {
+		name  string
+		args  args
+		wantW string
+	}{
+		{"Hello World", args{format: "Hello %s", a: []interface{}{"World"}}, "\u001b[32mHello World\u001b[0m\n"},
+		{"Test number 2", args{format: "This is a go %s", a: []interface{}{"test"}}, "\u001b[32mThis is a go test\u001b[0m\n"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			w := &bytes.Buffer{}
+			StdOutSuccess(w, tt.args.format, tt.args.a...)
+			if gotW := w.String(); gotW != tt.wantW {
+				t.Errorf("StdOutSuccess() = %v, want %v", gotW, tt.wantW)
 			}
 		})
 	}
