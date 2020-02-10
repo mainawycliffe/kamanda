@@ -18,12 +18,10 @@ func UnsetViperConfig(keys ...string) error {
 	if err != nil {
 		return err
 	}
-	err = viper.ReadConfig(bytes.NewReader(encodedConfig))
-	if err != nil {
+	if err = viper.ReadConfig(bytes.NewReader(encodedConfig)); err != nil {
 		return err
 	}
-	err = viper.WriteConfig()
-	if err != nil {
+	if err = viper.WriteConfig(); err != nil {
 		return fmt.Errorf("Error removing configs: %w", err)
 	}
 	return nil
