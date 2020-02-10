@@ -57,21 +57,6 @@ func generateOauthStateTracker() string {
 	return base64.URLEncoding.EncodeToString([]byte(string(b)))
 }
 
-func writeHTMLOutput(w http.ResponseWriter, data interface{}, html string) error {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	errorTemplate, err := template.New("response.html").Parse(html)
-	if err != nil {
-		fmt.Fprintf(w, "Unable to load and parse failure template")
-		return err
-	}
-	err = errorTemplate.Execute(w, data)
-	if err != nil {
-		fmt.Fprintf(w, "Unable to load and parse failure template")
-		return err
-	}
-	return nil
-}
-
 // getUserDataFromGoogle fetch user data and the token from google using code
 func getUserDataFromGoogle(googleOauthConfig *oauth2.Config, code string) (*GetUserDataFromGoogleResponse, error) {
 	token, err := googleOauthConfig.Exchange(context.Background(), code)
@@ -97,15 +82,6 @@ func getUserDataFromGoogle(googleOauthConfig *oauth2.Config, code string) (*GetU
 	}, nil
 }
 
-// googleOAuthScopes return a list of scopes used by kamanda
-func googleOAuthScopes() []string {
-	return []string{
-		"https://www.googleapis.com/auth/userinfo.email",
-		"https://www.googleapis.com/auth/cloud-platform",
-		"https://www.googleapis.com/auth/firebase",
-	}
-}
-
 // getGoogleOAuthConfig create a OAuth Config object
 func getGoogleOAuthConfig(port string) *oauth2.Config {
 	redirectURL := fmt.Sprintf("http://localhost:%s", port)
@@ -121,14 +97,13 @@ func getGoogleOAuthConfig(port string) *oauth2.Config {
 	}
 }
 
-func saveRefreshToken(data *GetUserDataFromGoogleResponse) error {
-	viper.Set(configs.FirebaseRefreshTokenViperConfigKey, data.RefreshToken)
-	viper.Set(configs.FirebaseLoggedInUserEmailViperConfigKey, data.Email)
-	err := viper.WriteConfig()
-	if err != nil {
-		return fmt.Errorf("An error occurred while saving refresh token: %w", err)
+// googleOAuthScopes return a list of scopes used by kamanda
+func googleOAuthScopes() []string {
+	return []string{
+		"https://www.googleapis.com/auth/userinfo.email",
+		"https://www.googleapis.com/auth/cloud-platform",
+		"https://www.googleapis.com/auth/firebase",
 	}
-	return nil
 }
 
 // LoginWithLocalhost starts a server that can be used to capture OAUTH
@@ -261,4 +236,29 @@ func RevokeRefreshToken() error {
 		message = responseJSON["error"]
 	}
 	return fmt.Errorf("%s", message)
+}
+
+func saveRefreshToken(data *GetUserDataFromGoogleResponse) error {
+	viper.Set(configs.FirebaseRefreshTokenViperConfigKey, data.RefreshToken)
+	viper.Set(configs.FirebaseLoggedInUserEmailViperConfigKey, data.Email)
+	err := viper.WriteConfig()
+	if err != nil {
+		return fmt.Errorf("An error occurred while saving refresh token: %w", err)
+	}
+	return nil
+}
+
+func writeHTMLOutput(w http.ResponseWriter, data interface{}, html string) error {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	errorTemplate, err := template.New("response.html").Parse(html)
+	if err != nil {
+		fmt.Fprintf(w, "Unable to load and parse failure template")
+		return err
+	}
+	err = errorTemplate.Execute(w, data)
+	if err != nil {
+		fmt.Fprintf(w, "Unable to load and parse failure template")
+		return err
+	}
+	return nil
 }
