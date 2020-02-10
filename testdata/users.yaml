@@ -1,7 +1,7 @@
 ---
 - name: Some name here
-  email: james1@gmail.com
+  email: james@gmail.com
   password: HelloWorld
 - name: Some name here
-  email: ms1@outlook.com
+  email: ms@outlook.com
   password: HelloWorld

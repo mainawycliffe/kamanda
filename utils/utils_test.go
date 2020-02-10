@@ -3,6 +3,8 @@ package utils
 import (
 	"reflect"
 	"testing"
+
+	"github.com/mainawycliffe/kamanda/firebase/auth"
 )
 
 func TestParseStringToActualValueType(t *testing.T) {
@@ -74,3 +76,58 @@ func TestProcessCustomClaimInput(t *testing.T) {
 	}
 }
 
+func TestUnmarshalFormatFile(t *testing.T) {
+	type args struct {
+		path      string
+		extension string
+		v         interface{}
+	}
+	testUserResponse := []auth.NewUser{
+		{
+			DisplayName: "Some name here",
+			Email:       "james@gmail.com",
+			Password:    "HelloWorld",
+		},
+		{
+			DisplayName: "Some name here",
+			Email:       "ms@outlook.com",
+			Password:    "HelloWorld",
+		},
+	}
+	testUserWrongResponse := []auth.NewUser{
+		{
+			DisplayName: "Some name here1",
+			Email:       "james@gmail.com1",
+			Password:    "HelloWorld1",
+		},
+		{
+			DisplayName: "Some name here1",
+			Email:       "ms@outlook.com1",
+			Password:    "HelloWorld1",
+		},
+	}
+	var test1Users []auth.NewUser
+	var test2Users []auth.NewUser
+	tests := []struct {
+		name         string
+		args         args
+		wantErr      bool
+		wantResponse []auth.NewUser
+	}{
+		{"Test with JSON File", args{path: "./../testdata/users.json", extension: "json", v: &test1Users}, false, testUserResponse},
+		{"Test with Yaml File", args{path: "./../testdata/users.yaml", extension: "yaml", v: &test2Users}, false, testUserResponse},
+		{"No file", args{path: "./../testdata/users1.yaml", extension: "yaml", v: &test2Users}, true, nil},
+		{"Test with Yaml File", args{path: "./../testdata/users.yaml", extension: "yaml", v: &test2Users}, false, testUserWrongResponse},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := UnmarshalFormatFile(tt.args.path, tt.args.extension, tt.args.v)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("UnmarshalFormatFile() error = %v, wantErr %v", err, tt.wantErr)
+			}
+			if !reflect.DeepEqual(&testUserResponse, tt.args.v) {
+				t.Errorf("UnmarshalFormatFile() want = %v, got %v", testUserResponse, tt.args.v)
+			}
+		})
+	}
+}
