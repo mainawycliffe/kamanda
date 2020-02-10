@@ -30,6 +30,13 @@ const (
 	noPortURL         = "urn:ietf:wg:oauth:2.0:oob"
 )
 
+// googleOAuthScopes return a list of scopes used by kamanda
+var googleOAuthScopes = []string{
+	"https://www.googleapis.com/auth/userinfo.email",
+	"https://www.googleapis.com/auth/cloud-platform",
+	"https://www.googleapis.com/auth/firebase",
+}
+
 // GoogleAPIUserInfo the user data returned from Google API Services
 type GoogleAPIUserInfo struct {
 	Email         string `json:"email"`
@@ -92,17 +99,8 @@ func getGoogleOAuthConfig(port string) *oauth2.Config {
 		RedirectURL:  redirectURL,
 		ClientID:     viper.GetString(configs.GoogleOAuthClientIDConfigKey),
 		ClientSecret: viper.GetString(configs.GoogleOAuthClientSecretConfigKey),
-		Scopes:       googleOAuthScopes(),
+		Scopes:       googleOAuthScopes,
 		Endpoint:     google.Endpoint,
-	}
-}
-
-// googleOAuthScopes return a list of scopes used by kamanda
-func googleOAuthScopes() []string {
-	return []string{
-		"https://www.googleapis.com/auth/userinfo.email",
-		"https://www.googleapis.com/auth/cloud-platform",
-		"https://www.googleapis.com/auth/firebase",
 	}
 }
 
