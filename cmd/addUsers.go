@@ -26,7 +26,7 @@ var addUsersCmd = &cobra.Command{
 			utils.StdOutError("%s Source file is a directory not folder!", sourceFile)
 			os.Exit(1)
 		}
-		usersToCreate := make([]auth.NewUser, 0)
+		var usersToCreate []auth.NewUser
 		err = utils.UnmarshalFormatFile(sourceFile, sourceFileExtension, &usersToCreate)
 		if err != nil {
 			utils.StdOutError("Error decoding your config file: %s", err.Error())
