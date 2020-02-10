@@ -166,7 +166,10 @@ func TestUnmarshalFormatFile(t *testing.T) {
 		{"Test with JSON File", args{path: "./../testdata/users.json", extension: "json", v: &test1Users}, false, testUserResponse},
 		{"Test with Yaml File", args{path: "./../testdata/users.yaml", extension: "yaml", v: &test2Users}, false, testUserResponse},
 		{"No file", args{path: "./../testdata/users1.yaml", extension: "yaml", v: &test2Users}, true, nil},
+		{"Unsupported Format", args{path: "./../testdata/users.csv", extension: "csv", v: &test2Users}, true, nil},
 		{"Test with Yaml File (Incorrect Response)", args{path: "./../testdata/users.yaml", extension: "yaml", v: &test2Users}, false, testUserWrongResponse},
+		{"Test with Wrong JSON File", args{path: "./../testdata/users.csv", extension: "json", v: &test1Users}, true, nil},
+		{"Test with Wrong Yaml File", args{path: "./../testdata/users.csv", extension: "yaml", v: &test2Users}, true, nil},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
