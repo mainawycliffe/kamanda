@@ -17,13 +17,13 @@ import (
 // ParseStringToActualValue takes a string and converts the string the actual
 // type of the string i.e. "true" => true
 func ParseStringToActualValueType(input string) interface{} {
+	if v, err := strconv.Atoi(input); err == nil {
+		return v
+	}
+	if v, err := strconv.ParseFloat(input, 64); err == nil {
+		return v
+	}
 	if v, err := strconv.ParseBool(input); err == nil {
-		return v
-	}
-	if v, err := strconv.Atoi(input); err == nil {
-		return v
-	}
-	if v, err := strconv.Atoi(input); err == nil {
 		return v
 	}
 	return input
