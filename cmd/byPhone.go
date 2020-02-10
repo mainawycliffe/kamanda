@@ -18,7 +18,7 @@ var byPhoneCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		// args = list of phone numbers
 		if len(args) == 0 {
-			utils.StdOutError("atleast one Firebase user UID is required!")
+			utils.StdOutError("at least one Firebase user UID is required!")
 			os.Exit(1)
 		}
 		criteria := auth.ByUserUIDCriteria

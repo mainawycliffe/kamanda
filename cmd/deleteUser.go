@@ -17,7 +17,7 @@ var deleteUserCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		// args = list of uids
 		if len(args) == 0 {
-			utils.StdOutError("atleast one Firebase user uid is required!")
+			utils.StdOutError("at least one Firebase user uid is required!")
 			os.Exit(1)
 		}
 		// delete all listed user accounts

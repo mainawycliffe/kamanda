@@ -27,7 +27,7 @@ func (err Error) Error() string {
 		return "UID already exists"
 	}
 	if auth.IsUserNotFound(err.OriginalError) {
-		return "User not found"
+		return "User was not found"
 	}
 	if auth.IsUnknown(err.OriginalError) {
 		return "Unknown error"

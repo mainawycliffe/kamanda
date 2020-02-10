@@ -63,8 +63,8 @@ func StdOutSuccess(format string, a ...interface{}) {
 	fmt.Fprintf(os.Stdout, "%s\n", m)
 }
 
-// UnmashalFormatFile read and unmashal either a json/yaml file into a struct
-func UnmashalFormatFile(path string, extension string, v interface{}) error {
+// UnmarshalFormatFile read and unmarshal either a json/yaml file into a struct
+func UnmarshalFormatFile(path string, extension string, v interface{}) error {
 	content, err := ioutil.ReadFile(path)
 	if err != nil {
 		return fmt.Errorf("Error reading %s: %w", path, err)

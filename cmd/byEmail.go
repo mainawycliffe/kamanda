@@ -16,9 +16,9 @@ var byEmailCmd = &cobra.Command{
 	Aliases: []string{"email"},
 	Short:   "find a user by email address",
 	Run: func(cmd *cobra.Command, args []string) {
-		// args = list of uids
+		// args = list of UIDs
 		if len(args) == 0 {
-			utils.StdOutError("atleast one email is required!")
+			utils.StdOutError("at least one email is required!")
 			os.Exit(1)
 		}
 		criteria := auth.ByUserEmailCriteria
