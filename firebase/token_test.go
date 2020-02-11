@@ -11,12 +11,17 @@ import (
 	"github.com/spf13/viper"
 )
 
-func Test_constructToken(t *testing.T) {
-	viper.Reset()
+func SetViperConfigs(setViperConfigs bool) {
 	viper.SetConfigFile("./../testdata/.viper.yaml")
-	viper.Set(configs.GoogleOAuthClientIDConfigKey, "ClientID")
-	viper.Set(configs.GoogleOAuthClientSecretConfigKey, "ClientSecret")
-	viper.Set(configs.FirebaseRefreshTokenViperConfigKey, "RefreshToken")
+	viper.Reset()
+	if setViperConfigs {
+		viper.Set(configs.GoogleOAuthClientIDConfigKey, "ClientID")
+		viper.Set(configs.GoogleOAuthClientSecretConfigKey, "ClientSecret")
+		viper.Set(configs.FirebaseRefreshTokenViperConfigKey, "RefreshToken")
+	}
+}
+
+func Test_constructToken(t *testing.T) {
 
 	want, _ := json.Marshal(RefreshToken{
 		ClientID:     "ClientID",
@@ -26,14 +31,17 @@ func Test_constructToken(t *testing.T) {
 	})
 
 	tests := []struct {
-		name    string
-		want    []byte
-		wantErr bool
+		name            string
+		want            []byte
+		wantErr         bool
+		setViperConfigs bool
 	}{
-		{"Test Token Retrieval", want, false},
+		{"Test Empty Token Retrieval", nil, true, false},
+		{"Test Token Retrieval", want, false, true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			SetViperConfigs(tt.setViperConfigs)
 			got, err := constructToken()
 			if (err != nil) != tt.wantErr {
 				t.Errorf("constructToken() error = %v, wantErr %v", err, tt.wantErr)
