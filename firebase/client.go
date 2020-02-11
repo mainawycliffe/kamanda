@@ -13,8 +13,8 @@ import (
 )
 
 const (
-	firebaseProjectConfig = "./.firebaserc"
-	defaultProject        = "default"
+	firebaseProjectConfigFile = "./.firebaserc"
+	defaultProject            = "default"
 )
 
 type FirebaseProjectConfigs struct {
@@ -28,8 +28,8 @@ type Firebase struct {
 }
 
 // setProjectID use the project alias to get the firebase project id
-func (f *Firebase) setProjectID(projectAlias string) error {
-	configFileContent, err := s.File(firebaseProjectConfig).Bytes()
+func (f *Firebase) setProjectID(projectAlias string, firebaseProjectConfigFile string) error {
+	configFileContent, err := s.File(firebaseProjectConfigFile).Bytes()
 	if err != nil {
 		return fmt.Errorf("An error occurred while reading config file: %w", err)
 	}
@@ -48,7 +48,7 @@ func (f *Firebase) initializeFirebaseApp(ctx context.Context, projectAlias strin
 	if projectAlias == "" {
 		projectAlias = defaultProject
 	}
-	err := f.setProjectID(projectAlias)
+	err := f.setProjectID(projectAlias, firebaseProjectConfigFile)
 	if err != nil {
 		return fmt.Errorf("An error occurred while reading config file: %w", err)
 	}
