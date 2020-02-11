@@ -1,7 +1,7 @@
 --debug=localhost
 .vscode
 .env
-.firebaserc
+/.firebaserc
 credentials.json
 credentials*
 *cover*
