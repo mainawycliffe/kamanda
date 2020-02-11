@@ -17,6 +17,11 @@ const (
 	defaultProject        = "default"
 )
 
+type FirebaseProjectConfigs struct {
+	Projects map[string]string `json:"projects"`
+	Targets  interface{}       `json:"-"`
+}
+
 type Firebase struct {
 	App       *firebase.App
 	projectId string
