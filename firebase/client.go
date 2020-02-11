@@ -38,6 +38,9 @@ func (f *Firebase) setProjectID(projectAlias string, firebaseProjectConfigFile s
 	if err != nil {
 		return fmt.Errorf("An error occurred while reading config file: %w", err)
 	}
+	if decodedConfigs.Projects[projectAlias] == "" {
+		return fmt.Errorf("Couldn't find the project alias provided!")
+	}
 	f.projectId = decodedConfigs.Projects[projectAlias]
 	return nil
 }
