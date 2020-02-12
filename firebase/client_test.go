@@ -17,7 +17,7 @@ func TestFirebase_setProjectID(t *testing.T) {
 		wantProjectId string
 	}{
 		{
-			"Test Case",
+			"Test for an Existing Firebase Alias with Correct Config File",
 			args{
 				projectAlias:              "default",
 				firebaseProjectConfigFile: "./../testdata/.firebaserc",
@@ -26,10 +26,19 @@ func TestFirebase_setProjectID(t *testing.T) {
 			"kamanda-test-project",
 		},
 		{
-			"Test Case 2",
+			"Test for a Non Existent Firebase Project Alias",
 			args{
 				firebaseProjectConfigFile: "./../testdata/.firebaserc",
 				projectAlias:              "default2",
+			},
+			true,
+			"",
+		},
+		{
+			"Test for Non Existent Firebase Config File",
+			args{
+				firebaseProjectConfigFile: "./.firebaserc",
+				projectAlias:              "default",
 			},
 			true,
 			"",
