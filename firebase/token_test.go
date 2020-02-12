@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-func SetViperConfigs(setViperConfigs bool) {
+func setViperConfigs(setViperConfigs bool) {
 	viper.SetConfigFile("./../testdata/.viper.yaml")
 	viper.Reset()
 	if setViperConfigs {
@@ -41,7 +41,7 @@ func Test_constructToken(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			SetViperConfigs(tt.setViperConfigs)
+			setViperConfigs(tt.setViperConfigs)
 			got, err := constructToken()
 			if (err != nil) != tt.wantErr {
 				t.Errorf("constructToken() error = %v, wantErr %v", err, tt.wantErr)
