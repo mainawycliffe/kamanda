@@ -47,11 +47,14 @@ func (f *Firebase) setProjectID(projectAlias string, firebaseProjectConfigFile s
 
 // initializeFirebaseApp create a new firebase app that can create clients for
 // auth, firestore, storage etc
-func (f *Firebase) initializeFirebaseApp(ctx context.Context, projectAlias string) error {
+func (f *Firebase) initializeFirebaseApp(ctx context.Context, projectAlias string, projectConfigFile string) error {
 	if projectAlias == "" {
 		projectAlias = defaultProject
 	}
-	err := f.setProjectID(projectAlias, firebaseProjectConfigFile)
+	if projectConfigFile == "" {
+		projectConfigFile = firebaseProjectConfigFile
+	}
+	err := f.setProjectID(projectAlias, projectConfigFile)
 	if err != nil {
 		return fmt.Errorf("An error occurred while reading config file: %w", err)
 	}
@@ -73,9 +76,9 @@ func (f *Firebase) initializeFirebaseApp(ctx context.Context, projectAlias strin
 }
 
 // Auth create a firebase auth client
-func Auth(ctx context.Context, projectAlias string) (*auth.Client, error) {
+func Auth(ctx context.Context, projectAlias string, projectConfigFile string) (*auth.Client, error) {
 	fb := &Firebase{}
-	if err := fb.initializeFirebaseApp(ctx, projectAlias); err != nil {
+	if err := fb.initializeFirebaseApp(ctx, projectAlias, projectConfigFile); err != nil {
 		return nil, err
 	}
 	return fb.App.Auth(ctx)

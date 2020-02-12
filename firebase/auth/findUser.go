@@ -29,7 +29,7 @@ func GetUser(ctx context.Context, query string, criteria FindUserCriteria) (*aut
 	if isValid := criteria.IsValid(); !isValid {
 		return nil, fmt.Errorf("Invalid find user criteria.")
 	}
-	client, err := firebase.Auth(ctx, "")
+	client, err := firebase.Auth(ctx, "", "")
 	if err != nil {
 		return nil, fmt.Errorf("Error authenticating firebase account: %w", err)
 	}

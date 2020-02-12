@@ -51,8 +51,9 @@ func TestFirebase_setProjectID(t *testing.T) {
 
 func TestFirebase_initializeFirebaseApp(t *testing.T) {
 	type args struct {
-		ctx          context.Context
-		projectAlias string
+		ctx               context.Context
+		projectAlias      string
+		projectConfigFile string
 	}
 	tests := []struct {
 		name           string
@@ -64,8 +65,9 @@ func TestFirebase_initializeFirebaseApp(t *testing.T) {
 		{
 			"Test Firebase App Init",
 			args{
-				ctx:          context.Background(),
-				projectAlias: "default",
+				ctx:               context.Background(),
+				projectAlias:      "default",
+				projectConfigFile: "./../testdata/.firebaserc",
 			},
 			false,
 			false,
@@ -74,8 +76,9 @@ func TestFirebase_initializeFirebaseApp(t *testing.T) {
 		{
 			"Test Firebase App Init (No Default Alias)",
 			args{
-				ctx:          context.Background(),
-				projectAlias: "",
+				ctx:               context.Background(),
+				projectAlias:      "",
+				projectConfigFile: "./../testdata/.firebaserc",
 			},
 			false,
 			false,
@@ -84,8 +87,20 @@ func TestFirebase_initializeFirebaseApp(t *testing.T) {
 		{
 			"Test Firebase App Init (No existent Default Alias)",
 			args{
-				ctx:          context.Background(),
-				projectAlias: "helloworld",
+				ctx:               context.Background(),
+				projectAlias:      "helloworld",
+				projectConfigFile: "./../testdata/.firebaserc",
+			},
+			true,
+			true,
+			"",
+		},
+		{
+			"Test Firebase App Init (Incorrect Project Config File)",
+			args{
+				ctx:               context.Background(),
+				projectAlias:      "",
+				projectConfigFile: "./../testdata/.firebaserc2",
 			},
 			true,
 			true,
@@ -96,7 +111,7 @@ func TestFirebase_initializeFirebaseApp(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			setViperConfigs(true)
 			f := &Firebase{}
-			if err := f.initializeFirebaseApp(tt.args.ctx, tt.args.projectAlias); (err != nil) != tt.wantErr {
+			if err := f.initializeFirebaseApp(tt.args.ctx, tt.args.projectAlias, tt.args.projectConfigFile); (err != nil) != tt.wantErr {
 				t.Errorf("Firebase.initializeFirebaseApp() error = %v, wantErr %v", err, tt.wantErr)
 			}
 			if (f.App == nil) != tt.wantAppToBeNil {

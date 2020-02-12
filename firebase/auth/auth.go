@@ -45,7 +45,7 @@ func NewFirebaseUser(ctx context.Context, user *NewUser) (*auth.UserRecord, erro
 	if user.PhotoURL != "" {
 		params = params.PhotoURL(user.PhotoURL)
 	}
-	client, err := firebase.Auth(ctx, "")
+	client, err := firebase.Auth(ctx, "", "")
 	if err != nil {
 		return nil, fmt.Errorf("Error authenticating firebase account: %w", err)
 	}
@@ -57,7 +57,7 @@ func NewFirebaseUser(ctx context.Context, user *NewUser) (*auth.UserRecord, erro
 }
 
 func AddCustomClaimToFirebaseUser(ctx context.Context, uid string, customClaims map[string]interface{}) error {
-	client, err := firebase.Auth(ctx, "")
+	client, err := firebase.Auth(ctx, "", "")
 	if err != nil {
 		return err
 	}
@@ -71,7 +71,7 @@ func DeleteFirebaseUser(ctx context.Context, uid string) error {
 	if uid == "" {
 		return fmt.Errorf("The UID of the user can not be empty")
 	}
-	client, err := firebase.Auth(ctx, "")
+	client, err := firebase.Auth(ctx, "", "")
 	if err != nil {
 		return fmt.Errorf("Error authenticating firebase account: %w", err)
 	}

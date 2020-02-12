@@ -16,7 +16,7 @@ type ListUsersResponse struct {
 
 // ListUsers get all users in firebase auth
 func ListUsers(ctx context.Context, maxSize int, nextPageToken string) (ListUsersResponse, error) {
-	client, err := firebase.Auth(ctx, "")
+	client, err := firebase.Auth(ctx, "", "")
 	if err != nil {
 		return ListUsersResponse{}, fmt.Errorf("Error authenticating firebase account: %w", err)
 	}
