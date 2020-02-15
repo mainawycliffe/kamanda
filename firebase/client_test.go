@@ -43,6 +43,15 @@ func TestFirebase_setProjectID(t *testing.T) {
 			true,
 			"",
 		},
+		{
+			"Test for wrong config file",
+			args{
+				firebaseProjectConfigFile: "./../testdata/.firebaserc_wrong",
+				projectAlias:              "default",
+			},
+			true,
+			"",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
