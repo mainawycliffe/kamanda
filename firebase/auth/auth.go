@@ -80,7 +80,7 @@ func DeleteFirebaseUser(ctx context.Context, uid string) error {
 		if auth.IsUserNotFound(err) {
 			return fmt.Errorf("User not found!")
 		}
-		return fmt.Errorf("An unnkown error: %w", err)
+		return fmt.Errorf("An unknown error: %w", err)
 	}
 	return nil
 }
