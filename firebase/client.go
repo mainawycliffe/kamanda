@@ -23,8 +23,9 @@ type FirebaseProjectConfigs struct {
 }
 
 type Firebase struct {
-	App       *firebase.App
-	projectId string
+	App         *firebase.App
+	projectId   string
+	credentials []byte
 }
 
 // setProjectID use the project alias to get the firebase project id
@@ -61,12 +62,8 @@ func (f *Firebase) initializeFirebaseApp(ctx context.Context, projectAlias strin
 	configs := &firebase.Config{
 		ProjectID: f.projectId,
 	}
-	credentials, err := constructToken()
-	if err != nil {
-		return fmt.Errorf("Error getting credentials: %w", err)
-	}
 	// replace this with something better
-	opt := option.WithCredentialsJSON(credentials)
+	opt := option.WithCredentialsJSON(f.credentials)
 	app, err := firebase.NewApp(ctx, configs, opt)
 	if err != nil {
 		log.Fatalf("error initializing app: %v\n", err)
@@ -77,7 +74,13 @@ func (f *Firebase) initializeFirebaseApp(ctx context.Context, projectAlias strin
 
 // Auth create a firebase auth client
 func Auth(ctx context.Context, projectAlias string, projectConfigFile string) (*auth.Client, error) {
-	fb := &Firebase{}
+	credentials, err := constructToken()
+	if err != nil {
+		return nil, fmt.Errorf("Error getting credentials: %w", err)
+	}
+	fb := &Firebase{
+		credentials: credentials,
+	}
 	if err := fb.initializeFirebaseApp(ctx, projectAlias, projectConfigFile); err != nil {
 		return nil, err
 	}
