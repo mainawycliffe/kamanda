@@ -6,6 +6,14 @@ Firestore Data.
 
 > This is not meant to replace Firebase CLI but to compliment it.
 
+An example of viewing and adding users:
+
+![Views Users](demos/userslist.gif)
+
+A demo for adding custom claims:
+
+![Add Custom Claims](demos/customClaims.gif)
+
 ## Work in Progress
 
 Its still an early work in progress, I hope to wrap the first few features in
