@@ -6,6 +6,18 @@ Firestore Data.
 
 > This is not meant to replace Firebase CLI but to compliment it.
 
+## Features
+
+- Firebase Auth Users:
+  - Add Single Users - Ideal for adding a user quickly
+  - Edit, Delete a User Account By ID
+  - Get a user by UID or Email Address
+  - Add Custom Claims to a User Account
+  - Add User by Bulk using a JSON/Yaml File
+  - List Users
+
+Documentation will come soon.
+
 An example of viewing and adding users:
 
 ![Views Users](demos/userslist.gif)
@@ -16,8 +28,8 @@ A demo for adding custom claims:
 
 ## Work in Progress
 
-Its still an early work in progress, I hope to wrap the first few features in
-the coming weeks.
+Its still a work in progress, I hope to wrap the first few features in
+the coming weeks (mid april at the latest).
 
 ## Contributors
 
@@ -29,18 +41,6 @@ This is currently our roadmap, please feel free to request additions/changes.
 
 | Feature          | Progress |
 | ---------------- | -------- |
-| Firebase Auth    | 🔜       |
+| Firebase Auth    | ✔✔       |
 | Cloud Firestore  | 🔜       |
 | Firebase Storage | 🔜       |
-
-### Currently Working On
-
-I am currently working on Firebase authentication. As of now, the tool can:
-
-- Delete User(s)
-- Add Users (Custom Claims Supported)
-  - Add Single User
-  - Add Users from a Yaml/JSON File
-  - Add Custom Claims to a User ID
-- Get User (WIP)
-- List Firebase Auth Users (WIP)
