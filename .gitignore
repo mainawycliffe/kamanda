@@ -1,3 +1,7 @@
+*
+!*/
+!*.*
+
 --debug=localhost
 .vscode
 .env
