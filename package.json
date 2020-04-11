@@ -1,0 +1,33 @@
+{
+  "name": "kamanda",
+  "version": "0.0.3",
+  "description": "Kamanda - A Firebase CLI Companion Tool",
+  "main": "index.js",
+  "scripts": {
+    "test": "go test ./... -v",
+    "postinstall": "go-npm install",
+    "preuninstall": "go-npm uninstall"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mainawycliffe/kamanda.git"
+  },
+  "keywords": [
+    "Firebase",
+    "Kamanda"
+  ],
+  "author": "Maina Wycliffe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mainawycliffe/kamanda/issues"
+  },
+  "homepage": "https://github.com/mainawycliffe/kamanda#readme",
+  "dependencies": {
+    "go-npm": "^0.1.9"
+  },
+  "goBinary": {
+    "name": "kamanda",
+    "path": "./bin",
+    "url": "https://github.com/mainawycliffe/kamanda/releases/download/v{{version}}/kamanda_{{version}}_{{platform}}_{{arch}}.tar.gz"
+  }
+}

@@ -10,3 +10,6 @@ credentials.json
 credentials*
 *cover*
 testdata/.viper.yaml
+node_modules
+yarn.lock
+package-lock.json
