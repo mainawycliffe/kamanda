@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 
 	firebase "firebase.google.com/go"
 	"firebase.google.com/go/auth"
@@ -66,7 +65,7 @@ func (f *Firebase) initializeFirebaseApp(ctx context.Context, projectAlias strin
 	opt := option.WithCredentialsJSON(f.credentials)
 	app, err := firebase.NewApp(ctx, configs, opt)
 	if err != nil {
-		log.Fatalf("error initializing app: %v\n", err)
+		return fmt.Errorf("error initializing app: %v\n", err)
 	}
 	f.App = app
 	return nil
