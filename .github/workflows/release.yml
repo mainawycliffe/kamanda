@@ -3,7 +3,7 @@ name: Go Release
 on:
   push:
     tags:
-      - "*"
+      - "releases/*"
 jobs:
   goreleaser:
     runs-on: ubuntu-latest
