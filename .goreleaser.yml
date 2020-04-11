@@ -1,8 +1,9 @@
 builds:
-  - binary: drum-roll
+  - binary: kamanda
     goos:
       - windows
       - darwin
       - linux
+      - freebsd
     goarch:
       - amd64
