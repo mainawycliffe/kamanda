@@ -118,7 +118,7 @@ func TestFirebase_initializeFirebaseApp(t *testing.T) {
 			args{
 				ctx:               context.Background(),
 				projectAlias:      "",
-				projectConfigFile: "./../testdata/.firebaserc2",
+				projectConfigFile: "./../testdata/.firebaserc_wrong",
 			},
 			true,
 			true,
@@ -128,7 +128,13 @@ func TestFirebase_initializeFirebaseApp(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			setViperConfigs(true)
-			f := &Firebase{}
+			credentials, err := constructToken()
+			if err != nil {
+				t.Errorf("Error getting credentials: %w", err)
+			}
+			f := &Firebase{
+				credentials: credentials,
+			}
 			if err := f.initializeFirebaseApp(tt.args.ctx, tt.args.projectAlias, tt.args.projectConfigFile); (err != nil) != tt.wantErr {
 				t.Errorf("Firebase.initializeFirebaseApp() error = %v, wantErr %v", err, tt.wantErr)
 			}
