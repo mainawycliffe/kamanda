@@ -1,8 +1,9 @@
 name: Go Release
 
 on:
-  release:
-    types: [published, prereleased, edited]
+  push:
+    tags:
+      - "*"
 jobs:
   goreleaser:
     runs-on: ubuntu-latest
