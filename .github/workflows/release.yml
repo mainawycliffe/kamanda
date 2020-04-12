@@ -31,12 +31,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Check package version
-        uses: technote-space/package-version-check-action@v1
-        with:
-          COMMIT_MESSAGE: "Update npm package version [skip-ci]"
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
       - name: Publish
         run: |
+          npm version ${{ steps.get_version.outputs.VERSION }} -m "Upgrade to %s"
           npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
           npm publish
         env:
