@@ -75,7 +75,9 @@ func initConfig() {
 	viper.AutomaticEnv()
 	// @todo: improve error handling here, i.e fail if error is due to missing
 	// config file
-	_ = viper.SafeWriteConfig()
+	if err := viper.SafeWriteConfig(); err != nil {
+		utils.StdOutError(os.Stderr, "The following error occurred while writing kamanda configs: %s\n", err.Error())
+	}
 	// bind token flag to refresh token config, overriding incase token is supplied
 	if err := viper.BindPFlag(configs.FirebaseRefreshTokenViperConfigKey, rootCmd.Flags().Lookup("token")); err != nil {
 		utils.StdOutError(os.Stderr, "Error bind token flag: %s\n", err.Error())
