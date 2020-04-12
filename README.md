@@ -6,6 +6,24 @@ Firestore Data.
 
 > This is not meant to replace Firebase CLI but to compliment it.
 
+## Installation
+
+> This is still an early version, feedback on improvements is much needed.
+
+### Using npm (Node Package Manager)
+
+You can use npm to install Kamanda:
+
+```sh
+npm -g install kamanda
+```
+
+> NB: At the moment, it doesn't work with yarn, I am working on a solution for this.
+
+### Executable Binaries
+
+You can find the latest binaries for your operating system in the [releases](https://github.com/mainawycliffe/kamanda/releases).
+
 ## Features
 
 - Firebase Auth Users:
@@ -42,5 +60,5 @@ This is currently our roadmap, please feel free to request additions/changes.
 | Feature          | Progress |
 | ---------------- | -------- |
 | Firebase Auth    | ✔✔       |
-| Cloud Firestore  | 🔜       |
-| Firebase Storage | 🔜       |
+| Cloud Firestore  | 🔜        |
+| Firebase Storage | 🔜        |
