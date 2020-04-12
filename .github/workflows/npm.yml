@@ -1,0 +1,29 @@
+name: npm publish
+
+on:
+  release:
+    types: [published, prereleased, created, edited]
+
+jobs:
+  npmPublish:
+    name: Publish Package to NPM
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup GIT
+        run: |
+          git switch -c master
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git config user.name "$GITHUB_ACTOR"
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      - name: Publish
+        run: |
+          npm version --no-git-tag-version ${{ steps.get_version.outputs.VERSION }} -m "Bump version to %s"
+          git push --set-upstream origin master
+          npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
+          npm publish
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
