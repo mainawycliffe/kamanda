@@ -54,13 +54,13 @@ func ProcessCustomClaimInput(input map[string]string) map[string]interface{} {
 // StdOutError print an error message to the standard out
 func StdOutError(w io.Writer, format string, a ...interface{}) {
 	m := aurora.Sprintf(aurora.Red(format), a...)
-	fmt.Fprintf(w, "%s\n", m)
+	fmt.Fprintf(w, "%s", m)
 }
 
 // StdOutSuccess print a success message to the standard out
 func StdOutSuccess(w io.Writer, format string, a ...interface{}) {
 	m := aurora.Sprintf(aurora.Green(format), a...)
-	fmt.Fprintf(w, "%s\n", m)
+	fmt.Fprintf(w, "%s", m)
 }
 
 // UnmarshalFormatFile read and unmarshal either a json/yaml file into a struct
