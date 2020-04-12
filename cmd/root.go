@@ -68,6 +68,7 @@ func initConfig() {
 			utils.StdOutError(os.Stderr, "Error checking if config file exists: %s\n", err.Error())
 			os.Exit(1)
 		}
+		cfgFile = configPath
 		viper.SetConfigFile(configPath)
 	}
 	viper.Set(configs.GoogleOAuthClientIDConfigKey, GOOGLE_OAUTH_CLIENT_ID)
@@ -75,7 +76,7 @@ func initConfig() {
 	viper.AutomaticEnv()
 	// @todo: improve error handling here, i.e fail if error is due to missing
 	// config file
-	_ = viper.SafeWriteConfig()
+	_ = viper.SafeWriteConfigAs(cfgFile) // creates config file if doesn't exist
 	// bind token flag to refresh token config, overriding incase token is supplied
 	if err := viper.BindPFlag(configs.FirebaseRefreshTokenViperConfigKey, rootCmd.Flags().Lookup("token")); err != nil {
 		utils.StdOutError(os.Stderr, "Error bind token flag: %s\n", err.Error())
