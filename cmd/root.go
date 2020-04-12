@@ -23,9 +23,8 @@ const description = `Kamanda is a  Firebase CLI Tool extender and should be used
 Kamanda provides additional functionality currently not available to via the 
 Firebase CLI Tool such as User Management, Cloud Firestore Management etc from the CLI.
 
-For instance, it allows you to easily create users with custom tokens, or add custom tokens to a user,
-which is currently not very easy in Firebase
-`
+For instance, it allows you to easily create users with custom tokens, 
+which is always a trick preposition.`
 
 var cfgFile string
 
@@ -69,15 +68,6 @@ func initConfig() {
 			utils.StdOutError(os.Stderr, "Error checking if config file exists: %s\n", err.Error())
 			os.Exit(1)
 		}
-		// create config file if it doesn't exist
-		if err != nil && os.IsNotExist(err) {
-			f, err := os.Create(configPath)
-			if err != nil {
-				utils.StdOutError(os.Stderr, "Error while creating config file: %s\n", err.Error())
-				os.Exit(1)
-			}
-			f.Close()
-		}
 		viper.SetConfigFile(configPath)
 	}
 	viper.Set(configs.GoogleOAuthClientIDConfigKey, GOOGLE_OAUTH_CLIENT_ID)
@@ -85,9 +75,7 @@ func initConfig() {
 	viper.AutomaticEnv()
 	// @todo: improve error handling here, i.e fail if error is due to missing
 	// config file
-	if err := viper.SafeWriteConfig(); err != nil {
-		utils.StdOutError(os.Stderr, "The following error occurred while writing kamanda configs: %s\n", err.Error())
-	}
+	_ = viper.SafeWriteConfig()
 	// bind token flag to refresh token config, overriding incase token is supplied
 	if err := viper.BindPFlag(configs.FirebaseRefreshTokenViperConfigKey, rootCmd.Flags().Lookup("token")); err != nil {
 		utils.StdOutError(os.Stderr, "Error bind token flag: %s\n", err.Error())
