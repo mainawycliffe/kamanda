@@ -42,7 +42,7 @@ jobs:
       - name: Publish
         run: |
           npm version --no-git-tag-version ${{ steps.get_version.outputs.VERSION }} -m "Bump version to %s"
-          git push
+          git push --set-upstream origin master
           npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
           npm publish
         env:
