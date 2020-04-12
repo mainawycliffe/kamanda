@@ -69,6 +69,10 @@ func initConfig() {
 			utils.StdOutError(os.Stderr, "Error checking if config file exists: %s\n", err.Error())
 			os.Exit(1)
 		}
+		if err != nil {
+			utils.StdOutError(os.Stderr, "Error: %s\n", err.Error())
+			os.Exit(1)
+		}
 		viper.SetConfigFile(configPath)
 	}
 	viper.Set(configs.GoogleOAuthClientIDConfigKey, GOOGLE_OAUTH_CLIENT_ID)
