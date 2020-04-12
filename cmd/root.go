@@ -53,9 +53,7 @@ func init() {
 }
 
 func initConfig() {
-	if cfgFile != "" {
-		viper.SetConfigFile(cfgFile)
-	} else {
+	if cfgFile == "" {
 		// Find home directory.
 		home, err := homedir.Dir()
 		if err != nil {
@@ -69,8 +67,8 @@ func initConfig() {
 			os.Exit(1)
 		}
 		cfgFile = configPath
-		viper.SetConfigFile(configPath)
 	}
+	viper.SetConfigFile(cfgFile)
 	viper.Set(configs.GoogleOAuthClientIDConfigKey, GOOGLE_OAUTH_CLIENT_ID)
 	viper.Set(configs.GoogleOAuthClientSecretConfigKey, GOOGLE_OAUTH_CLIENT_SECRET)
 	viper.AutomaticEnv()
