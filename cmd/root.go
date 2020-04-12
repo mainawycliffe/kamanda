@@ -69,9 +69,14 @@ func initConfig() {
 			utils.StdOutError(os.Stderr, "Error checking if config file exists: %s\n", err.Error())
 			os.Exit(1)
 		}
-		if err != nil {
-			utils.StdOutError(os.Stderr, "Error: %s\n", err.Error())
-			os.Exit(1)
+		// create config file if it doesn't exist
+		if err != nil && os.IsNotExist(err) {
+			f, err := os.Create(configPath)
+			if err != nil {
+				utils.StdOutError(os.Stderr, "Error while creating config file: %s\n", err.Error())
+				os.Exit(1)
+			}
+			f.Close()
 		}
 		viper.SetConfigFile(configPath)
 	}
