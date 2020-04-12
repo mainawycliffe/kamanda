@@ -87,8 +87,22 @@ func TestStdOutError(t *testing.T) {
 		args  args
 		wantW string
 	}{
-		{"Hello World", args{format: "Hello %s", a: []interface{}{"World"}}, "\u001b[31mHello World\u001b[0m\n"},
-		{"Test number 2", args{format: "This is a go %s", a: []interface{}{"test"}}, "\u001b[31mThis is a go test\u001b[0m\n"},
+		{
+			name: "Hello World",
+			args: args{
+				format: "Hello %s",
+				a:      []interface{}{"World"},
+			},
+			wantW: "\u001b[31mHello World\u001b[0m",
+		},
+		{
+			name: "Test number 2",
+			args: args{
+				format: "This is a go %s",
+				a:      []interface{}{"test"},
+			},
+			wantW: "\u001b[31mThis is a go test\u001b[0m",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -111,8 +125,22 @@ func TestStdOutSuccess(t *testing.T) {
 		args  args
 		wantW string
 	}{
-		{"Hello World", args{format: "Hello %s", a: []interface{}{"World"}}, "\u001b[32mHello World\u001b[0m\n"},
-		{"Test number 2", args{format: "This is a go %s", a: []interface{}{"test"}}, "\u001b[32mThis is a go test\u001b[0m\n"},
+		{
+			name: "Hello World",
+			args: args{
+				format: "Hello %s",
+				a:      []interface{}{"World"},
+			},
+			wantW: "\u001b[32mHello World\u001b[0m",
+		},
+		{
+			name: "Test number 2",
+			args: args{
+				format: "This is a go %s",
+				a:      []interface{}{"test"},
+			},
+			wantW: "\u001b[32mThis is a go test\u001b[0m",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
