@@ -22,13 +22,11 @@ require (
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.6.2
-	go.hein.dev/go-version v0.1.0
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
 	golang.org/x/sys v0.0.0-20200327173247-9dae0f8f5775 // indirect
 	golang.org/x/tools v0.0.0-20200328031815-3db5fc6bac03 // indirect
 	google.golang.org/api v0.20.0
 	google.golang.org/genproto v0.0.0-20200326112834-f447254575fd // indirect
 	gopkg.in/ini.v1 v1.55.0 // indirect
-	go.hein.dev/go-version v0.1.0
 	gopkg.in/yaml.v2 v2.2.8
 )
