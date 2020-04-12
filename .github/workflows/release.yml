@@ -41,7 +41,8 @@ jobs:
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
       - name: Publish
         run: |
-          npm version ${{ steps.get_version.outputs.VERSION }} -m "Upgrade to %s"
+          npm version --no-git-tag-version ${{ steps.get_version.outputs.VERSION }} -m "Bump version to %s"
+          git push
           npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
           npm publish
         env:
