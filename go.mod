@@ -6,6 +6,7 @@ require (
 	cloud.google.com/go/firestore v1.2.0 // indirect
 	firebase.google.com/go v3.12.0+incompatible
 	github.com/bitfield/script v0.14.2
+	github.com/cheynewallace/tabby v1.1.0
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/gdamore/tcell v1.3.0
 	github.com/go-chi/chi v4.0.4+incompatible

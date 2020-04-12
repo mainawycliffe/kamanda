@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 	"runtime"
-	"strings"
 
+	"github.com/cheynewallace/tabby"
 	"github.com/mainawycliffe/kamanda/utils"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v2"
@@ -34,9 +34,13 @@ var versionCmd = &cobra.Command{
 			"OS/Arch":    fmt.Sprintf("%s/%s", runtime.GOOS, runtime.GOARCH),
 		}
 		if output == "text" {
-			for k, v := range kamandaVersion {
-				fmt.Printf("%s: \t %s \n", strings.Title(k), v)
-			}
+			t := tabby.New()
+			t.AddLine("Version:", version)
+			t.AddLine("Release Date:", date)
+			t.AddLine("Commit Hash:", commit)
+			t.AddLine("Built by:", builtBy)
+			t.AddLine("OS/Arch:", fmt.Sprintf("%s/%s", runtime.GOOS, runtime.GOARCH))
+			t.Print()
 			os.Exit(0)
 		}
 		if output == "json" {
