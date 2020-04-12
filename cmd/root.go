@@ -48,7 +48,7 @@ func init() {
 	// this can be used to pass project alias to sub commands, incase having
 	// multiple projects
 	rootCmd.PersistentFlags().StringP("project", "P", "default", "The firebase project to use")
-	findUserCmd.PersistentFlags().StringP("output", "o", "", "A file where data from firebase will be saved.")
+	rootCmd.PersistentFlags().StringP("output", "o", "", "A file where data from firebase will be saved.")
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 

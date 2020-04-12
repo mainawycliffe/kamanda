@@ -17,7 +17,6 @@ var (
 	commit  = "none"
 	date    = "unknown"
 	builtBy = "goreleaser"
-	output  = "text"
 )
 
 // versionCmd represents the version command
@@ -26,22 +25,17 @@ var versionCmd = &cobra.Command{
 	Aliases: []string{"v"},
 	Short:   "Version will output the current build information",
 	Run: func(cmd *cobra.Command, args []string) {
+		output, err := cmd.Flags().GetString("output")
+		if err != nil {
+			utils.StdOutError(os.Stderr, "Error reading output %s", err.Error())
+			os.Exit(1)
+		}
 		kamandaVersion := map[string]string{
 			"version":    version,
 			"commitHash": commit,
 			"builtBy":    builtBy,
 			"built":      date,
 			"OS/Arch":    fmt.Sprintf("%s/%s", runtime.GOOS, runtime.GOARCH),
-		}
-		if output == "text" {
-			t := tabby.New()
-			t.AddLine("Version:", version)
-			t.AddLine("Release Date:", date)
-			t.AddLine("Commit Hash:", commit)
-			t.AddLine("Built by:", builtBy)
-			t.AddLine("OS/Arch:", fmt.Sprintf("%s/%s", runtime.GOOS, runtime.GOARCH))
-			t.Print()
-			os.Exit(0)
 		}
 		if output == "json" {
 			output, err := json.Marshal(kamandaVersion)
@@ -61,10 +55,18 @@ var versionCmd = &cobra.Command{
 			fmt.Printf("%s\n", output)
 			os.Exit(0)
 		}
+		// default to text output
+		t := tabby.New()
+		t.AddLine("Version:", version)
+		t.AddLine("Release Date:", date)
+		t.AddLine("Commit Hash:", commit)
+		t.AddLine("Built by:", builtBy)
+		t.AddLine("OS/Arch:", fmt.Sprintf("%s/%s", runtime.GOOS, runtime.GOARCH))
+		t.Print()
+		os.Exit(0)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(versionCmd)
-	versionCmd.Flags().StringVarP(&output, "output", "o", "text", "Output format. One of 'Text', 'yaml' or 'json'.")
 }
