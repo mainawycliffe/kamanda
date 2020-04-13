@@ -11,18 +11,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - run: git fetch --prune --unshallow
-      - name: Setup GIT
-        run: |
-          git switch -c master
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          git config user.name "$GITHUB_ACTOR"
-      - name: Latest Version
-        run: git describe --tags
       - name: Publish
         run: |
-          npm version from-git -m "Update npm version for this package [ci]"
-          git push --set-upstream origin master
           npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
           npm publish
         env:
