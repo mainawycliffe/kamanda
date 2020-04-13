@@ -1,6 +1,6 @@
 {
   "name": "kamanda",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Kamanda - A Firebase CLI Companion Tool",
   "main": "index.js",
   "scripts": {
