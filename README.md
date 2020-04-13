@@ -6,6 +6,20 @@ Firestore Data.
 
 > This is not meant to replace Firebase CLI but to compliment it.
 
+## Why?
+
+Kamanda is meant to make you work as developer easier by providing with easier
+and well built tools to make changes to your Firebase project quickly.
+
+For instance you want to create a new admin user for your Firebase App, you can
+use Kamanda to quickly add the user and attach the necessary custom claims. You
+can also attach or remove a users custom claims, view list of users among other
+functionality currently available for Firebase Auth.
+
+In future as Kamanda gains support for Firestore, it will give you can easy way
+to explore, export, import and manipulate your Firestore documents, right from
+the cloud without writing extra code.
+
 ## Installation
 
 > This is still an early version, feedback on improvements is much needed.
@@ -20,9 +34,49 @@ npm -g install kamanda
 
 > NB: At the moment, it doesn't work with yarn, I am working on a solution for this.
 
+To check if installation was completed successfully, run the following
+command:
+
+```sh
+kamanda version
+```
+
+You can view all supported commands [here](./docs/kamanda.md) or by running `kamanda help`
+
+```sh
+kamanda help
+```
+
 ### Executable Binaries
 
-You can find the latest binaries for your operating system in the [releases](https://github.com/mainawycliffe/kamanda/releases).
+You can find the latest binaries for your operating system in the
+[releases](https://github.com/mainawycliffe/kamanda/releases).
+
+## Usage
+
+There are a few things to keep in minds, Kamanda works inside a Firebase Project
+and not outside and is meant to provide extra functionality and not replace
+Firebase CLI.
+
+First you will need to login just like Firebase CLI, this provides Kamanda with
+the credentials it requires in order to perform most of the tasks.
+
+You can login by running the following command:
+
+```sh
+kamanda login
+```
+
+> Kamanda mimics Firebase in this regard, so all authentication commands work
+similar to Firebase CLI Authentication commands.
+
+Login to your Google Account and Give Kamanda the permission it requires. As of
+now, you might get a warning from Google, I am working to have the app verified
+as soon as possible.
+
+![Unsafe App Screen](docs/images/unsafe_app.png)
+
+> Kamanda is a fully open source project, no information is corrected at any time.
 
 ## Features
 
