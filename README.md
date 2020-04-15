@@ -2,7 +2,10 @@
 
 [![npm](https://img.shields.io/npm/v/kamanda)](https://www.npmjs.com/package/kamanda)
 [![](https://img.shields.io/github/release/mainawycliffe/kamanda.svg)](https://github.com/mainawycliffe/kamanda/releases/latest)
-
+[![](https://github.com/mainawycliffe/kamanda/workflows/Go%20Tests/badge.svg)](https://github.com/mainawycliffe/kamanda/actions?query=workflow%3A%22Go+Tests%22)
+[![](https://github.com/mainawycliffe/kamanda/workflows/Go%20Linting/badge.svg)](https://github.com/mainawycliffe/kamanda/actions?query=workflow%3A%22Go+Linting%22)
+[![](https://github.com/mainawycliffe/kamanda/workflows/Go%20Release/badge.svg)](https://github.com/mainawycliffe/kamanda/actions?query=workflow%3A%22Go+Release%22)
+[![](https://github.com/mainawycliffe/kamanda/workflows/npm%20publish/badge.svg)](https://github.com/mainawycliffe/kamanda/actions?query=workflow%3A%22npm+publish%22)
 
 This tool is meant to provide additional functionality not provided by Firebase
 CLI such as Managing Users of your Projects, Exporting and Importing of Cloud
