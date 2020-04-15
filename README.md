@@ -1,5 +1,7 @@
 # Kamanda - A Firebase CLI Companion Tool
 
+![npm](https://img.shields.io/npm/v/kamanda)
+
 This tool is meant to provide additional functionality not provided by Firebase
 CLI such as Managing Users of your Projects, Exporting and Importing of Cloud
 Firestore Data.
