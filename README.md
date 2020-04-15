@@ -1,6 +1,6 @@
 # Kamanda - A Firebase CLI Companion Tool
 
-![npm](https://img.shields.io/npm/v/kamanda)
+[![npm](https://img.shields.io/npm/v/kamanda)](https://www.npmjs.com/package/kamanda)
 [![](https://img.shields.io/github/release/mainawycliffe/kamanda.svg)](https://github.com/mainawycliffe/kamanda/releases/latest)
 
 
