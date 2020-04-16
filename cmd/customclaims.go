@@ -13,7 +13,8 @@ import (
 var customclaimsCmd = &cobra.Command{
 	Use:     "customClaims",
 	Aliases: []string{"claims", "custom-claims", "cc"},
-	Short:   "Add custom claims to firebase user or users",
+	Short:   "Add custom claims to an existing firebase user or users through their UIDs",
+	Example: `kamanda auth custom-claims [uid1] [uid2] --customClaims "key1:value1" --customClaims "key2:value2"`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// args = list of uids
 		if len(args) == 0 {
