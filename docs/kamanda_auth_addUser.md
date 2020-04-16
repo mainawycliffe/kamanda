@@ -38,7 +38,7 @@ kamanda auth addUser --email email@example.com --password 1234 --custom-claims "
 
 ```
       --config string    config file (default is $HOME/.kamanda/config.json)
-  -o, --output string    A file where data from firebase will be saved.
+  -o, --output string    The format in which data will be outputted in [text, json, yaml]
   -P, --project string   The firebase project to use (default "default")
       --token string     firebase token to use for authentication
 ```
