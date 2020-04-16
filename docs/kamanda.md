@@ -25,7 +25,6 @@ which is always a trick preposition.
 
 ### SEE ALSO
 
-* [kamanda auth](kamanda_auth.md)	 - Perform Firebase Auth Operations
 * [kamanda docsGen](kamanda_docsGen.md)	 - Generate Kamanda Documentation
 * [kamanda login](kamanda_login.md)	 - Log kamanda into firebase
 * [kamanda login:ci](kamanda_login:ci.md)	 - generate an access token for use in non-interactive environments

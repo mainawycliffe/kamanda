@@ -6,8 +6,9 @@ import (
 
 // authCmd represents the auth command
 var authCmd = &cobra.Command{
-	Use:   "auth",
-	Short: "Perform Firebase Auth Operations",
+	Use:    "auth",
+	Short:  "Perform Firebase Auth Operations",
+	Hidden: true,
 }
 
 func init() {
