@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"os"
 
@@ -10,7 +9,6 @@ import (
 	"github.com/mainawycliffe/kamanda/utils"
 	"github.com/mainawycliffe/kamanda/views"
 	"github.com/spf13/cobra"
-	"gopkg.in/yaml.v2"
 )
 
 // listUsersCmd represents the listUsers command
@@ -38,26 +36,18 @@ var listUsersCmd = &cobra.Command{
 			utils.StdOutError(os.Stderr, "Error! %s", err.Error())
 			os.Exit(1)
 		}
-		if output == "json" {
-			json, err := json.Marshal(getUsers)
-			if err != nil {
-				utils.StdOutError(os.Stderr, "Error marsalling json: %s", err.Error())
-				os.Exit(1)
-			}
-			fmt.Printf("%s\n", json)
-			os.Exit(0)
+		formatedUsers, err := utils.FormatResults(getUsers, output)
+		if err != nil && err.Error() != "Unknown Format" {
+			utils.StdOutError(os.Stderr, "%s\n", err.Error())
+			os.Exit(1)
 		}
-		if output == "yaml" {
-			yaml, err := yaml.Marshal(getUsers)
-			if err != nil {
-				utils.StdOutError(os.Stderr, "Error marsalling yaml: %s", err.Error())
-				os.Exit(1)
-			}
-			fmt.Printf("%s\n", yaml)
+		if formatedUsers != nil {
+			fmt.Printf("%s\n", formatedUsers)
 			os.Exit(0)
 		}
 		// draw table
 		views.ViewUsersTable(getUsers.Users, getUsers.NextPageToken)
+		os.Exit(0)
 	},
 }
 
