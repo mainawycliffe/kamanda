@@ -1,0 +1,16 @@
+*
+!*/
+!*.*
+
+--debug=localhost
+.vscode
+.env
+/.firebaserc
+credentials.json
+credentials*
+*cover*
+testdata
+node_modules
+yarn.lock
+package-lock.json
+*.go
