@@ -20,6 +20,7 @@
     "Authentication",
     "Firestore"
   ],
+  "preferGlobal": true,
   "author": "Maina Wycliffe",
   "license": "MIT",
   "bugs": {
