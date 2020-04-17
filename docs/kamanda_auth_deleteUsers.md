@@ -10,6 +10,12 @@ Delete multiple Firebase Auth User by their UID
 kamanda auth deleteUsers [flags]
 ```
 
+### Examples
+
+```
+kamanda auth delete [uid1] [uid2] [uid3]
+```
+
 ### Options
 
 ```
