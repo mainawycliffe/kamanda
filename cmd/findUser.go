@@ -48,12 +48,10 @@ To find user by email or by phone use "find by-email" or "find by-phone"`,
 				utils.StdOutError(os.Stderr, "Error \t %s \t %s", uid, err.Error())
 				continue
 			}
-			//@todo something with the output
 			users = append(users, &fAuth.ExportedUserRecord{
 				UserRecord: user,
 			})
 		}
-
 		formatedUsers, err := utils.FormatResults(users, output)
 		if err != nil && err.Error() != "Unknown Format" {
 			utils.StdOutError(os.Stderr, "%s\n", err.Error())
