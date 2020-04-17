@@ -11,8 +11,19 @@ import (
 	"time"
 
 	"github.com/logrusorgru/aurora"
+	"github.com/mainawycliffe/kamanda/configs"
+	"github.com/spf13/viper"
 	"gopkg.in/yaml.v2"
 )
+
+// IsUserLoggedIn checks whether a firebase refresh token is set in the configurations
+func IsUserLoggedIn() bool {
+	if viper.IsSet(configs.FirebaseRefreshTokenViperConfigKey) && viper.GetString(configs.FirebaseLoggedInUserEmailViperConfigKey) != "" {
+		// todo: probably check the format of the token to ensure its correct
+		return true
+	}
+	return false
+}
 
 // ParseStringToActualValue takes a string and converts the string the actual
 // type of the string i.e. "true" => true

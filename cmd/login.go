@@ -14,8 +14,11 @@ import (
 var loginCmd = &cobra.Command{
 	Use:   "login",
 	Short: "Log kamanda into firebase",
+	Long: `This allows Kamanda to administer your Firebase Project. 
+You can use --no-localhost flag if you are on environment without a browser.`,
+	Example: `kamanda login`,
 	Run: func(cmd *cobra.Command, args []string) {
-		if viper.IsSet(configs.FirebaseRefreshTokenViperConfigKey) {
+		if utils.IsUserLoggedIn() {
 			email := viper.GetString(configs.FirebaseLoggedInUserEmailViperConfigKey)
 			utils.StdOutSuccess(os.Stdout, "Already logged in as %s\n", email)
 			os.Exit(1)
