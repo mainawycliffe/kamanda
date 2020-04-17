@@ -1,13 +1,23 @@
 ## kamanda auth users
 
-Get a list of users in firebase auth.
+Fetch and display a list of users in firebase auth.
 
 ### Synopsis
 
-Get a list of users in firebase auth.
+This fetches users on Firebase Auth and either outputs it in either table, json or yaml format. 
+	
+In cases where there are more than 500 users, you will also get a nextPageToken, that you can use to fetch more users.
 
 ```
 kamanda auth users [flags]
+```
+
+### Examples
+
+```
+kamanda auth users
+kamanda auth users -o json
+kamanda auth users -output yaml
 ```
 
 ### Options

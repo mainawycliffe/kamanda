@@ -14,8 +14,14 @@ import (
 // listUsersCmd represents the listUsers command
 var listUsersCmd = &cobra.Command{
 	Use:     "users",
-	Aliases: []string{"list", "listUsers"},
-	Short:   "Get a list of users in firebase auth.",
+	Aliases: []string{"list", "listUsers", "list-users"},
+	Short:   "Fetch and display a list of users in firebase auth.",
+	Long: `This fetches users on Firebase Auth and either outputs it in either table, json or yaml format. 
+	
+In cases where there are more than 500 users, you will also get a nextPageToken, that you can use to fetch more users.`,
+	Example: `kamanda auth users
+kamanda auth users -o json
+kamanda auth users -output yaml`,
 	Run: func(cmd *cobra.Command, args []string) {
 		output, err := cmd.Flags().GetString("output")
 		if err != nil {

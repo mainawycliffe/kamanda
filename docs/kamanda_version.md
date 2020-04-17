@@ -13,7 +13,8 @@ kamanda version [flags]
 ### Examples
 
 ```
-kamanda version or kamanda version -o json
+kamanda version
+kamanda version -o json
 ```
 
 ### Options
