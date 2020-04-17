@@ -33,18 +33,11 @@ func GetUser(ctx context.Context, query string, criteria FindUserCriteria) (*aut
 	if err != nil {
 		return nil, fmt.Errorf("Error authenticating firebase account: %w", err)
 	}
-	var user *auth.UserRecord
-	var getUserErr error
-	switch criteria {
-	case ByUserEmailCriteria:
-		user, getUserErr = client.GetUserByEmail(ctx, query)
-	case ByUserPhoneCriteria:
-		user, getUserErr = client.GetUserByPhoneNumber(ctx, query)
-	default: // by UID
-		user, getUserErr = client.GetUser(ctx, query)
+	if criteria == ByUserEmailCriteria {
+		return client.GetUserByEmail(ctx, query)
 	}
-	if getUserErr != nil {
-		return nil, firebase.NewError(getUserErr)
+	if criteria == ByUserPhoneCriteria {
+		return client.GetUserByPhoneNumber(ctx, query)
 	}
-	return user, nil
+	return client.GetUser(ctx, query)
 }
