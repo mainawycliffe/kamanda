@@ -13,8 +13,9 @@ import (
 // byEmailCmd represents the byEmail command
 var byEmailCmd = &cobra.Command{
 	Use:     "byEmail",
-	Aliases: []string{"email"},
-	Short:   "find a user by email address",
+	Aliases: []string{"email", "by-email"},
+	Short:   "Find a Firebase Auth user by email address",
+	Example: `kamanda auth find by-email email@example.com`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// args = list of UIDs
 		if len(args) == 0 {

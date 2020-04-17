@@ -14,7 +14,10 @@ import (
 var findUserCmd = &cobra.Command{
 	Use:     "find",
 	Aliases: []string{"findUser"},
-	Short:   "Find a user by uid. To find user by email or by phone use `find byEmail` or `find byPhone`",
+	Short:   "Find a a Firebase Auth user by their Firebase UID.",
+	Long: `Find a a Firebase Auth user by their Firebase UID.
+To find user by email or by phone use "find by-email" or "find by-phone"`,
+	Example: `kamanda auth find [UID1] [UID2]`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// args = list of uids
 		if len(args) == 0 {

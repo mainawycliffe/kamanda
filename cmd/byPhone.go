@@ -13,8 +13,9 @@ import (
 // byPhoneCmd represents the byPhone command
 var byPhoneCmd = &cobra.Command{
 	Use:     "byPhone",
-	Aliases: []string{"phone"},
-	Short:   "find a user by phone number",
+	Aliases: []string{"phone", "by-phone"},
+	Short:   "find a Firebase Auth User by their phone number",
+	Example: `kamanda auth find by-phone +254712345678`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// args = list of phone numbers
 		if len(args) == 0 {
