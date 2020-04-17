@@ -14,7 +14,11 @@
   },
   "keywords": [
     "Firebase",
-    "Kamanda"
+    "Kamanda",
+    "Firebase CLI",
+    "Firebase Auth",
+    "Authentication",
+    "Firestore"
   ],
   "author": "Maina Wycliffe",
   "license": "MIT",
