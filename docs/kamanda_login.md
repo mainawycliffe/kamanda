@@ -4,10 +4,17 @@ Log kamanda into firebase
 
 ### Synopsis
 
-Log kamanda into firebase
+This allows Kamanda to administer your Firebase Project. 
+You can use --no-localhost flag if you are on environment without a browser.
 
 ```
 kamanda login [flags]
+```
+
+### Examples
+
+```
+kamanda login
 ```
 
 ### Options

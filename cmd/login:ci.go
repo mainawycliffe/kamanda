@@ -10,8 +10,9 @@ import (
 
 // loginCICmd represents the login:ci command
 var loginCICmd = &cobra.Command{
-	Use:   "login:ci",
-	Short: "generate an access token for use in non-interactive environments",
+	Use:     "login:ci",
+	Short:   "generate an access token for use in non-interactive environments",
+	Example: "kamanda login:ci",
 	Run: func(cmd *cobra.Command, args []string) {
 		noLocalhostFlag, _ := cmd.Flags().GetBool("no-localhost")
 		if !noLocalhostFlag {

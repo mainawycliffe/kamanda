@@ -13,8 +13,9 @@ import (
 
 // logoutCmd represents the logout command
 var logoutCmd = &cobra.Command{
-	Use:   "logout",
-	Short: "Logout kamanda from Firebase",
+	Use:     "logout",
+	Short:   "Logout kamanda from Firebase",
+	Example: "kamanda logout",
 	Run: func(cmd *cobra.Command, args []string) {
 		email := viper.GetString(configs.FirebaseLoggedInUserEmailViperConfigKey)
 		if !viper.IsSet(configs.FirebaseRefreshTokenViperConfigKey) {

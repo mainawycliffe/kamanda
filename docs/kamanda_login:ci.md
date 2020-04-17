@@ -10,6 +10,12 @@ generate an access token for use in non-interactive environments
 kamanda login:ci [flags]
 ```
 
+### Examples
+
+```
+kamanda login:ci
+```
+
 ### Options
 
 ```

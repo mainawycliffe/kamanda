@@ -10,6 +10,12 @@ Version will output the current build information
 kamanda version [flags]
 ```
 
+### Examples
+
+```
+kamanda version or kamanda version -o json
+```
+
 ### Options
 
 ```

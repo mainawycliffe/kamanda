@@ -10,6 +10,12 @@ Logout kamanda from Firebase
 kamanda logout [flags]
 ```
 
+### Examples
+
+```
+kamanda logout
+```
+
 ### Options
 
 ```

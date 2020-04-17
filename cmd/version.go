@@ -24,6 +24,7 @@ var versionCmd = &cobra.Command{
 	Use:     "version",
 	Aliases: []string{"v"},
 	Short:   "Version will output the current build information",
+	Example: "kamanda version or kamanda version -o json",
 	Run: func(cmd *cobra.Command, args []string) {
 		output, err := cmd.Flags().GetString("output")
 		if err != nil {
