@@ -1,6 +1,6 @@
 ---
 name: Support or Question
-about: Describe this issue template's purpose here.
+about: Ask a question or get support for any issue you facing
 title: ''
 labels: question
 assignees: ''
