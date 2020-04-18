@@ -59,3 +59,20 @@ func ViewUsersTable(users []*auth.ExportedUserRecord, nextPageToken string) {
 		os.Exit(1)
 	}
 }
+
+type TableUI interface {
+	AddLine(args ...interface{})
+	AddHeader(args ...interface{})
+	Print()
+}
+
+// SimpleTable returns a simple no interactable table to be printed to the terminal
+func SimpleTableList(t TableUI, headers []interface{}, rows ...[]interface{}) TableUI {
+	if headers != nil {
+		t.AddHeader(headers...)
+	}
+	for _, v := range rows {
+		t.AddLine(v...)
+	}
+	return t
+}
