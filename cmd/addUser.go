@@ -2,10 +2,13 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 	"os"
 
+	"github.com/cheynewallace/tabby"
 	"github.com/mainawycliffe/kamanda/firebase/auth"
 	"github.com/mainawycliffe/kamanda/utils"
+	"github.com/mainawycliffe/kamanda/views"
 	"github.com/spf13/cobra"
 )
 
@@ -17,9 +20,17 @@ var addUserCmd = &cobra.Command{
 	Short:   "Add a new Firebase Email/Password user (Accepts Custom Claims)",
 	Long: `Creates a new Firebase User (Email/Password). Both the Email and the Password are required. 
 
-You can also add custom claims using --custom-claims="key:value" flag.
-	`,
+You can also add custom claims using --custom-claims="key:value" flag.`,
 	Run: func(cmd *cobra.Command, args []string) {
+		output, err := cmd.Flags().GetString("output")
+		if err != nil {
+			utils.StdOutError(os.Stderr, "Error reading output: %s", err.Error())
+			os.Exit(1)
+		}
+		if output != "json" && output != "yaml" && output != "" {
+			utils.StdOutError(os.Stderr, "Unsupported output!")
+			os.Exit(1)
+		}
 		UID, _ := cmd.Flags().GetString("uid")
 		email, _ := cmd.Flags().GetString("email")
 		password, _ := cmd.Flags().GetString("password")
@@ -44,17 +55,35 @@ You can also add custom claims using --custom-claims="key:value" flag.
 			utils.StdOutError(os.Stderr, "%s\n", err.Error())
 			os.Exit(1)
 		}
-		utils.StdOutSuccess(os.Stdout, "✔✔ user added - uid: %s email: %s\n", userRecord.UID, userRecord.Email)
 		if len(customClaimsInput) == 0 {
-			os.Exit(0)
+			customClaims := utils.ProcessCustomClaimInput(customClaimsInput)
+			err = auth.AddCustomClaimToFirebaseUser(context.Background(), userRecord.UID, customClaims)
+			if err != nil {
+				utils.StdOutError(os.Stderr, "%s\n", err.Error())
+				os.Exit(1)
+			}
 		}
-		customClaims := utils.ProcessCustomClaimInput(customClaimsInput)
-		err = auth.AddCustomClaimToFirebaseUser(context.Background(), userRecord.UID, customClaims)
-		if err != nil {
+		formatedUsers, err := utils.FormatResults(userRecord, output)
+		if err != nil && err.Error() != "Unknown Format" {
 			utils.StdOutError(os.Stderr, "%s\n", err.Error())
 			os.Exit(1)
 		}
-		utils.StdOutSuccess(os.Stdout, "✔✔ custom claims added\n")
+		if formatedUsers != nil {
+			fmt.Printf("%s\n", formatedUsers)
+			os.Exit(0)
+		}
+		// this is when no output is specified
+		utils.StdOutSuccess(os.Stdout, "The following users have been added successfully\n")
+		header := []interface{}{"UID", "Email", "Email Verified", "Display Name", "Phone", "Disabled"}
+		row := []interface{}{
+			userRecord.UID,
+			userRecord.Email,
+			userRecord.EmailVerified,
+			userRecord.DisplayName,
+			userRecord.PhoneNumber,
+			userRecord.Disabled,
+		}
+		views.SimpleTableList(tabby.New(), header, row).Print()
 		os.Exit(0)
 	},
 }
