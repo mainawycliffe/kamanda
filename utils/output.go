@@ -11,7 +11,7 @@ import (
 // FormatResults Takes any results and formats it in the requested way
 func FormatResults(results interface{}, format string) (output []byte, err error) {
 	if format == "json" {
-		json, err := json.Marshal(results)
+		json, err := json.MarshalIndent(results, "", "  ")
 		if err != nil {
 			return nil, fmt.Errorf("Error marsalling json: %s", err.Error())
 		}

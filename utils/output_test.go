@@ -17,6 +17,10 @@ func TestFormatResults(t *testing.T) {
 	yamlOutput := []byte(`age: 13
 name: Jane Doe
 `)
+	jsonOutput := []byte(`{
+  "age": 13,
+  "name": "Jane Doe"
+}`)
 	tests := []struct {
 		name       string
 		args       args
@@ -29,7 +33,7 @@ name: Jane Doe
 				results: results,
 				format:  "json",
 			},
-			wantOutput: []byte(`{"age":13,"name":"Jane Doe"}`),
+			wantOutput: jsonOutput,
 			wantErr:    false,
 		},
 		{
