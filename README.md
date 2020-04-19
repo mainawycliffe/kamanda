@@ -85,6 +85,22 @@ as soon as possible.
 
 > Kamanda is a fully open source project, no information is corrected at any time.
 
+### CI Environment
+
+If you are in CI environment, you can use the `--token` flag to pass the
+firebase refresh token without login in. You can acquire the refresh token by
+running `kamanda login:ci`.
+
+### Multiple Project Support
+
+Kamanda also support multiple Firebase project within the same workspace just
+like `firebase cli`. You can use the `--project` flag to pass either the project
+name or project alias you wish to execute the command on. If the flag is not
+specified, Kamanda uses the `default` project with the workspace. This is
+usually specified inside the `.firebaserc` file at the root of you workspace.
+Please note, Kamanda cannot be used to setup multiple projects, this can only be
+done using Firebase CLI.
+
 ## Features
 
 - Firebase Auth Users:

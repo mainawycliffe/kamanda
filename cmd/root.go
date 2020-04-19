@@ -23,8 +23,13 @@ const description = `Kamanda is a  Firebase CLI Tool extender and should be used
 Kamanda provides additional functionality currently not available to via the 
 Firebase CLI Tool such as User Management, Cloud Firestore Management etc from the CLI.
 
-For instance, it allows you to easily create users with custom tokens, 
-which is always a trick preposition.`
+For instance, it allows you to easily create users with custom tokens, which is always a trick preposition.
+
+You can use the "--token" flag to specify the firebase refresh token to use for your project and the 
+"--project" to specify the project or project alias to executes the commands on.
+
+The "--token" flag is ideal for a CI environment, where the firebase refresh token can be passed to the
+environment securely. You can get your refresh token by running "kamanda login:ci" or "firebase login:ci".`
 
 var cfgFile string
 
