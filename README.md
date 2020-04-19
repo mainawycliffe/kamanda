@@ -13,6 +13,20 @@ Firestore Data.
 
 > This is not meant to replace Firebase CLI but to compliment it.
 
+## Table of Content
+
+- [Why?](#why)
+- [Installation](#installation)
+  - [Using npm (Node Package Manager)](#using-npm-node-package-manager)
+  - [Executable Binaries](#executable-binaries)
+- [Usage](#usage)
+  - [CI Environment](#ci-environment)
+  - [Multiple Project Support](#multiple-project-support)
+- [Features](#features)
+- [Work in Progress](#work-in-progress)
+- [Contributors](#contributors)
+- [Roadmap](#roadmap)
+
 ## Why?
 
 Kamanda is meant to make you work as developer easier by providing with easier
