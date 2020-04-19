@@ -13,13 +13,14 @@ Firestore Data.
 
 > This is not meant to replace Firebase CLI but to compliment it.
 
-## Table of Content
+## Table of Content <!-- omit in toc -->
 
 - [Why?](#why)
 - [Installation](#installation)
   - [Using npm (Node Package Manager)](#using-npm-node-package-manager)
   - [Executable Binaries](#executable-binaries)
 - [Usage](#usage)
+  - [Documentation](#documentation)
   - [CI Environment](#ci-environment)
   - [Multiple Project Support](#multiple-project-support)
 - [Features](#features)
@@ -99,6 +100,10 @@ as soon as possible.
 
 > Kamanda is a fully open source project, no information is corrected at any time.
 
+### Documentation
+
+Documentation for this project can be found [here](docs/kamanda.md).
+
 ### CI Environment
 
 If you are in CI environment, you can use the `--token` flag to pass the
@@ -124,16 +129,6 @@ done using Firebase CLI.
   - Add Custom Claims to a User Account
   - Add User by Bulk using a JSON/Yaml File
   - List Users
-
-Documentation will come soon.
-
-An example of viewing and adding users:
-
-![Views Users](demos/userslist.gif)
-
-A demo for adding custom claims:
-
-![Add Custom Claims](demos/customClaims.gif)
 
 ## Work in Progress
 
