@@ -32,12 +32,12 @@ kamanda auth users -output yaml`,
 			utils.StdOutError(os.Stderr, "Unsupported output!")
 			os.Exit(1)
 		}
-		token, err := cmd.Flags().GetString("nextPageToken")
+		nextPageToken, err := cmd.Flags().GetString("nextPageToken")
 		if err != nil {
 			utils.StdOutError(os.Stderr, "Error reading nextPageToken: %s", err.Error())
 			os.Exit(1)
 		}
-		getUsers, err := auth.ListUsers(context.Background(), 0, token)
+		getUsers, err := auth.ListUsers(context.Background(), 0, nextPageToken)
 		if err != nil {
 			utils.StdOutError(os.Stderr, "Error! %s", err.Error())
 			os.Exit(1)
