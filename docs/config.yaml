@@ -1,3 +1,4 @@
-baseURL: "http://example.org/"
+baseURL: "https://kamanda.dev/"
 languageCode: "en-us"
-title: "Kamanda Firebase CLI"
+title: "Kamanda Firebase CLI Companion Tool"
+theme: "kamanda"
