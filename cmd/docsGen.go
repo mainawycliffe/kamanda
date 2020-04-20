@@ -36,7 +36,10 @@ var docsGenCmd = &cobra.Command{
 			base := strings.TrimSuffix(name, path.Ext(name))
 			return "/commands/" + strings.ToLower(base) + "/"
 		}
-		err := doc.GenMarkdownTreeCustom(rootCmd, "./docs/content/commands", filePrepender, linkHandler)
+		// Probably Rethink How This Works A Little Bit
+		// Instead of Starting From Root, Probably Individual Categories is much
+		// nice i.e. start with auth, then firestore, then storage etc
+		err := doc.GenMarkdownTreeCustom(authCmd, "./docs/content/auth", filePrepender, linkHandler)
 		if err != nil {
 			log.Fatal(err)
 		}
