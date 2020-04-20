@@ -1,0 +1,9 @@
+{
+  "name": "kamanda",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "bulma": "^0.8.2"
+  }
+}
