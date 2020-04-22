@@ -21,7 +21,6 @@ import (
 	"github.com/pkg/browser"
 	"github.com/spf13/viper"
 	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/google"
 )
 
 const (
@@ -100,7 +99,11 @@ func getGoogleOAuthConfig(port string) *oauth2.Config {
 		ClientID:     viper.GetString(configs.GoogleOAuthClientIDConfigKey),
 		ClientSecret: viper.GetString(configs.GoogleOAuthClientSecretConfigKey),
 		Scopes:       googleOAuthScopes,
-		Endpoint:     google.Endpoint,
+		Endpoint: oauth2.Endpoint{
+			AuthURL:   "https://accounts.google.com/o/oauth2/auth",
+			TokenURL:  "https://oauth2.googleapis.com/token",
+			AuthStyle: oauth2.AuthStyleInParams,
+		},
 	}
 }
 
