@@ -6,6 +6,7 @@ import (
 	"os"
 
 	fAuth "firebase.google.com/go/auth"
+	"github.com/cheynewallace/tabby"
 	"github.com/mainawycliffe/kamanda/firebase"
 	"github.com/mainawycliffe/kamanda/firebase/auth"
 	"github.com/mainawycliffe/kamanda/utils"
@@ -27,6 +28,11 @@ var byPhoneCmd = &cobra.Command{
 		}
 		if output != "json" && output != "yaml" && output != "" {
 			utils.StdOutError(os.Stderr, "Unsupported output!")
+			os.Exit(1)
+		}
+		minimalUI, err := cmd.Flags().GetBool("minimalUI")
+		if err != nil {
+			utils.StdOutError(os.Stderr, "Error reading minimal ui flag: %s", err.Error())
 			os.Exit(1)
 		}
 		// args = list of uids
@@ -65,7 +71,29 @@ var byPhoneCmd = &cobra.Command{
 			os.Exit(0)
 		}
 		// draw table
-		views.ViewUsersTable(users, "")
+		if !minimalUI {
+			// draw table
+			views.ViewUsersTable(users, "")
+			os.Exit(0)
+		}
+		// show minimal ui here
+		header := []interface{}{"UID", "Email", "Display Name", "Provider", "Last Login", "Created On"}
+		rows := make([][]interface{}, len(users))
+		for index, user := range users {
+			dateCreated := utils.FormatTimestampToDate(user.UserMetadata.CreationTimestamp, "02/01/2006 15:04:05 MST")
+			lastModified := utils.FormatTimestampToDate(user.UserMetadata.LastLogInTimestamp, "02/01/2006 15:04:05 MST")
+			row := []interface{}{
+				user.UID,
+				user.Email,
+				user.DisplayName,
+				user.ProviderID,
+
+				lastModified,
+				dateCreated,
+			}
+			rows[index] = row
+		}
+		views.SimpleTableList(tabby.New(), header, rows...).Print()
 		os.Exit(0)
 	},
 }
