@@ -15,7 +15,7 @@ import (
 func ViewUsersTable(users []*auth.ExportedUserRecord, nextPageToken string) {
 	app := tview.NewApplication()
 	table := tview.NewTable()
-	tableHeaderColumnNames := []string{"#", "UID", "Email", "Email Verified", "Name", "Phone Number", "Provider"}
+	tableHeaderColumnNames := []string{"#", "UID", "Email", "Name", "Phone Number", "Provider", "Last Login", "Date Created"}
 	for index, value := range tableHeaderColumnNames {
 		tableCell := tview.NewTableCell(value).
 			SetTextColor(tcell.ColorBlue).
@@ -25,17 +25,22 @@ func ViewUsersTable(users []*auth.ExportedUserRecord, nextPageToken string) {
 		table.SetCell(0, index, tableCell)
 	}
 	for index, user := range users {
-		isEmailVerified := "Yes"
-		if !user.EmailVerified {
-			isEmailVerified = "No"
+		isEmailVerified := ""
+		if user.EmailVerified {
+			isEmailVerified = "✔"
 		}
+		// get the dates
+		dateCreated := utils.FormatTimestampToDate(user.UserMetadata.CreationTimestamp, "02/01/2006 15:04:05 MST")
+		lastLoginDate := utils.FormatTimestampToDate(user.UserMetadata.LastLogInTimestamp, "02/01/2006 15:04:05 MST")
+		// add everything to the table
 		table.SetCell(index+1, 0, tview.NewTableCell(fmt.Sprintf("%d", index+1))).SetSelectable(false, false)
-		table.SetCell(index+1, 1, tview.NewTableCell(user.UID).SetExpansion(3)).SetSelectable(true, false)
-		table.SetCell(index+1, 2, tview.NewTableCell(user.Email).SetExpansion(2)).SetSelectable(true, false)
-		table.SetCell(index+1, 3, tview.NewTableCell(isEmailVerified).SetExpansion(1)).SetSelectable(true, false)
-		table.SetCell(index+1, 4, tview.NewTableCell(user.DisplayName).SetExpansion(3)).SetSelectable(true, false)
-		table.SetCell(index+1, 5, tview.NewTableCell(user.PhoneNumber).SetExpansion(1)).SetSelectable(true, false)
-		table.SetCell(index+1, 6, tview.NewTableCell(strings.ToUpper(user.ProviderID)).SetExpansion(1)).SetSelectable(true, false)
+		table.SetCell(index+1, 1, tview.NewTableCell(user.UID).SetExpansion(2)).SetSelectable(true, false)
+		table.SetCell(index+1, 2, tview.NewTableCell(fmt.Sprintf("%s %s", user.Email, isEmailVerified)).SetExpansion(2)).SetSelectable(true, false)
+		table.SetCell(index+1, 3, tview.NewTableCell(user.DisplayName).SetExpansion(2)).SetSelectable(true, false)
+		table.SetCell(index+1, 4, tview.NewTableCell(user.PhoneNumber).SetExpansion(1)).SetSelectable(true, false)
+		table.SetCell(index+1, 5, tview.NewTableCell(strings.ToUpper(user.ProviderID)).SetExpansion(1)).SetSelectable(true, false)
+		table.SetCell(index+1, 6, tview.NewTableCell(lastLoginDate).SetExpansion(1)).SetSelectable(true, false)
+		table.SetCell(index+1, 7, tview.NewTableCell(dateCreated).SetExpansion(1)).SetSelectable(true, false)
 	}
 	table.Select(1, 0).SetFixed(1, 1).SetDoneFunc(func(key tcell.Key) {
 		// exit when the following keys ae pressed
