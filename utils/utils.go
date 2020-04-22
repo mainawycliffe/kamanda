@@ -16,6 +16,14 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+// FormatTimestampToDate takes in a timestamp in milliseconds since epoch and
+// converts to a date format
+func FormatTimestampToDate(timestamp int64, format string) string {
+	nanoSeconds := timestamp * int64(time.Millisecond)
+	tm := time.Unix(0, nanoSeconds)
+	return tm.Format(format)
+}
+
 // IsUserLoggedIn checks whether a firebase refresh token is set in the configurations
 func IsUserLoggedIn() bool {
 	if viper.IsSet(configs.FirebaseRefreshTokenViperConfigKey) && viper.GetString(configs.FirebaseLoggedInUserEmailViperConfigKey) != "" {

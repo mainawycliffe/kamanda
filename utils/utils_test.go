@@ -211,3 +211,47 @@ func TestUnmarshalFormatFile(t *testing.T) {
 		})
 	}
 }
+
+func TestFormatTimestampToDate(t *testing.T) {
+	type args struct {
+		timestamp int64
+		format    string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "Test Date Format is Correct",
+			args: args{
+				timestamp: int64(1587541614335),
+				format:    "02/01/2006",
+			},
+			want: "22/04/2020",
+		},
+		{
+			name: "Test Date Time Format is Correct",
+			args: args{
+				timestamp: int64(1587541614335),
+				format:    "02/01/2006 15:04:05 MST",
+			},
+			want: "22/04/2020 10:46:54 EAT",
+		},
+		{
+			name: "Test Time Format is Correct",
+			args: args{
+				timestamp: int64(1587541614335),
+				format:    "15:04:05 MST",
+			},
+			want: "10:46:54 EAT",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := FormatTimestampToDate(tt.args.timestamp, tt.args.format); got != tt.want {
+				t.Errorf("FormatTimestampToDate() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
