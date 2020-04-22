@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/cheynewallace/tabby"
 	"github.com/mainawycliffe/kamanda/firebase/auth"
 	"github.com/mainawycliffe/kamanda/utils"
 	"github.com/mainawycliffe/kamanda/views"
@@ -37,6 +38,11 @@ kamanda auth users -output yaml`,
 			utils.StdOutError(os.Stderr, "Error reading nextPageToken: %s", err.Error())
 			os.Exit(1)
 		}
+		minimalUI, err := cmd.Flags().GetBool("minimalUI")
+		if err != nil {
+			utils.StdOutError(os.Stderr, "Error reading minimal ui flag: %s", err.Error())
+			os.Exit(1)
+		}
 		getUsers, err := auth.ListUsers(context.Background(), 0, nextPageToken)
 		if err != nil {
 			utils.StdOutError(os.Stderr, "Error! %s", err.Error())
@@ -51,8 +57,29 @@ kamanda auth users -output yaml`,
 			fmt.Printf("%s\n", formatedUsers)
 			os.Exit(0)
 		}
-		// draw table
-		views.ViewUsersTable(getUsers.Users, getUsers.NextPageToken)
+		if !minimalUI {
+			// draw table
+			views.ViewUsersTable(getUsers.Users, getUsers.NextPageToken)
+			os.Exit(0)
+		}
+		// show minimal ui here
+		header := []interface{}{"UID", "Email", "Display Name", "Provider", "Last Login", "Created On"}
+		rows := make([][]interface{}, len(getUsers.Users))
+		for index, user := range getUsers.Users {
+			dateCreated := utils.FormatTimestampToDate(user.UserMetadata.CreationTimestamp, "02/01/2006 15:04:05 MST")
+			lastModified := utils.FormatTimestampToDate(user.UserMetadata.LastLogInTimestamp, "02/01/2006 15:04:05 MST")
+			row := []interface{}{
+				user.UID,
+				user.Email,
+				user.DisplayName,
+				user.ProviderID,
+
+				lastModified,
+				dateCreated,
+			}
+			rows[index] = row
+		}
+		views.SimpleTableList(tabby.New(), header, rows...).Print()
 		os.Exit(0)
 	},
 }
@@ -60,4 +87,5 @@ kamanda auth users -output yaml`,
 func init() {
 	authCmd.AddCommand(listUsersCmd)
 	listUsersCmd.Flags().StringP("nextPageToken", "n", "", "Fetch next set of results")
+	listUsersCmd.Flags().BoolP("minimalUI", "m", false, "Show a minimal ui")
 }
