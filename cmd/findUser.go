@@ -32,7 +32,7 @@ To find user by email or by phone use "find by-email" or "find by-phone"`,
 			utils.StdOutError(os.Stderr, "Unsupported output!")
 			os.Exit(1)
 		}
-		minimalUI, err := cmd.Flags().GetBool("minimalUI")
+		minimalUI, err := cmd.Flags().GetBool("minimal-view")
 		if err != nil {
 			utils.StdOutError(os.Stderr, "Error reading minimal ui flag: %s", err.Error())
 			os.Exit(1)
@@ -97,5 +97,5 @@ To find user by email or by phone use "find by-email" or "find by-phone"`,
 func init() {
 	authCmd.AddCommand(findUserCmd)
 	findUserCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	listUsersCmd.Flags().BoolP("minimalUI", "m", false, "Show a minimal ui")
+	findUserCmd.Flags().BoolP("minimal-view", "m", false, "Show a minimal ui")
 }

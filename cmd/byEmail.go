@@ -30,7 +30,7 @@ var byEmailCmd = &cobra.Command{
 			utils.StdOutError(os.Stderr, "Unsupported output!")
 			os.Exit(1)
 		}
-		minimalUI, err := cmd.Flags().GetBool("minimalUI")
+		minimalUI, err := cmd.Flags().GetBool("minimal-view")
 		if err != nil {
 			utils.StdOutError(os.Stderr, "Error reading minimal ui flag: %s", err.Error())
 			os.Exit(1)
