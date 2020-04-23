@@ -2,11 +2,57 @@ package utils
 
 import (
 	"bytes"
+	"os"
 	"reflect"
 	"testing"
 
 	"github.com/mainawycliffe/kamanda/firebase/auth"
 )
+
+func TestFormatTimestampToDate(t *testing.T) {
+	os.Setenv("TZ", "UTC")
+	type args struct {
+		timestamp int64
+		format    string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "Test Date Format is Correct",
+			args: args{
+				timestamp: int64(1587541614335),
+				format:    "02/01/2006",
+			},
+			want: "22/04/2020",
+		},
+		{
+			name: "Test Date Time Format is Correct",
+			args: args{
+				timestamp: int64(1587541614335),
+				format:    "02/01/2006 15:04:05 MST",
+			},
+			want: "22/04/2020 07:46:54 UTC",
+		},
+		{
+			name: "Test Time Format is Correct",
+			args: args{
+				timestamp: int64(1587541614335),
+				format:    "15:04:05 MST",
+			},
+			want: "07:46:54 UTC",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := FormatTimestampToDate(tt.args.timestamp, tt.args.format); got != tt.want {
+				t.Errorf("FormatTimestampToDate() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
 
 func TestParseStringToActualValueType(t *testing.T) {
 	type args struct {
@@ -17,9 +63,27 @@ func TestParseStringToActualValueType(t *testing.T) {
 		args args
 		want interface{}
 	}{
-		{`Test \"true\" to true boolean conversion`, args{input: "true"}, true},
-		{`Test \"1\" to 1 int conversion`, args{input: "1"}, 1},
-		{`Test \"1.5\" to 1.5 int conversion`, args{input: "1.5"}, 1.5},
+		{
+			name: `Test \"true\" to true boolean conversion`,
+			args: args{
+				input: "true",
+			},
+			want: true,
+		},
+		{
+			name: `Test \"1\" to 1 int conversion`,
+			args: args{
+				input: "1",
+			},
+			want: 1,
+		},
+		{
+			name: `Test \"1.5\" to 1.5 int conversion`,
+			args: args{
+				input: "1.5",
+			},
+			want: 1.5,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -35,20 +99,104 @@ func TestPasswordGenerator(t *testing.T) {
 		passwordLength int
 	}
 	tests := []struct {
-		name string
-		args args
-		want int
+		name       string
+		args       args
+		wantLength int
 	}{
-		{"Generate an 8 Char Password", args{passwordLength: 8}, 8},
-		{"Generate an 10 Char Password", args{passwordLength: 10}, 10},
-		{"Generate an 12 Char Password", args{passwordLength: 12}, 12},
-		{"Generate an 16 Char Password", args{passwordLength: 16}, 16},
-		{"Generate an 100 Char Password", args{passwordLength: 100}, 100},
+		{
+			name: "Generate an 8 Char Password",
+			args: args{
+				passwordLength: 8,
+			},
+			wantLength: 8,
+		},
+		{
+			name: "Generate an 10 Char Password",
+			args: args{
+				passwordLength: 10,
+			},
+			wantLength: 10,
+		},
+		{
+			name: "Generate an 12 Char Password",
+			args: args{
+				passwordLength: 12,
+			},
+			wantLength: 12,
+		},
+		{
+			name: "Generate an 16 Char Password",
+			args: args{
+				passwordLength: 16,
+			},
+			wantLength: 16,
+		},
+		{
+			name: "Generate an 100 Char Password",
+			args: args{
+				passwordLength: 100,
+			},
+			wantLength: 100,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := PasswordGenerator(tt.args.passwordLength); len(got) != tt.want {
-				t.Errorf("PasswordGenerator() Length = %v, want %v", got, tt.want)
+			if got := PasswordGenerator(tt.args.passwordLength); len(got) != tt.wantLength {
+				t.Errorf("PasswordGenerator() Length = %v, want %v", got, tt.wantLength)
+			}
+		})
+	}
+}
+
+func TestPasswordGeneratorRandom(t *testing.T) {
+	type args struct {
+		passwordLength int
+	}
+	tests := []struct {
+		name       string
+		args       args
+		wantLength int
+	}{
+		{
+			name: "Generate an 8 Char Password",
+			args: args{
+				passwordLength: 8,
+			},
+			wantLength: 8,
+		},
+		{
+			name: "Generate an 10 Char Password",
+			args: args{
+				passwordLength: 10,
+			},
+			wantLength: 10,
+		},
+		{
+			name: "Generate an 12 Char Password",
+			args: args{
+				passwordLength: 12,
+			},
+			wantLength: 12,
+		},
+		{
+			name: "Generate an 16 Char Password",
+			args: args{
+				passwordLength: 16,
+			},
+			wantLength: 16,
+		},
+		{
+			name: "Generate an 100 Char Password",
+			args: args{
+				passwordLength: 100,
+			},
+			wantLength: 100,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := PasswordGenerator(tt.args.passwordLength); len(got) != tt.wantLength {
+				t.Errorf("PasswordGenerator() Length = %v, want %v", got, tt.wantLength)
 			}
 		})
 	}
@@ -63,10 +211,34 @@ func TestProcessCustomClaimInput(t *testing.T) {
 		args args
 		want map[string]interface{}
 	}{
-		{"Custom Claims Str to Interface 1 (String)", args{input: map[string]string{"hello": "world"}}, map[string]interface{}{"hello": "world"}},
-		{"Custom Claims Str to Interface 2 (Boolean)", args{input: map[string]string{"hello": "true"}}, map[string]interface{}{"hello": true}},
-		{"Custom Claims Str to Interface 3 (Int)", args{input: map[string]string{"hello": "1"}}, map[string]interface{}{"hello": 1}},
-		{"Custom Claims Str to Interface 4 (Float)", args{input: map[string]string{"hello": "1.23"}}, map[string]interface{}{"hello": 1.23}},
+		{
+			name: "Custom Claims Str to Interface 1 (String)",
+			args: args{
+				input: map[string]string{"hello": "world"},
+			},
+			want: map[string]interface{}{"hello": "world"},
+		},
+		{
+			name: "Custom Claims Str to Interface 2 (Boolean)",
+			args: args{
+				input: map[string]string{"hello": "true"},
+			},
+			want: map[string]interface{}{"hello": true},
+		},
+		{
+			name: "Custom Claims Str to Interface 3 (Int)",
+			args: args{
+				input: map[string]string{"hello": "1"},
+			},
+			want: map[string]interface{}{"hello": 1},
+		},
+		{
+			name: "Custom Claims Str to Interface 4 (Float)",
+			args: args{
+				input: map[string]string{"hello": "1.23"},
+			},
+			want: map[string]interface{}{"hello": 1.23},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -191,13 +363,76 @@ func TestUnmarshalFormatFile(t *testing.T) {
 		wantErr      bool
 		wantResponse []auth.NewUser
 	}{
-		{"Test with JSON File", args{path: "./../testdata/users.json", extension: "json", v: &test1Users}, false, testUserResponse},
-		{"Test with Yaml File", args{path: "./../testdata/users.yaml", extension: "yaml", v: &test2Users}, false, testUserResponse},
-		{"No file", args{path: "./../testdata/users1.yaml", extension: "yaml", v: &test2Users}, true, nil},
-		{"Unsupported Format", args{path: "./../testdata/users.csv", extension: "csv", v: &test2Users}, true, nil},
-		{"Test with Yaml File (Incorrect Response)", args{path: "./../testdata/users.yaml", extension: "yaml", v: &test2Users}, false, testUserWrongResponse},
-		{"Test with Wrong JSON File", args{path: "./../testdata/users.csv", extension: "json", v: &test1Users}, true, nil},
-		{"Test with Wrong Yaml File", args{path: "./../testdata/users.csv", extension: "yaml", v: &test2Users}, true, nil},
+		{
+			name: "Test with JSON File",
+			args: args{
+				path:      "./../testdata/users.json",
+				extension: "json",
+				v:         &test1Users,
+			},
+			wantErr:      false,
+			wantResponse: testUserResponse,
+		},
+		{
+			name: "Test with Yaml File",
+			args: args{
+				path:      "./../testdata/users.yaml",
+				extension: "yaml",
+				v:         &test2Users,
+			},
+			wantErr:      false,
+			wantResponse: testUserResponse,
+		},
+		{
+			name: "No file",
+			args: args{
+				path:      "./../testdata/users1.yaml",
+				extension: "yaml",
+				v:         &test2Users,
+			},
+			wantErr:      true,
+			wantResponse: nil,
+		},
+		{
+			name: "Unsupported Format",
+			args: args{
+				path:      "./../testdata/users.csv",
+				extension: "csv",
+				v:         &test2Users,
+			},
+			wantErr:      true,
+			wantResponse: nil,
+		},
+		{
+			name: "Test with Yaml File (Incorrect Response)",
+			args: args{
+				path:      "./../testdata/users.yaml",
+				extension: "yaml",
+				v:         &test2Users,
+			},
+			wantErr:      false,
+			wantResponse: testUserWrongResponse,
+		},
+		{
+			name: "Test with Wrong JSON File",
+			args: args{
+				path:      "./../testdata/users.csv",
+				extension: "json",
+				v:         &test1Users,
+			},
+			wantErr:      true,
+			wantResponse: nil,
+		},
+		{
+			name: "Test with Wrong Yaml File",
+			args: args{
+				path:      "./../testdata/users.csv",
+				extension: "yaml",
+				v:         &test2Users,
+			},
+			wantErr:      true,
+			wantResponse: nil,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
