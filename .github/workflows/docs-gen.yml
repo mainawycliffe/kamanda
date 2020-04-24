@@ -28,7 +28,4 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v4.1.5
         with:
           commit_message: Update Kamanda Documentation [CI]
-          commit_user_name: Kamanda Bot
-          commit_user_email: bot@kamanda.dev
-          commit_author: Kamanda Bot <bot@kamanda.dev>
         # in future, build and deploy the site
