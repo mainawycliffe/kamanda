@@ -11,14 +11,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const fmTemplate = `---
-date: %s
-title: "%s"
-slug: %s
-url: %s
----
-`
-
 // docsGenCmd represents the docsGen command
 var docsGenCmd = &cobra.Command{
 	Use:   "docsGen",
