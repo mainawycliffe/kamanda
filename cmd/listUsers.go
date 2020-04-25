@@ -38,7 +38,7 @@ kamanda auth users -output yaml`,
 			utils.StdOutError(os.Stderr, "Error reading nextPageToken: %s", err.Error())
 			os.Exit(1)
 		}
-		minimalUI, err := cmd.Flags().GetBool("minimalUI")
+		minimalUI, err := cmd.Flags().GetBool("minimal-view")
 		if err != nil {
 			utils.StdOutError(os.Stderr, "Error reading minimal ui flag: %s", err.Error())
 			os.Exit(1)
@@ -87,5 +87,5 @@ kamanda auth users -output yaml`,
 func init() {
 	authCmd.AddCommand(listUsersCmd)
 	listUsersCmd.Flags().StringP("nextPageToken", "n", "", "Fetch next set of results")
-	listUsersCmd.Flags().BoolP("minimalUI", "m", false, "Show a minimal ui")
+	listUsersCmd.Flags().BoolP("minimal-view", "m", false, "Show a minimal ui")
 }
