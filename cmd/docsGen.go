@@ -3,13 +3,12 @@ package cmd
 import (
 	"fmt"
 	"log"
+	"os"
 	"path"
-	"path/filepath"
 	"strings"
-	"time"
 
+	"github.com/mainawycliffe/kamanda/utils"
 	"github.com/spf13/cobra"
-	"github.com/spf13/cobra/doc"
 )
 
 const fmTemplate = `---
@@ -25,13 +24,7 @@ var docsGenCmd = &cobra.Command{
 	Use:   "docsGen",
 	Short: "Generate Kamanda Documentation",
 	Run: func(cmd *cobra.Command, args []string) {
-		filePrepender := func(filename string) string {
-			now := time.Now().Format(time.RFC3339)
-			name := filepath.Base(filename)
-			base := strings.TrimSuffix(name, path.Ext(name))
-			url := "/commands/" + strings.ToLower(base) + "/"
-			return fmt.Sprintf(fmTemplate, now, strings.Replace(base, "_", " ", -1), base, url)
-		}
+		filePrepender := utils.DocsFrontMatter
 		linkHandler := func(name string) string {
 			base := strings.TrimSuffix(name, path.Ext(name))
 			return "/commands/" + strings.ToLower(base) + "/"
@@ -39,9 +32,31 @@ var docsGenCmd = &cobra.Command{
 		// Probably Rethink How This Works A Little Bit
 		// Instead of Starting From Root, Probably Individual Categories is much
 		// nice i.e. start with auth, then firestore, then storage etc
-		err := doc.GenMarkdownTreeCustom(authCmd, "./docs/content/auth", filePrepender, linkHandler)
-		if err != nil {
-			log.Fatal(err)
+
+		baseCommands := []struct {
+			dir string
+			cmd *cobra.Command
+		}{
+			{"", versionCmd},
+			{"", loginCICmd},
+			{"", loginCmd},
+			{"", logoutCmd},
+			{"/auth", authCmd},
+		}
+
+		for _, v := range baseCommands {
+			dir := fmt.Sprintf("./docs/content/commands%s", v.dir)
+			if _, err := os.Stat(dir); os.IsNotExist(err) {
+				e := os.Mkdir(dir, os.ModePerm)
+				if e != nil {
+					utils.StdOutError(os.Stderr, "Error creating command directory: %s\n", e.Error())
+					os.Exit(1)
+				}
+			}
+			err := utils.GenMarkdownTreeCustom(v.cmd, dir, filePrepender, linkHandler)
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 	},
 }
