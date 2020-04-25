@@ -1,5 +1,4 @@
 ---
-date: 2020-04-25T23:17:07+03:00
 title: "kamanda version"
 slug: kamanda_version
 url: /commands/kamanda_version/

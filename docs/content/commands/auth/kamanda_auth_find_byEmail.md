@@ -1,5 +1,4 @@
 ---
-date: 2020-04-25T23:17:07+03:00
 title: "kamanda auth find byEmail"
 slug: kamanda_auth_find_byEmail
 url: /commands/kamanda_auth_find_byemail/

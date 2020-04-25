@@ -1,5 +1,4 @@
 ---
-date: 2020-04-25T23:17:07+03:00
 title: "kamanda auth find byPhone"
 slug: kamanda_auth_find_byPhone
 url: /commands/kamanda_auth_find_byphone/

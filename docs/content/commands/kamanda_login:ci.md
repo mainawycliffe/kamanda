@@ -1,5 +1,4 @@
 ---
-date: 2020-04-25T23:17:07+03:00
 title: "kamanda login:ci"
 slug: kamanda_login:ci
 url: /commands/kamanda_login:ci/
