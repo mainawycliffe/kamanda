@@ -1,0 +1,4 @@
+baseURL: "https://kamanda.dev/"
+languageCode: "en-us"
+title: "Kamanda Firebase CLI Companion Tool"
+theme: "kamanda"

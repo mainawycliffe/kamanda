@@ -13,4 +13,9 @@ testdata
 node_modules
 yarn.lock
 package-lock.json
-*.go
+*/**.go
+docs
+.github
+go.mod
+go.sum
+goreleaser.yml

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{ partial "head.html" . }}
+</head>
+
+<body>
+    <header class="header"> {{ partial "header.html" . }} </header>
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column">
+                    <h3 class="title is-3">Kamanda - Available Commands</h3>
+                    {{ range (where .Site.RegularPages.ByTitle "Section" "commands" ) }}
+                    <div class="columns is-multiline">
+                        <div class="column is-full">
+                            <h4 class="subtitle is-4">{{ .Title}}</h4>
+                        </div>
+                        <div class="column is-full">
+                            <p class="content is-medium"> {{ .Summary }} </p>
+                        </div>
+                        <div class="column is-full">
+                            <a class="button is-dark is-outline is-rounded" href="{{.Permalink}}">Learn More</a>
+                        </div>
+                    </div>
+                    {{ end }}
+                </div>
+            </div>
+        </div>
+    </section>
+    {{ partial "footer.html" . }}
+</body>
+
+</html>
