@@ -30,8 +30,8 @@ Firestore Data.
 
 ## Why?
 
-Kamanda is meant to make you work as developer easier by providing with easier
-and well built tools to make changes to your Firebase project quickly.
+Kamanda is meant to make your work as developer easier by providing with well
+built tools to help you manage your Firebase project quickly.
 
 For instance you want to create a new admin user for your Firebase App, you can
 use Kamanda to quickly add the user and attach the necessary custom claims. You
