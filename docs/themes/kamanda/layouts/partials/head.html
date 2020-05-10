@@ -1,4 +1,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kamanda - Firebase CLI Companion Tool</title>
+<title>{{ .Title }}</title>
+{{ if .IsPage }}
+<meta name="description" content="{{ .Summary }}" />
+<meta name="keywords" content="Kamanda, Firebase, Firebase CLI, Firebase Helper" />
+{{ else }}
+<meta name="description" content="Kamanda is meant to make your work as developer easier by providing
+with well built tools to manage your Firebase project quickly." />
+<meta name="keywords" content="Kamanda, Firebase, Firebase CLI, Firebase Helper" />
+{{ end }}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
