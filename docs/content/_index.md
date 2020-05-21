@@ -7,7 +7,7 @@
 [![](https://github.com/mainawycliffe/kamanda/workflows/Go%20Release/badge.svg)](https://github.com/mainawycliffe/kamanda/actions?query=workflow%3A%22Go+Release%22)
 [![](https://github.com/mainawycliffe/kamanda/workflows/npm%20publish/badge.svg)](https://github.com/mainawycliffe/kamanda/actions?query=workflow%3A%22npm+publish%22)
 
-Kamanda is an open source tool is meant to provide additional functionality not provided by Firebase
+Kamanda is an open source tool tool is meant to provide additional functionality not provided by Firebase
 CLI such as Managing Users of your Projects, Exporting and Importing of Cloud
 Firestore Data.
 
@@ -16,6 +16,8 @@ Firestore Data.
 ## Table of Content <!-- omit in toc -->
 
 - [Why?](#why)
+- [Terms of Use](#terms-of-use)
+- [Privacy Policy](#privacy-policy)
 - [Installation](#installation)
   - [Using npm (Node Package Manager)](#using-npm-node-package-manager)
   - [Executable Binaries](#executable-binaries)
@@ -41,6 +43,16 @@ functionality currently available for Firebase Auth.
 In future as Kamanda gains support for Firestore, it will give you can easy way
 to explore, export, import and manipulate your Firestore documents, right from
 the cloud without writing extra code.
+
+## Terms of Use
+
+Kamanda is an open source program provided under the permissive MIT License for both
+the source code and the executable.
+
+## Privacy Policy
+
+Kamanda is an open source program and doesn't collect any information from it's
+users.
 
 ## Installation
 
@@ -100,10 +112,6 @@ as soon as possible.
 
 > Kamanda is a fully open source project, no information is corrected at any time.
 
-### Documentation
-
-Documentation for this project can be found [here](https://kamanda.dev).
-
 ### CI Environment
 
 If you are in CI environment, you can use the `--token` flag to pass the
@@ -143,8 +151,9 @@ Contributions are always welcome.
 
 This is currently our roadmap, please feel free to request additions/changes.
 
-| Feature          | Progress |
-| ---------------- | -------- |
-| Firebase Auth    | ✔✔       |
-| Cloud Firestore  | 🔜        |
-| Firebase Storage | 🔜        |
+| Feature                               | Progress |
+| ------------------------------------- | -------- |
+| Firebase Auth                         | ✅        |
+| Cloud Functions Environment Variables | 🔜        |
+| Cloud Firestore                       | 🔜        |
+| Firebase Storage                      | 🔜        |

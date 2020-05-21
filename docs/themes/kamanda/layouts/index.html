@@ -10,21 +10,16 @@
     <section class="section">
         <div class="container">
             <div class="columns">
+                <div class="column is-two-thirds">
+                    <div class="content is-medium"> {{ .Content }} </div>
+                </div>
                 <div class="column">
-                    <h3 class="title is-3">Kamanda - Available Commands</h3>
-                    {{ range (where .Site.RegularPages.ByTitle "Section" "commands" ) }}
-                    <div class="columns is-multiline">
-                        <div class="column is-full">
-                            <h4 class="subtitle is-4">{{ .Title}}</h4>
-                        </div>
-                        <div class="column is-full">
-                            <p class="content is-medium"> {{ .Summary }} </p>
-                        </div>
-                        <div class="column is-full">
-                            <a class="button is-dark is-outline is-rounded" href="{{.Permalink}}">Learn More</a>
-                        </div>
+                    <h3 class="title is-3">Available Commands</h3>
+                    <div class="list is-hoverable">
+                        {{ range (where .Site.RegularPages.ByTitle "Section" "commands" ) }}
+                        <a class="list-item" href="{{.Permalink}}">{{ .Title}}</a>
+                        {{ end }}
                     </div>
-                    {{ end }}
                 </div>
             </div>
         </div>
