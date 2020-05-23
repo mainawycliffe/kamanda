@@ -28,8 +28,8 @@ const PLATFORM_MAPPING = {
 function getInstallationPath(callback) {
   // `$npm_execpath bin` will output the path where binary files should be installed
   // using whichever package manager is current
-  const packageManager = process.env.npm_execpath || "npm";
-  console.log({ packageManager });
+  const execPath = process.env.npm_execpath;
+  const packageManager = packageManager.includes("yarn") ? "yarn" : "npm";
   exec(`${packageManager} bin`, function (err, stdout, stderr) {
     console.log({ err, stderr, stdout });
     let dir = null;
@@ -39,7 +39,6 @@ function getInstallationPath(callback) {
       !stdout ||
       stdout.length === 0
     ) {
-      console.log("LOG TWO", { err, stderr, stdout });
       // We couldn't infer path from `npm bin`. Let's try to get it from
       // Environment variables set by NPM when it runs.
       // npm_config_prefix points to NPM's installation directory where `bin` folder is available
