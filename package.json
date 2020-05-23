@@ -1,12 +1,13 @@
 {
   "name": "kamanda",
-  "version": "0.4.0",
+  "version": "0.4.1-11",
   "description": "Kamanda - A Firebase CLI Companion Tool",
   "main": "index.js",
   "scripts": {
     "test": "go test ./... -v",
-    "postinstall": "node index.js install",
-    "preuninstall": "node index.js uninstall"
+    "postinstall": "node ./bin/index.js install",
+    "preuninstall": "node ./bin/index.js uninstall",
+    "prepublish": "node_modules/babel-cli/bin/babel.js index.js --out-dir bin --presets es2015"
   },
   "repository": {
     "type": "git",
