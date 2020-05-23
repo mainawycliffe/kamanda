@@ -6,9 +6,7 @@ on:
   release:
     types:
       - created
-  push:
-    branches:
-      - master
+
 jobs:
   docsGen:
     name: Generate Documentation For New Release
