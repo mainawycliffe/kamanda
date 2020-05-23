@@ -29,7 +29,7 @@ function getInstallationPath(callback) {
   // `$npm_execpath bin` will output the path where binary files should be installed
   // using whichever package manager is current
   const execPath = process.env.npm_execpath;
-  const packageManager = packageManager.includes("yarn") ? "yarn" : "npm";
+  const packageManager = execPath.includes("yarn") ? "yarn" : "npm";
   exec(`${packageManager} bin`, function (err, stdout, stderr) {
     console.log({ err, stderr, stdout });
     let dir = null;
