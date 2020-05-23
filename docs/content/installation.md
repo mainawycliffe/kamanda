@@ -17,7 +17,13 @@ You can use npm to install Kamanda:
 npm -g install kamanda
 ```
 
-> NB: At the moment, it doesn't work with yarn, I am working on a solution for this.
+### Using Yan
+
+You can also use yarn to install Kamanda:
+
+```sh
+yarn global add kamanda
+```
 
 To check if installation was completed successfully, run the following
 command:
