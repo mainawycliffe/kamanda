@@ -1,32 +1,46 @@
 # whenever a new release is done, this github actions will generate and update
 # the docs.
-# name: docsSiteGenerator
+name: docsSiteGenerator
 
-# on:
-#   release:
-#     types:
-#       - created
-#   push:
-#     branches:
-#       - master
-# # jobs:
-# #   docsGen:
-# #     name: Generate Documentation For New Release
-# #     runs-on: ubuntu-latest
-# #     steps:
-# #       - name: Set up Go 1.13
-# #         uses: actions/setup-go@v1
-# #         with:
-# #           go-version: 1.13
-# #         id: go
-# #       - name: Check out code into the Go module directory
-# #         uses: actions/checkout@v2
-# #       - name: Get dependencies
-# #         run: go get -v -t -d ./...
-# #       - name: Generate Documentation
-# #         run: go run main.go docsGen
-# #         # commit the changes
-# #       - uses: stefanzweifel/git-auto-commit-action@v4.1.5
-# #         with:
-# #           commit_message: Update Kamanda Documentation [CI]
-# #         # in future, build and deploy the site
+on:
+  release:
+    types:
+      - created
+  push:
+    branches:
+      - master
+jobs:
+  docsGen:
+    name: Generate Documentation For New Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go 1.13
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.13
+        id: go
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+      - name: Get dependencies
+        run: go get -v -t -d ./...
+      - name: Generate Documentation
+        run: go run main.go docsGen
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: "0.69.0"
+          extended: true
+      - name: Build
+        run: hugo --minify
+        working-directory: "./docs"
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          PROJECT_PATH: "./docs"
+      # in future, commit the changes to docs directory
+      # - uses: stefanzweifel/git-auto-commit-action@v4.1.5
+      #   with:
+      #     commit_message: Update Kamanda Documentation [CI]
