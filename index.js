@@ -39,7 +39,7 @@ function getInstallationPath(callback) {
       !stdout ||
       stdout.length === 0
     ) {
-      console.log({2, err, stderr, stdout });
+      console.log("LOG TWO", { err, stderr, stdout });
       // We couldn't infer path from `npm bin`. Let's try to get it from
       // Environment variables set by NPM when it runs.
       // npm_config_prefix points to NPM's installation directory where `bin` folder is available
