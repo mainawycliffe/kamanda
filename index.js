@@ -29,9 +29,8 @@ function getInstallationPath(callback) {
   // `$npm_execpath bin` will output the path where binary files should be installed
   // using whichever package manager is current
   const execPath = process.env.npm_execpath;
-  const packageManager = execPath.includes("yarn") ? "yarn" : "npm";
+  const packageManager = execPath.includes("yarn") ? "yarn global" : "npm";
   exec(`${packageManager} bin`, function (err, stdout, stderr) {
-    console.log({ err, stderr, stdout });
     let dir = null;
     if (
       err ||
@@ -51,7 +50,6 @@ function getInstallationPath(callback) {
       dir = stdout.trim();
     }
 
-    console.log({ dir });
     mkdirp.sync(dir);
 
     callback(null, dir);
@@ -174,7 +172,6 @@ function install(callback) {
   if (!opts) {
     return callback("Invalid inputs");
   }
-  console.log({ opts });
   mkdirp.sync(opts.binPath);
   let ungz = zlib.createGunzip();
   let untar = tar.Extract({ path: opts.binPath });
