@@ -12,7 +12,6 @@ Firestore Data."
 [![](https://github.com/mainawycliffe/kamanda/workflows/Go%20Tests/badge.svg)](https://github.com/mainawycliffe/kamanda/actions?query=workflow%3A%22Go+Tests%22)
 [![](https://github.com/mainawycliffe/kamanda/workflows/Go%20Linting/badge.svg)](https://github.com/mainawycliffe/kamanda/actions?query=workflow%3A%22Go+Linting%22)
 [![](https://github.com/mainawycliffe/kamanda/workflows/Go%20Release/badge.svg)](https://github.com/mainawycliffe/kamanda/actions?query=workflow%3A%22Go+Release%22)
-[![](https://github.com/mainawycliffe/kamanda/workflows/npm%20publish/badge.svg)](https://github.com/mainawycliffe/kamanda/actions?query=workflow%3A%22npm+publish%22)
 
 Kamanda is an open source tool tool is meant to provide additional functionality not provided by Firebase
 CLI such as Managing Users of your Projects, Exporting and Importing of Cloud
@@ -63,35 +62,9 @@ users.
 
 ## Installation
 
+Follow the installation instruction [here](/installation).
+
 > This is still an early version, feedback on improvements is much needed.
-
-### Using npm (Node Package Manager)
-
-You can use npm to install Kamanda:
-
-```sh
-npm -g install kamanda
-```
-
-> NB: At the moment, it doesn't work with yarn, I am working on a solution for this.
-
-To check if installation was completed successfully, run the following
-command:
-
-```sh
-kamanda version
-```
-
-You can view all supported commands [here](./docs/kamanda.md) or by running `kamanda help`
-
-```sh
-kamanda help
-```
-
-### Executable Binaries
-
-You can find the latest binaries for your operating system in the
-[releases](https://github.com/mainawycliffe/kamanda/releases).
 
 ## Usage
 

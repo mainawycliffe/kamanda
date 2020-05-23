@@ -5,7 +5,6 @@
 [![](https://github.com/mainawycliffe/kamanda/workflows/Go%20Tests/badge.svg)](https://github.com/mainawycliffe/kamanda/actions?query=workflow%3A%22Go+Tests%22)
 [![](https://github.com/mainawycliffe/kamanda/workflows/Go%20Linting/badge.svg)](https://github.com/mainawycliffe/kamanda/actions?query=workflow%3A%22Go+Linting%22)
 [![](https://github.com/mainawycliffe/kamanda/workflows/Go%20Release/badge.svg)](https://github.com/mainawycliffe/kamanda/actions?query=workflow%3A%22Go+Release%22)
-[![](https://github.com/mainawycliffe/kamanda/workflows/npm%20publish/badge.svg)](https://github.com/mainawycliffe/kamanda/actions?query=workflow%3A%22npm+publish%22)
 
 Kamanda is an open source tool is meant to provide additional functionality not provided by Firebase
 CLI such as Managing Users of your Projects, Exporting and Importing of Cloud
@@ -54,7 +53,11 @@ You can use npm to install Kamanda:
 npm -g install kamanda
 ```
 
-> NB: At the moment, it doesn't work with yarn, I am working on a solution for this.
+You can also use yarn to install Kamanda:
+
+```sh
+yarn global add kamanda
+```
 
 To check if installation was completed successfully, run the following
 command:
