@@ -31,6 +31,7 @@ function getInstallationPath(callback) {
   const packageManager = process.env.npm_execpath || "npm";
   console.log({ packageManager });
   exec(`${packageManager} bin`, function (err, stdout, stderr) {
+    console.log({ err, stderr, stdout });
     let dir = null;
     if (err || stderr || !stdout || stdout.length === 0) {
       // We couldn't infer path from `npm bin`. Let's try to get it from
