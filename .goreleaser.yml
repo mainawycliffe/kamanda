@@ -16,6 +16,6 @@ builds:
 archives:
   # windows will struggle with unzipping .tar.gz, hence use of zip is better
   # as it is supported widely.
-  format: zip
-  files:
-    - none*
+  - format: zip
+    files:
+      - none*
