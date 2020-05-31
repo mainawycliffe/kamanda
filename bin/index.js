@@ -7,8 +7,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var request = require("request"),
     path = require("path"),
-    tar = require("tar"),
-    zlib = require("zlib"),
+    unzipper = require("unzipper"),
     mkdirp = require("mkdirp"),
     fs = require("fs"),
     exec = require("child_process").exec;
@@ -31,11 +30,11 @@ var PLATFORM_MAPPING = {
 function getInstallationPath(callback) {
   // `$npm_execpath bin` will output the path where binary files should be installed
   // using whichever package manager is current
-  var packageManager = process.env.npm_execpath || "npm";
-  console.log({ packageManager: packageManager });
+  var execPath = process.env.npm_execpath;
+  var packageManager = execPath && execPath.includes("yarn") ? "yarn global" : "npm";
   exec(packageManager + " bin", function (err, stdout, stderr) {
     var dir = null;
-    if (err || stderr || !stdout || stdout.length === 0) {
+    if (err || stderr && !stderr.includes("No license field") || !stdout || stdout.length === 0) {
       // We couldn't infer path from `npm bin`. Let's try to get it from
       // Environment variables set by NPM when it runs.
       // npm_config_prefix points to NPM's installation directory where `bin` folder is available
@@ -48,7 +47,6 @@ function getInstallationPath(callback) {
       dir = stdout.trim();
     }
 
-    console.log({ dir: dir });
     mkdirp.sync(dir);
 
     callback(null, dir);
@@ -157,25 +155,18 @@ function install(callback) {
   if (!opts) {
     return callback("Invalid inputs");
   }
-  console.log({ opts: opts });
   mkdirp.sync(opts.binPath);
-  var ungz = zlib.createGunzip();
-  var untar = tar.Extract({ path: opts.binPath });
-
-  ungz.on("error", callback);
-  untar.on("error", callback);
-
-  // First we will Un-GZip, then we will untar. So once untar is completed,
-  // binary is downloaded into `binPath`. Verify the binary and call it good
-  untar.on("end", verifyAndPlaceBinary.bind(null, opts.binName, opts.binPath, callback));
-
   console.log("Downloading from URL: " + opts.url);
   var req = request({ uri: opts.url });
   req.on("error", callback.bind(null, "Error downloading from URL: " + opts.url));
   req.on("response", function (res) {
-    if (res.statusCode !== 200) return callback("Error downloading binary. HTTP Status Code: " + res.statusCode);
-
-    req.pipe(ungz).pipe(untar);
+    if (res.statusCode !== 200) {
+      return callback("Error downloading binary. HTTP Status Code: " + res.statusCode);
+    }
+    req.pipe(unzipper.Extract({ path: opts.binPath })).on("error", callback)
+    // First we will Un-GZip, then we will untar. So once untar is completed,
+    // binary is downloaded into `binPath`. Verify the binary and call it good
+    .on("close", verifyAndPlaceBinary.bind(null, opts.binName, opts.binPath, callback));
   });
 }
 
