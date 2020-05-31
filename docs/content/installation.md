@@ -9,6 +9,18 @@ summary: "How to install kamanda in to your system"
 
 > This is still an early version, feedback on improvements is much needed.
 
+### Using Shell
+
+#### Bash
+
+```sh
+curl https://raw.githubusercontent.com/mainawycliffe/kamanda/master/install.sh | sh
+```
+
+#### Powershell
+
+Coming soon.
+
 ### Using npm (Node Package Manager)
 
 You can use npm to install Kamanda:
