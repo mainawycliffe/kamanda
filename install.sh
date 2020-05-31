@@ -18,29 +18,29 @@ if [ $# -eq 0 ]; then
     # download the latest executables for kamanda 
 	kamanda_asset_path=$(
 		command curl -sSf https://github.com/mainawycliffe/kamanda/releases |
-			command grep -o "/mainawycliffe/kamanda/releases/download/.*/kamanda_.*_${platform}_${arch}.tar.gz" |
+			command grep -o "/mainawycliffe/kamanda/releases/download/.*/kamanda_.*_${platform}_${arch}.zip" |
 			command head -n 1
 	)
     if [ ! "$kamanda_asset_path" ]; then exit 1; fi
     downloadUrl="https://github.com/${kamanda_asset_path}"
 else
     # download the specific requested version for kamanda
-    downloadUrl="https://github.com/mainawycliffe/kamanda/releases/download/v${1}/kamanda_${1}_${platform}_${arch}.tar.gz"
+    downloadUrl="https://github.com/mainawycliffe/kamanda/releases/download/v${1}/kamanda_${1}_${platform}_${arch}.zip"
 fi
 
 binDir="/usr/local/bin"
 filename="kamanda"
 
-curl --fail --location --progress-bar "${downloadUrl}" --output "./${filename}.tar.gz"
+curl --fail --location --progress-bar "${downloadUrl}" --output "./${filename}.zip"
 
 # extract executables
-tar xvzf kamanda.tar.gz
+unzip kamanda.zip
 
 # add to use executable dir, no permissions required
 mv ${filename} ${binDir}
 
 # delete the extra files
 echo "Clean up the dowloads after installation"
-rm "LICENSE" "README.md" "./${filename}.tar.gz"
+rm "./${filename}.zip"
 
 echo "Kamanda was installed successfully. You can find documentation here https://kamanda.dev"
