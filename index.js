@@ -4,7 +4,7 @@
 
 const request = require("request"),
   path = require("path"),
-  zlib = require("zlib"),
+  unzipper = require("unzipper"),
   mkdirp = require("mkdirp"),
   fs = require("fs"),
   exec = require("child_process").exec;
@@ -28,7 +28,8 @@ function getInstallationPath(callback) {
   // `$npm_execpath bin` will output the path where binary files should be installed
   // using whichever package manager is current
   const execPath = process.env.npm_execpath;
-  const packageManager = execPath.includes("yarn") ? "yarn global" : "npm";
+  const packageManager =
+    execPath && execPath.includes("yarn") ? "yarn global" : "npm";
   exec(`${packageManager} bin`, function (err, stdout, stderr) {
     let dir = null;
     if (
@@ -172,17 +173,6 @@ function install(callback) {
     return callback("Invalid inputs");
   }
   mkdirp.sync(opts.binPath);
-  let ungz = zlib.createGunzip();
-
-  ungz.on("error", callback);
-
-  // First we will Un-GZip, then we will untar. So once untar is completed,
-  // binary is downloaded into `binPath`. Verify the binary and call it good
-  ungz.on(
-    "end",
-    verifyAndPlaceBinary.bind(null, opts.binName, opts.binPath, callback)
-  );
-
   console.log("Downloading from URL: " + opts.url);
   let req = request({ uri: opts.url });
   req.on(
@@ -190,12 +180,20 @@ function install(callback) {
     callback.bind(null, "Error downloading from URL: " + opts.url)
   );
   req.on("response", function (res) {
-    if (res.statusCode !== 200)
+    if (res.statusCode !== 200) {
       return callback(
         "Error downloading binary. HTTP Status Code: " + res.statusCode
       );
-
-    req.pipe(ungz);
+    }
+    req
+      .pipe(unzipper.Extract({ path: opts.binPath }))
+      .on("error", callback)
+      // First we will Un-GZip, then we will untar. So once untar is completed,
+      // binary is downloaded into `binPath`. Verify the binary and call it good
+      .on(
+        "close",
+        verifyAndPlaceBinary.bind(null, opts.binName, opts.binPath, callback)
+      );
   });
 }
 
