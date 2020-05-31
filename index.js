@@ -186,7 +186,18 @@ function install(callback) {
       );
     }
     req
-      .pipe(unzipper.Extract({ path: opts.binPath }))
+      // parse and save file
+      .pipe(unzipper.Parse())
+      .on("entry", function (entry) {
+        const fileName = entry.path;
+        if (fileName === "kamanda") {
+          entry.pipe(
+            fs.createWriteStream(opts.binPath + "/kamanda", { mode: 755 })
+          );
+        } else {
+          entry.autodrain();
+        }
+      })
       .on("error", callback)
       // First we will Un-GZip, then we will untar. So once untar is completed,
       // binary is downloaded into `binPath`. Verify the binary and call it good
