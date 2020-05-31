@@ -2,7 +2,10 @@ builds:
   - binary: kamanda
     # windows will struggle with unzipping .tar.gz, hence use of zip is better
     # as it is supported widely.
-    format: zip
+    archives:
+      format: zip
+      files:
+        - none*
     goos:
       - windows
       - darwin
