@@ -42,6 +42,6 @@
   "goBinary": {
     "name": "kamanda",
     "path": "./bin",
-    "url": "https://github.com/mainawycliffe/kamanda/releases/download/v{{version}}/kamanda_{{version}}_{{platform}}_{{arch}}.tar.gz"
+    "url": "https://github.com/mainawycliffe/kamanda/releases/download/v{{version}}/kamanda_{{version}}_{{platform}}_{{arch}}.zip"
   }
 }
