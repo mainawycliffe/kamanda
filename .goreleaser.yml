@@ -1,5 +1,6 @@
 builds:
   - binary: kamanda
+
     goos:
       - windows
       - darwin
@@ -11,3 +12,10 @@ builds:
     # Default is `-s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}} -X main.builtBy=goreleaser`.
     ldflags:
       - -s -w -X github.com/mainawycliffe/kamanda/cmd.version={{.Version}} -X github.com/mainawycliffe/kamanda/cmd.commit={{.Commit}} -X github.com/mainawycliffe/kamanda/cmd.date={{.Date}} -X github.com/mainawycliffe/kamanda/cmd.builtBy=goreleaser
+
+archives:
+  # windows will struggle with unzipping .tar.gz, hence use of zip is better
+  # as it is supported widely.
+  - format: zip
+    files:
+      - none*
