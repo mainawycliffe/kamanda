@@ -40,7 +40,7 @@ command:
 kamanda version
 ```
 
-You can view all supported commands [here](./docs/kamanda.md) or by running `kamanda help`
+You can view all supported commands [here](https://kamanda.dev/) or by running `kamanda help`
 
 ```sh
 kamanda help
@@ -56,7 +56,7 @@ You can find the latest binaries for your operating system in the
 You can build your version of kamanda from the source. Kamanda is written using
 Golang and all you will need is Golang to build kamanda from the source.
 
-Follow the following stepts to build kamanda.
+Follow the following steps to build kamanda.
 
 - First, makes sure you have Golang installed.
 - Clone this repository: `git clone https://github.com/mainawycliffe/kamanda.git`
