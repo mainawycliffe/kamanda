@@ -30,9 +30,9 @@ var byEmailCmd = &cobra.Command{
 			utils.StdOutError(os.Stderr, "Unsupported output!")
 			os.Exit(1)
 		}
-		minimalUI, err := cmd.Flags().GetBool("minimal-view")
+		interactive, err := cmd.Flags().GetBool("interactive")
 		if err != nil {
-			utils.StdOutError(os.Stderr, "Error reading minimal ui flag: %s", err.Error())
+			utils.StdOutError(os.Stderr, "Error reading interactive ui flag: %s", err.Error())
 			os.Exit(1)
 		}
 		// args = list of UIDs
@@ -65,7 +65,7 @@ var byEmailCmd = &cobra.Command{
 			fmt.Printf("%s\n", formatedUsers)
 			os.Exit(0)
 		}
-		if !minimalUI {
+		if interactive {
 			// draw table
 			views.ViewUsersTable(users, "")
 			os.Exit(0)

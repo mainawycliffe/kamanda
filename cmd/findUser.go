@@ -32,9 +32,9 @@ To find user by email or by phone use "find by-email" or "find by-phone"`,
 			utils.StdOutError(os.Stderr, "Unsupported output!")
 			os.Exit(1)
 		}
-		minimalUI, err := cmd.Flags().GetBool("minimal-view")
+		interactive, err := cmd.Flags().GetBool("interactive")
 		if err != nil {
-			utils.StdOutError(os.Stderr, "Error reading minimal ui flag: %s", err.Error())
+			utils.StdOutError(os.Stderr, "Error reading interactive ui flag: %s", err.Error())
 			os.Exit(1)
 		}
 		// args = list of uids
@@ -67,7 +67,7 @@ To find user by email or by phone use "find by-email" or "find by-phone"`,
 			fmt.Printf("%s\n", formatedUsers)
 			os.Exit(0)
 		}
-		if !minimalUI {
+		if interactive {
 			// draw table
 			views.ViewUsersTable(users, "")
 			os.Exit(0)
@@ -97,5 +97,5 @@ To find user by email or by phone use "find by-email" or "find by-phone"`,
 func init() {
 	authCmd.AddCommand(findUserCmd)
 	findUserCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	findUserCmd.Flags().BoolP("minimal-view", "m", false, "Show a minimal ui")
+	listUsersCmd.Flags().BoolP("interactive", "i", false, "Show Interactive UI for Users")
 }

@@ -17,7 +17,13 @@ var listUsersCmd = &cobra.Command{
 	Use:     "users",
 	Aliases: []string{"list", "listUsers", "list-users"},
 	Short:   "Fetch and display a list of users in firebase auth.",
-	Long: `This fetches users on Firebase Auth and either outputs it in either table, json or yaml format. 
+	Long: `This fetches users on Firebase Auth and either displays it in either simple table, an interactive console table, json or yaml format.
+	
+	By Default, this will display a simple table with the list of users.
+	
+	Use the output flag [--output] to display the data in either JSON or Yaml Formats. To show an interactive UI, please use the interactive flag [--interactive]. 
+	
+	This will display a table you can interact with.
 	
 In cases where there are more than 500 users, you will also get a nextPageToken, that you can use to fetch more users.`,
 	Example: `kamanda auth users
@@ -38,9 +44,9 @@ kamanda auth users -output yaml`,
 			utils.StdOutError(os.Stderr, "Error reading nextPageToken: %s", err.Error())
 			os.Exit(1)
 		}
-		minimalUI, err := cmd.Flags().GetBool("minimal-view")
+		interactive, err := cmd.Flags().GetBool("interactive")
 		if err != nil {
-			utils.StdOutError(os.Stderr, "Error reading minimal ui flag: %s", err.Error())
+			utils.StdOutError(os.Stderr, "Error reading interactive ui flag: %s", err.Error())
 			os.Exit(1)
 		}
 		getUsers, err := auth.ListUsers(context.Background(), 0, nextPageToken)
@@ -57,7 +63,7 @@ kamanda auth users -output yaml`,
 			fmt.Printf("%s\n", formatedUsers)
 			os.Exit(0)
 		}
-		if !minimalUI {
+		if interactive {
 			// draw table
 			views.ViewUsersTable(getUsers.Users, getUsers.NextPageToken)
 			os.Exit(0)
@@ -87,5 +93,5 @@ kamanda auth users -output yaml`,
 func init() {
 	authCmd.AddCommand(listUsersCmd)
 	listUsersCmd.Flags().StringP("nextPageToken", "n", "", "Fetch next set of results")
-	listUsersCmd.Flags().BoolP("minimal-view", "m", false, "Show a minimal ui")
+	listUsersCmd.Flags().BoolP("interactive", "i", false, "Show Interactive UI for Users")
 }

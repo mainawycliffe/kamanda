@@ -30,9 +30,9 @@ var byPhoneCmd = &cobra.Command{
 			utils.StdOutError(os.Stderr, "Unsupported output!")
 			os.Exit(1)
 		}
-		minimalUI, err := cmd.Flags().GetBool("minimal-view")
+		interactive, err := cmd.Flags().GetBool("interactive")
 		if err != nil {
-			utils.StdOutError(os.Stderr, "Error reading minimal ui flag: %s", err.Error())
+			utils.StdOutError(os.Stderr, "Error reading interactive ui flag: %s", err.Error())
 			os.Exit(1)
 		}
 		// args = list of uids
@@ -71,7 +71,7 @@ var byPhoneCmd = &cobra.Command{
 			os.Exit(0)
 		}
 		// draw table
-		if !minimalUI {
+		if interactive {
 			// draw table
 			views.ViewUsersTable(users, "")
 			os.Exit(0)
