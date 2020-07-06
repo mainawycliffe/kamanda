@@ -9,7 +9,7 @@
 Kamanda helps manage your Firebase Project from the terminal. It helps you manage
 user data in Firebase Authentication. You can add, remove, update, list and search
 Firebase users from your console. Functionalities for Cloud Firestore and Cloud
-Functions are coming soon.
+Functions are on the pipeline.
 
 > This is not meant to replace Firebase CLI but to compliment it.
 
