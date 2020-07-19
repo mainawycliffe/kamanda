@@ -97,5 +97,5 @@ To find user by email or by phone use "find by-email" or "find by-phone"`,
 func init() {
 	authCmd.AddCommand(findUserCmd)
 	findUserCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	listUsersCmd.Flags().BoolP("interactive", "i", false, "Show Interactive UI for Users")
+	// listUsersCmd.Flags().BoolP("interactive", "i", false, "Show Interactive UI for Users")
 }
