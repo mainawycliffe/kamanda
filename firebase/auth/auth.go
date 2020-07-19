@@ -8,7 +8,7 @@ import (
 	"github.com/mainawycliffe/kamanda/firebase"
 )
 
-type NewUser struct {
+type FirebaseUser struct {
 	UID           string                     `json:"uid" yaml:"uid"`
 	Email         string                     `json:"email" yaml:"email"`
 	EmailVerified bool                       `json:"email_verified" yaml:"email_verified"`
@@ -26,7 +26,7 @@ type FirebaseUserCustomClaims struct {
 }
 
 // NewFirebaseUser create a new firebase user using Email/Password Auth Provider
-func NewFirebaseUser(ctx context.Context, user *NewUser) (*auth.UserRecord, error) {
+func NewFirebaseUser(ctx context.Context, user *FirebaseUser) (*auth.UserRecord, error) {
 	params := (&auth.UserToCreate{}).
 		Email(user.Email).
 		EmailVerified(user.EmailVerified).
@@ -50,6 +50,36 @@ func NewFirebaseUser(ctx context.Context, user *NewUser) (*auth.UserRecord, erro
 		return nil, fmt.Errorf("Error authenticating firebase account: %w", err)
 	}
 	u, err := client.CreateUser(ctx, params)
+	if err != nil {
+		return nil, firebase.NewError(err)
+	}
+	return u, nil
+}
+
+// UpdateFirebaseUser update a user details on firebase.
+func UpdateFirebaseUser(ctx context.Context, UID string, user *FirebaseUser) (*auth.UserRecord, error) {
+	params := &auth.UserToUpdate{}
+	// incase you want to use a custom UID instead a random one
+	if user.Email != "" {
+		params = params.Email(user.Email)
+	}
+	if user.Password != "" {
+		params = params.Password(user.Password)
+	}
+	if user.DisplayName != "" {
+		params = params.DisplayName(user.DisplayName)
+	}
+	if user.PhoneNumber != "" {
+		params = params.PhoneNumber(user.PhoneNumber)
+	}
+	if user.PhotoURL != "" {
+		params = params.PhotoURL(user.PhotoURL)
+	}
+	client, err := firebase.Auth(ctx, "", "")
+	if err != nil {
+		return nil, fmt.Errorf("Error authenticating firebase account: %w", err)
+	}
+	u, err := client.UpdateUser(ctx, UID, params)
 	if err != nil {
 		return nil, firebase.NewError(err)
 	}

@@ -331,7 +331,7 @@ func TestUnmarshalFormatFile(t *testing.T) {
 		extension string
 		v         interface{}
 	}
-	testUserResponse := []auth.NewUser{
+	testUserResponse := []auth.FirebaseUser{
 		{
 			DisplayName: "Some name here",
 			Email:       "james@gmail.com",
@@ -343,7 +343,7 @@ func TestUnmarshalFormatFile(t *testing.T) {
 			Password:    "HelloWorld",
 		},
 	}
-	testUserWrongResponse := []auth.NewUser{
+	testUserWrongResponse := []auth.FirebaseUser{
 		{
 			DisplayName: "Some name here1",
 			Email:       "james@gmail.com1",
@@ -355,13 +355,13 @@ func TestUnmarshalFormatFile(t *testing.T) {
 			Password:    "HelloWorld1",
 		},
 	}
-	var test1Users []auth.NewUser
-	var test2Users []auth.NewUser
+	var test1Users []auth.FirebaseUser
+	var test2Users []auth.FirebaseUser
 	tests := []struct {
 		name         string
 		args         args
 		wantErr      bool
-		wantResponse []auth.NewUser
+		wantResponse []auth.FirebaseUser
 	}{
 		{
 			name: "Test with JSON File",

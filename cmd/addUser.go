@@ -40,7 +40,7 @@ You can also add custom claims using --custom-claims="key:value" flag.`,
 		photoURL, _ := cmd.Flags().GetString("photoURL")
 		isDisabled, _ := cmd.Flags().GetBool("isDisabled")
 		customClaimsInput, _ := cmd.Flags().GetStringToString("customClaims")
-		user := &auth.NewUser{
+		user := &auth.FirebaseUser{
 			UID:           UID,
 			Email:         email,
 			EmailVerified: emailVerified,

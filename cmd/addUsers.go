@@ -40,7 +40,7 @@ The following fields are accepted:
 			utils.StdOutError(os.Stderr, "%s Source file is a directory not folder!", sourceFile)
 			os.Exit(1)
 		}
-		var usersToCreate []auth.NewUser
+		var usersToCreate []auth.FirebaseUser
 		err = utils.UnmarshalFormatFile(sourceFile, sourceFileExtension, &usersToCreate)
 		if err != nil {
 			utils.StdOutError(os.Stderr, "Error decoding your config file: %s", err.Error())
