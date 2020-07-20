@@ -14,8 +14,8 @@ import (
 
 // updateUserCmd represents the updateUser command
 var updateUserCmd = &cobra.Command{
-	Use:     "updateUser",
-	Aliases: []string{"update", "update-user"},
+	Use:     "update",
+	Aliases: []string{"updateUser", "update-user"},
 	Short:   "Update User Details",
 	Long:    `Updates an existing Firebase users details given the UID`,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -85,7 +85,7 @@ var updateUserCmd = &cobra.Command{
 }
 
 func init() {
-	authCmd.AddCommand(updateUserCmd)
+	listUsersCmd.AddCommand(updateUserCmd)
 	updateUserCmd.Flags().String("email", "", "the email of the user (Required)")
 	updateUserCmd.Flags().String("password", "", "the password of user (Required)")
 	updateUserCmd.Flags().Bool("emailVerified", false, "is the email verified")
