@@ -11,9 +11,8 @@ import (
 
 // resetPasswordCmd represents the resetPassword command
 var resetPasswordCmd = &cobra.Command{
-	Use:     "password",
-	Aliases: []string{"resetPassword", "reset-password"},
-	Short:   "Reset password for a firebase user(s)",
+	Use:   "password",
+	Short: "Reset password for a firebase user(s)",
 	Long: `Reset the password of a Firebase user(s).
 
 You can provide the password or the user or if left empty, Kamanda will automatically generate a password and print it.`,
@@ -41,7 +40,7 @@ You can provide the password or the user or if left empty, Kamanda will automati
 }
 
 func init() {
-	listUsersCmd.AddCommand(resetPasswordCmd)
+	setCmd.AddCommand(resetPasswordCmd)
 	resetPasswordCmd.Flags().String(
 		"password",
 		"",
