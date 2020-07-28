@@ -9,12 +9,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// customclaimsCmd represents the customclaims command
-var customclaimsCmd = &cobra.Command{
+// customClaimsCmd represents the customclaims command
+var customClaimsCmd = &cobra.Command{
 	Use:     "customClaims",
-	Aliases: []string{"claims", "custom-claims", "cc"},
+	Aliases: []string{"custom-claims", "cc"},
 	Short:   "Add custom claims to an existing firebase user or users through their UIDs",
-	Example: `kamanda auth custom-claims [uid1] [uid2] --customClaims "key1:value1" --customClaims "key2:value2"`,
+	Example: `kamanda auth users set customClaims [uid1] --customClaims "key1:value1" --customClaims "key2:value2"`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// args = list of uids
 		if len(args) == 0 {
@@ -36,9 +36,9 @@ var customclaimsCmd = &cobra.Command{
 }
 
 func init() {
-	authCmd.AddCommand(customclaimsCmd)
-	customclaimsCmd.Flags().StringToStringP("customClaims", "c", nil, "user custom claims i.e. --customClaims \"admin=true\"")
-	if err := customclaimsCmd.MarkFlagRequired("customClaims"); err != nil {
+	setCmd.AddCommand(customClaimsCmd)
+	customClaimsCmd.Flags().StringToStringP("customClaims", "c", nil, "user custom claims i.e. --customClaims \"admin=true\"")
+	if err := customClaimsCmd.MarkFlagRequired("customClaims"); err != nil {
 		utils.StdOutError(os.Stderr, "%s\n", err.Error())
 		os.Exit(1)
 	}
