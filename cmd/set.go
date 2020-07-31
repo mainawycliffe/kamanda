@@ -11,5 +11,5 @@ var setCmd = &cobra.Command{
 }
 
 func init() {
-	listUsersCmd.AddCommand(setCmd)
+	usersCmd.AddCommand(setCmd)
 }

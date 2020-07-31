@@ -85,7 +85,7 @@ var updateUserCmd = &cobra.Command{
 }
 
 func init() {
-	listUsersCmd.AddCommand(updateUserCmd)
+	usersCmd.AddCommand(updateUserCmd)
 	updateUserCmd.Flags().String("email", "", "the email of the user (Required)")
 	updateUserCmd.Flags().String("password", "", "the password of user (Required)")
 	updateUserCmd.Flags().Bool("emailVerified", false, "is the email verified")
