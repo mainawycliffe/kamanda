@@ -91,7 +91,11 @@ kamanda auth users -output yaml`,
 }
 
 func init() {
+	// This is Deprecated and will be removed in future
 	authCmd.AddCommand(listUsersCmd)
+	// This allows both kamanda auth users and kamanda users to be used at the
+	// same time.
+	rootCmd.AddCommand(listUsersCmd)
 	listUsersCmd.Flags().StringP("nextPageToken", "n", "", "Fetch next set of results")
 	listUsersCmd.Flags().BoolP("interactive", "i", false, "Show Interactive UI for Users")
 }
