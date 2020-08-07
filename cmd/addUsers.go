@@ -76,6 +76,7 @@ The following fields are accepted:
 
 func init() {
 	authCmd.AddCommand(addUsersCmd)
+	usersCmd.AddCommand(addUsersCmd)
 	addUsersCmd.Flags().StringP("source", "s", "", "file with list of users to create")
 	if err := addUsersCmd.MarkFlagRequired("source"); err != nil {
 		utils.StdOutError(os.Stderr, "%s\n", err.Error())

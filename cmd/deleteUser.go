@@ -35,5 +35,6 @@ var deleteUserCmd = &cobra.Command{
 }
 
 func init() {
-	authCmd.AddCommand(deleteUserCmd)
+	authCmd.AddCommand(deleteUserCmd) // deprecated
+	usersCmd.AddCommand(deleteUserCmd)
 }
