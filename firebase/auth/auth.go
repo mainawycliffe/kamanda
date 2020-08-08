@@ -56,24 +56,6 @@ func NewFirebaseUser(ctx context.Context, user *FirebaseUser) (*auth.UserRecord,
 	return u, nil
 }
 
-// UpdateFirebaseUserPassword update a users password on Firebase Auth.
-func UpdateFirebaseUserPassword(ctx context.Context, UID string, password string) (*auth.UserRecord, error) {
-	params := &auth.UserToUpdate{}
-	if password == "" {
-		return nil, fmt.Errorf("Password cannot be empty")
-	}
-	params = params.Password(password)
-	client, err := firebase.Auth(ctx, "", "")
-	if err != nil {
-		return nil, fmt.Errorf("Error authenticating firebase account: %w", err)
-	}
-	u, err := client.UpdateUser(ctx, UID, params)
-	if err != nil {
-		return nil, firebase.NewError(err)
-	}
-	return u, nil
-}
-
 // UpdateFirebaseUser update a user details on firebase.
 func UpdateFirebaseUser(ctx context.Context, UID string, user *FirebaseUser) (*auth.UserRecord, error) {
 	params := &auth.UserToUpdate{}

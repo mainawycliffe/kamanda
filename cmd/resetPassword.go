@@ -25,7 +25,10 @@ You can provide the password or the user or if left empty, Kamanda will automati
 			if password == "" {
 				passwordToSave = utils.PasswordGenerator(10)
 			}
-			user, err := auth.UpdateFirebaseUserPassword(context.Background(), v, passwordToSave)
+			updatePassword := &auth.FirebaseUser{
+				Password: password,
+			}
+			user, err := auth.UpdateFirebaseUser(context.Background(), v, updatePassword)
 			if err != nil {
 				hasError = true
 				utils.StdOutError(os.Stderr, "Error updating user %s password\n", v)
