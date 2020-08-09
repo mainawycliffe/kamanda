@@ -5,7 +5,9 @@
 --debug=localhost
 .vscode
 .env
-/.firebaserc
+.firebaserc
+.github
+demos
 credentials.json
 credentials*
 *cover*
@@ -18,4 +20,5 @@ docs
 .github
 go.mod
 go.sum
-goreleaser.yml
+*/**.yml
+.prettierrc
