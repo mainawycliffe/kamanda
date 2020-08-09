@@ -9,15 +9,17 @@ import (
 )
 
 type FirebaseUser struct {
-	UID           string                     `json:"uid" yaml:"uid"`
-	Email         string                     `json:"email" yaml:"email"`
-	EmailVerified bool                       `json:"email_verified" yaml:"email_verified"`
-	PhoneNumber   string                     `json:"phone" yaml:"phone"`
-	Password      string                     `json:"password" yaml:"password"`
-	DisplayName   string                     `json:"name" yaml:"name" `
-	Disabled      bool                       `json:"disabled" yaml:"disabled"`
-	PhotoURL      string                     `json:"photo_url" yaml:"photo_url"`
-	CustomClaims  []FirebaseUserCustomClaims `json:"custom_claims" yaml:"custom_claims"`
+	UID                       string                     `json:"uid" yaml:"uid"`
+	Email                     string                     `json:"email" yaml:"email"`
+	ShouldUpdateEmailVerified bool                       `json:"-" yaml:"-"`
+	EmailVerified             bool                       `json:"email_verified" yaml:"email_verified"`
+	PhoneNumber               string                     `json:"phone" yaml:"phone"`
+	Password                  string                     `json:"password" yaml:"password"`
+	DisplayName               string                     `json:"name" yaml:"name" `
+	ShouldUpdateDisabled      bool                       `json:"-" yaml:"-"`
+	Disabled                  bool                       `json:"disabled" yaml:"disabled"`
+	PhotoURL                  string                     `json:"photo_url" yaml:"photo_url"`
+	CustomClaims              []FirebaseUserCustomClaims `json:"custom_claims" yaml:"custom_claims"`
 }
 
 type FirebaseUserCustomClaims struct {
@@ -74,6 +76,12 @@ func UpdateFirebaseUser(ctx context.Context, UID string, user *FirebaseUser) (*a
 	}
 	if user.PhotoURL != "" {
 		params = params.PhotoURL(user.PhotoURL)
+	}
+	if user.ShouldUpdateDisabled {
+		params = params.Disabled(user.Disabled)
+	}
+	if user.ShouldUpdateEmailVerified {
+		params = params.EmailVerified(user.EmailVerified)
 	}
 	client, err := firebase.Auth(ctx, "", "")
 	if err != nil {
