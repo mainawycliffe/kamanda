@@ -6,7 +6,6 @@ on:
     paths-ignore:
       - "docs/**"
       - "demos/**"
-      - ".github/**"
       - ".vscode/**"
       - "**/*.js"
       - "**/*.md"
