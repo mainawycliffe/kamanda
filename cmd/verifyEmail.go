@@ -39,5 +39,5 @@ var verifyEmailCmd = &cobra.Command{
 
 func init() {
 	setCmd.AddCommand(verifyEmailCmd)
-	verifyEmailCmd.Flags().BoolP("status", "s", false, "The email verified value to set to")
+	verifyEmailCmd.Flags().Bool("status", false, "The email verified value to set to")
 }
