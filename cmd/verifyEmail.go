@@ -10,10 +10,10 @@ import (
 )
 
 var verifyEmailCmd = &cobra.Command{
-	Use:     "isEmailVerified",
-	Aliases: []string{"is-email-verified"},
+	Use:     "emailVerified",
+	Aliases: []string{"is-email-verified", "email-verified", "isEmailVerified"},
 	Short:   "Manually verify or un-verify a users email address.",
-	Example: "kamanda users set isEmailVerified --status=false [UID] [UID]",
+	Example: "kamanda users set emailVerified --status=false [UID] [UID]",
 	Run: func(cmd *cobra.Command, args []string) {
 		emailVerifiedStatus, _ := cmd.Flags().GetBool("status")
 		hasError := false
