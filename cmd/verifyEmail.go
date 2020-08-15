@@ -39,5 +39,9 @@ var verifyEmailCmd = &cobra.Command{
 
 func init() {
 	setCmd.AddCommand(verifyEmailCmd)
-	verifyEmailCmd.Flags().Bool("status", false, "The email verified value to set to")
+	verifyEmailCmd.Flags().Bool("status", false, "Status to toggle user email verified to")
+	if err := enableUserAccountCmd.MarkFlagRequired("status"); err != nil {
+		utils.StdOutError(os.Stderr, "Status value to toggle email verified to is required!\n")
+		os.Exit(1)
+	}
 }
