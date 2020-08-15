@@ -97,5 +97,5 @@ func init() {
 	// same time.
 	rootCmd.AddCommand(usersCmd)
 	usersCmd.Flags().StringP("nextPageToken", "n", "", "Fetch next set of results")
-	usersCmd.Flags().BoolP("interactive", "i", false, "Show Interactive UI for Users")
+	usersCmd.PersistentFlags().BoolP("interactive", "i", false, "Show Interactive UI for Users")
 }

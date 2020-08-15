@@ -98,5 +98,4 @@ func init() {
 	authCmd.AddCommand(findUserCmd) // deprecated
 	usersCmd.AddCommand(findUserCmd)
 	findUserCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	// listUsersCmd.Flags().BoolP("interactive", "i", false, "Show Interactive UI for Users")
 }
