@@ -108,21 +108,26 @@ func AddCustomClaimToFirebaseUser(ctx context.Context, uid string, customClaims 
 // RemoveCustomClaimFromUser remove a custom claim or custom claims from a users
 // account
 func RemoveCustomClaimFromUser(ctx context.Context, UID string, keys []string) (*auth.UserRecord, error) {
-	customClaimsToUnset := map[string]interface{}{}
-	for _, v := range keys {
-		customClaimsToUnset[v] = nil
-	}
 	client, err := firebase.Auth(ctx, "", "")
 	if err != nil {
 		return nil, fmt.Errorf("Error authenticating firebase account: %w", err)
 	}
+	user, err := client.GetUser(ctx, UID)
+	if err != nil {
+		return nil, fmt.Errorf("Error retrieving user details: %w", err)
+	}
+	customClaims := user.CustomClaims
+	// loop over the custom claims and remove all provided keys for removal
+	for _, v := range keys {
+		delete(customClaims, v)
+	}
 	params := &auth.UserToUpdate{}
-	params.CustomClaims(customClaimsToUnset)
-	user, err := client.UpdateUser(ctx, UID, params)
+	params.CustomClaims(customClaims) // update CustomClaims overrides all customClaims Pressent
+	updatedUser, err := client.UpdateUser(ctx, UID, params)
 	if err != nil {
 		return nil, firebase.NewError(err)
 	}
-	return user, nil
+	return updatedUser, nil
 }
 
 func DeleteFirebaseUser(ctx context.Context, uid string) error {
