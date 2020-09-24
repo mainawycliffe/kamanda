@@ -1,6 +1,6 @@
 {
   "name": "kamanda",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Kamanda - Manage your Firebase Application from the Terminal. Add, Remove, Update, View and Search for Firebase Users.",
   "main": "index.js",
   "scripts": {
