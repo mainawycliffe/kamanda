@@ -1,7 +1,7 @@
 {
   "name": "kamanda",
   "version": "0.8.0",
-  "description": "Kamanda - A Firebase CLI Companion Tool",
+  "description": "Kamanda - Manage your Firebase Application from the Terminal. Add, Remove, Update, View and Search for Firebase Users.",
   "main": "index.js",
   "scripts": {
     "test": "go test ./... -v",
@@ -22,12 +22,12 @@
     "Firestore"
   ],
   "preferGlobal": true,
-  "author": "Maina Wycliffe",
+  "author": "Maina Wycliffe <me@mainawycliffe.dev> (https://mainawycliffe.dev)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mainawycliffe/kamanda/issues"
   },
-  "homepage": "https://github.com/mainawycliffe/kamanda#readme",
+  "homepage": "https://kamanda.dev/",
   "dependencies": {
     "mkdirp": "^0.5.1",
     "request": "^2.81.0",
