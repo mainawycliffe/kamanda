@@ -13,9 +13,12 @@ Firestore Data."
 [![](https://github.com/mainawycliffe/kamanda/workflows/Go%20Linting/badge.svg)](https://github.com/mainawycliffe/kamanda/actions?query=workflow%3A%22Go+Linting%22)
 [![](https://github.com/mainawycliffe/kamanda/workflows/Go%20Release/badge.svg)](https://github.com/mainawycliffe/kamanda/actions?query=workflow%3A%22Go+Release%22)
 
-Kamanda is an open source tool tool is meant to provide additional functionality not provided by Firebase
-CLI such as Managing Users of your Projects, Exporting and Importing of Cloud
-Firestore Data.
+> Use `kamanda users` instead of `kamanda auth`, which is being removed after being deprecated in the previous version (v0.8.0).
+
+Kamanda helps manage your Firebase Project from the terminal. It helps you manage
+user data in Firebase Authentication. You can add, remove, update, list and search
+Firebase users from your console. Functionalities for Cloud Firestore and Cloud
+Functions are on the pipeline.
 
 > This is not meant to replace Firebase CLI but to compliment it.
 
