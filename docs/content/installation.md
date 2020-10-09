@@ -25,7 +25,7 @@ You can use npm to install Kamanda:
 npm -g install kamanda
 ```
 
-### Using Yan
+### Using Yarn Package Manager
 
 You can also use yarn to install Kamanda:
 
