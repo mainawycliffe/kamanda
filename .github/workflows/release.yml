@@ -76,3 +76,30 @@ jobs:
           npm publish
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+  docsGen:
+    name: Generate Documentation For New Release
+    runs-on: ubuntu-latest
+    needs:
+      - npmPublish
+    steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+      - name: Get dependencies
+        run: go get -v -t -d ./...
+      - name: Generate Documentation
+        run: go run main.go docsGen
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: "0.69.0"
+          extended: true
+      - name: Build
+        run: hugo --minify
+        working-directory: "./docs"
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          PROJECT_PATH: "./docs"
