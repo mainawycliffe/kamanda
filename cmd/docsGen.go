@@ -33,6 +33,7 @@ var docsGenCmd = &cobra.Command{
 			{"", loginCICmd},
 			{"", loginCmd},
 			{"", logoutCmd},
+			{"", completionCmd},
 			{"/users", usersCmd},
 		}
 
