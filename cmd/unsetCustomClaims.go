@@ -14,7 +14,7 @@ var unsetCustomClaimsCmd = &cobra.Command{
 	Use:     "custom-claims",
 	Aliases: []string{"customClaims"},
 	Short:   "Unset custom claims from a firebase user account",
-	Example: "kamanda users unset custom-claims --keys \"role\"",
+	Example: "kamanda users unset custom-claims --keys \"role\" [UID]",
 	Run: func(cmd *cobra.Command, args []string) {
 		keys, _ := cmd.Flags().GetStringArray("keys")
 		hasError := false

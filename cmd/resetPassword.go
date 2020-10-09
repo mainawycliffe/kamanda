@@ -13,7 +13,7 @@ import (
 var resetPasswordCmd = &cobra.Command{
 	Use:     "password",
 	Short:   "Reset password for a firebase user(s)",
-	Example: "kamanda auth users set password [UID] --password newPassword",
+	Example: "kamanda users set password [UID] --password newPassword",
 	Long: `Reset the password of a Firebase user(s).
 
 You can provide the password or the user or if left empty, Kamanda will automatically generate a password and print it.`,

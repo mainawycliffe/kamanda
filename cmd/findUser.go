@@ -21,7 +21,7 @@ var findUserCmd = &cobra.Command{
 	Short:   "Find a a Firebase Auth user by their Firebase UID.",
 	Long: `Find a a Firebase Auth user by their Firebase UID.
 To find user by email or by phone use "find by-email" or "find by-phone"`,
-	Example: `kamanda auth find [UID1] [UID2]`,
+	Example: `kamanda users find [UID1] [UID2]`,
 	Run: func(cmd *cobra.Command, args []string) {
 		output, err := cmd.Flags().GetString("output")
 		if err != nil {

@@ -19,7 +19,7 @@ var byEmailCmd = &cobra.Command{
 	Use:     "byEmail",
 	Aliases: []string{"email", "by-email"},
 	Short:   "Find a Firebase Auth user by email address",
-	Example: `kamanda auth find by-email email@example.com`,
+	Example: `kamanda users find by-email email@example.com`,
 	Run: func(cmd *cobra.Command, args []string) {
 		output, err := cmd.Flags().GetString("output")
 		if err != nil {

@@ -26,9 +26,9 @@ var usersCmd = &cobra.Command{
 	This will display a table you can interact with.
 	
 In cases where there are more than 500 users, you will also get a nextPageToken, that you can use to fetch more users.`,
-	Example: `kamanda auth users
-kamanda auth users -o json
-kamanda auth users -output yaml`,
+	Example: `kamanda users
+kamanda users -o json
+kamanda users -output yaml`,
 	Run: func(cmd *cobra.Command, args []string) {
 		output, err := cmd.Flags().GetString("output")
 		if err != nil {

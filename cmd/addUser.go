@@ -14,9 +14,9 @@ import (
 
 // addUserCmd represents the addUser command
 var addUserCmd = &cobra.Command{
-	Use:     "addUser",
-	Aliases: []string{"add-user", "add"},
-	Example: `kamanda auth addUser --email email@example.com --password 1234 --custom-claims "admin=true" --custom-claims "key:value"`,
+	Use:     "add",
+	Aliases: []string{"add-user", "addUsers"},
+	Example: `kamanda users add --email email@example.com --password 123456 --custom-claims "admin=true" --custom-claims "key=value"`,
 	Short:   "Add a new Firebase Email/Password user (Accepts Custom Claims)",
 	Long: `Creates a new Firebase User (Email/Password). Both the Email and the Password are required. 
 

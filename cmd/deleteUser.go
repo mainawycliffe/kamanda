@@ -14,7 +14,7 @@ var deleteUserCmd = &cobra.Command{
 	Use:     "deleteUsers",
 	Aliases: []string{"delete-users", "delete"},
 	Short:   "Delete multiple Firebase Auth User by their UID",
-	Example: "kamanda auth delete [uid1] [uid2] [uid3]",
+	Example: "kamanda users delete [uid1] [uid2] [uid3]",
 	Run: func(cmd *cobra.Command, args []string) {
 		// args = list of uids
 		if len(args) == 0 {
