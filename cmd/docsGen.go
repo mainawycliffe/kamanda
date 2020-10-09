@@ -33,7 +33,7 @@ var docsGenCmd = &cobra.Command{
 			{"", loginCICmd},
 			{"", loginCmd},
 			{"", logoutCmd},
-			{"/auth", authCmd},
+			{"/users", usersCmd},
 		}
 
 		for _, v := range baseCommands {

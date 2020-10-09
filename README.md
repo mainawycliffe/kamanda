@@ -6,6 +6,8 @@
 [![](https://github.com/mainawycliffe/kamanda/workflows/Go%20Linting/badge.svg)](https://github.com/mainawycliffe/kamanda/actions?query=workflow%3A%22Go+Linting%22)
 [![](https://github.com/mainawycliffe/kamanda/workflows/Go%20Release/badge.svg)](https://github.com/mainawycliffe/kamanda/actions?query=workflow%3A%22Go+Release%22)
 
+> Use `kamanda users` instead of `kamanda auth`, which is being remove after being deprecated in the previous version (v0.8.0).
+
 Kamanda helps manage your Firebase Project from the terminal. It helps you manage
 user data in Firebase Authentication. You can add, remove, update, list and search
 Firebase users from your console. Functionalities for Cloud Firestore and Cloud
