@@ -5,6 +5,7 @@ name: docsSiteGenerator
 on:
   release:
     types:
+      - published
       - created
   push:
     branches: [master]
